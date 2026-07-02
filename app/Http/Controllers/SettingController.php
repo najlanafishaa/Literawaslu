@@ -15,7 +15,7 @@ class SettingController extends Controller
     /**
      * Get settings storage path.
      */
-    private function getSettingsPath()
+    private static function getSettingsPath()
     {
         return 'settings.json';
     }
@@ -23,10 +23,11 @@ class SettingController extends Controller
     /**
      * Read settings from storage.
      */
-    private function readSettings()
+    public static function readSettings()
     {
-        if (Storage::exists($this->getSettingsPath())) {
-            return json_decode(Storage::get($this->getSettingsPath()), true) ?: [];
+        $path = self::getSettingsPath();
+        if (Storage::exists($path)) {
+            return json_decode(Storage::get($path), true) ?: [];
         }
         return [];
     }
@@ -36,7 +37,16 @@ class SettingController extends Controller
      */
     private function writeSettings(array $settings)
     {
-        Storage::put($this->getSettingsPath(), json_encode($settings, JSON_PRETTY_PRINT));
+        Storage::put(self::getSettingsPath(), json_encode($settings, JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Get specific setting helper.
+     */
+    public static function getSetting($key, $default = null)
+    {
+        $settings = self::readSettings();
+        return $settings[$key] ?? $default;
     }
 
     /**
@@ -44,10 +54,23 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $settings = $this->readSettings();
+        $settings = self::readSettings();
+        
         $googleSheetsUrl = $settings['google_sheets_url'] ?? '';
+        $googleSitesUrl = $settings['google_sites_url'] ?? '';
+        $libraryName = $settings['library_name'] ?? 'Literawas';
+        $loanDuration = $settings['loan_duration'] ?? 7;
+        $lateFee = $settings['late_fee'] ?? 2000;
+        $rewardPoints = $settings['reward_points'] ?? 10;
 
-        return view('settings.index', compact('googleSheetsUrl'));
+        return view('settings.index', compact(
+            'googleSheetsUrl',
+            'googleSitesUrl',
+            'libraryName',
+            'loanDuration',
+            'lateFee',
+            'rewardPoints'
+        ));
     }
 
     /**
@@ -56,16 +79,29 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $request->validate([
+            'library_name' => 'required|string|max:255',
+            'loan_duration' => 'required|integer|min:1',
+            'late_fee' => 'required|integer|min:0',
+            'reward_points' => 'required|integer|min:0',
             'google_sheets_url' => 'nullable|url',
+            'google_sites_url' => 'nullable|url',
         ], [
-            'google_sheets_url.url' => 'Format URL tidak valid. Pastikan diawali dengan http:// atau https://',
+            'google_sheets_url.url' => 'Format URL Google Sheets tidak valid.',
+            'google_sites_url.url' => 'Format URL Google Sites tidak valid.',
         ]);
 
-        $settings = $this->readSettings();
-        $settings['google_sheets_url'] = $request->google_sheets_url;
+        $settings = $request->only([
+            'library_name',
+            'loan_duration',
+            'late_fee',
+            'reward_points',
+            'google_sheets_url',
+            'google_sites_url'
+        ]);
+
         $this->writeSettings($settings);
 
-        return redirect()->route('settings.index')->with('success', 'Pengaturan berhasil diperbarui.');
+        return redirect()->route('settings.index')->with('success', 'Pengaturan perpustakaan berhasil diperbarui.');
     }
 
     /**
@@ -73,7 +109,7 @@ class SettingController extends Controller
      */
     public function syncSheets()
     {
-        $settings = $this->readSettings();
+        $settings = self::readSettings();
         $googleSheetsUrl = $settings['google_sheets_url'] ?? '';
 
         if (empty($googleSheetsUrl)) {

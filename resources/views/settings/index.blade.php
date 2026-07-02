@@ -1,84 +1,171 @@
 @extends('layouts.app')
 
 @section('title', 'Pengaturan')
-@section('header_title', 'Pengaturan Integrasi')
+@section('header_title', 'Pengaturan Sistem')
 
 @section('content')
 <div class="welcome-banner" style="margin-bottom: 25px;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;">
         <div>
-            <h1>Integrasi Google Sheets</h1>
-            <p>Sinkronisasikan seluruh data buku, member, dan riwayat peminjaman ke Google Sheets secara real-time.</p>
+            <h1>Pengaturan & Integrasi Perpustakaan</h1>
+            <p>Atur identitas perpustakaan, parameter operasional, durasi pinjam, denda, dan kelola integrasi data Google Sheets & Google Sites.</p>
         </div>
         <div>
-            <i class="fa-solid fa-file-excel" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
+            <i class="fa-solid fa-sliders" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
         </div>
     </div>
 </div>
 
-<div class="dashboard-grid">
-    <!-- Left Column: Settings Form & Sync Execution -->
-    <div class="card">
-        <div class="card-header">
-            <h2><i class="fa-solid fa-gear" style="color: var(--primary); margin-right: 8px;"></i> Konfigurasi Koneksi</h2>
+@if($errors->any())
+    <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+        <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+    </div>
+@endif
+
+<form action="{{ route('settings.update') }}" method="POST">
+    @csrf
+    
+    <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+        <!-- Column 1: Library Identity & Operational Parameters -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-sliders" style="color: var(--primary); margin-right: 8px;"></i> Aturan & Parameter Operasional</h2>
+            </div>
+            <div class="card-body" style="padding: 25px; display: flex; flex-direction: column; gap: 20px;">
+                <div class="form-group">
+                    <label for="library_name" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                        Nama Perpustakaan:
+                    </label>
+                    <input type="text" name="library_name" id="library_name" class="form-control" 
+                           value="{{ $libraryName }}" placeholder="Contoh: Perpustakaan Literawas Bawaslu Lampung" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loan_duration" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                        Durasi Maksimal Peminjaman (Hari):
+                    </label>
+                    <input type="number" name="loan_duration" id="loan_duration" class="form-control" 
+                           value="{{ $loanDuration }}" placeholder="7" required min="1">
+                    <small style="color: var(--gray-600); display: block; margin-top: 5px; font-size: 0.8rem;">
+                        Tenggat waktu pengembalian buku terhitung setelah checkout dilakukan.
+                    </small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="late_fee" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                            Denda Keterlambatan per Hari (Rp):
+                        </label>
+                        <input type="number" name="late_fee" id="late_fee" class="form-control" 
+                               value="{{ $lateFee }}" placeholder="2000" required min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reward_points" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                            Poin Reward per Transaksi Sukses:
+                        </label>
+                        <input type="number" name="reward_points" id="reward_points" class="form-control" 
+                               value="{{ $rewardPoints }}" placeholder="10" required min="0">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <form action="{{ route('settings.update') }}" method="POST" style="margin-bottom: 30px;">
-                @csrf
-                <div class="form-group" style="margin-bottom: 20px;">
+
+        <!-- Column 2: External Integrations (Google Sheets & Google Sites) -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-link" style="color: var(--secondary); margin-right: 8px;"></i> Integrasi Google Sheets & Google Sites</h2>
+            </div>
+            <div class="card-body" style="padding: 25px; display: flex; flex-direction: column; gap: 20px;">
+                <div class="form-group">
                     <label for="google_sheets_url" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
-                        Google Sheets Web App URL:
+                        Google Sheets Web App URL (Apps Script):
                     </label>
                     <input type="url" name="google_sheets_url" id="google_sheets_url" class="form-control" 
                            placeholder="https://script.google.com/macros/s/.../exec" 
-                           value="{{ $googleSheetsUrl }}" 
-                           style="width: 100%; padding: 12px; border: 1px solid var(--gray-300); border-radius: var(--border-radius); font-size: 0.9rem;"
-                           required>
+                           value="{{ $googleSheetsUrl }}">
                     <small style="color: var(--gray-600); display: block; margin-top: 5px; font-size: 0.8rem;">
-                        Masukkan URL Deployment Web App dari Google Apps Script Anda.
+                        Masukkan URL Deployment Web App dari Google Apps Script untuk sinkronisasi database.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="google_sites_url" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                        Google Sites Publish URL:
+                    </label>
+                    <input type="url" name="google_sites_url" id="google_sites_url" class="form-control" 
+                           placeholder="https://sites.google.com/view/..." 
+                           value="{{ $googleSitesUrl }}">
+                    <small style="color: var(--gray-600); display: block; margin-top: 5px; font-size: 0.8rem;">
+                        Tautkan URL portal Google Sites Anda yang menampilkan visual catalog atau profil perpustakaan.
                     </small>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-floppy-disk"></i> Simpan URL
-                </button>
-            </form>
-
-            <div style="border-top: 1px solid var(--gray-200); padding-top: 25px;">
-                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--dark); margin-bottom: 15px;">Aksi Sinkronisasi</h3>
-                <p style="font-size: 0.85rem; color: var(--gray-600); margin-bottom: 20px; line-height: 1.5;">
-                    Setelah menyimpan URL, Anda dapat langsung melakukan sinkronisasi data database lokal (Buku, Anggota, Transaksi Peminjaman) ke Google Sheet tujuan Anda dengan menekan tombol di bawah.
-                </p>
-
-                @if(!empty($googleSheetsUrl))
-                    <form action="{{ route('settings.sync_sheets') }}" method="POST" id="syncForm">
-                        @csrf
-                        <button type="submit" class="btn btn-secondary" id="syncBtn" style="background-color: var(--secondary); border-color: var(--secondary); color: var(--light);">
-                            <i class="fa-solid fa-rotate" id="syncIcon"></i> Sinkronisasi Sekarang
-                        </button>
-                    </form>
-                @else
-                    <div style="background-color: rgba(var(--primary-rgb), 0.05); color: var(--primary); padding: 15px; border-radius: var(--border-radius); font-size: 0.85rem; border: 1px dashed rgba(var(--primary-rgb), 0.2);">
-                        <i class="fa-solid fa-circle-info"></i> Silakan simpan URL Web App terlebih dahulu untuk mengaktifkan fitur sinkronisasi data.
+                @if(!empty($googleSitesUrl))
+                    <div style="margin-top: 5px;">
+                        <a href="{{ $googleSitesUrl }}" target="_blank" class="btn btn-outline btn-sm" style="width: 100%; text-align: center; display: inline-block; color: var(--secondary); border-color: var(--secondary);">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Portal Google Sites
+                        </a>
                     </div>
                 @endif
             </div>
         </div>
     </div>
 
-    <!-- Right Column: Instructions & Script Template -->
+    <!-- Sticky Bottom Form Action Card -->
+    <div class="card" style="margin-bottom: 25px;">
+        <div class="card-body" style="padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h3 style="font-size: 0.95rem; font-weight: 600; color: var(--dark);">Simpan Seluruh Pengaturan</h3>
+                <p style="font-size: 0.8rem; color: var(--gray-600);">Tekan simpan untuk memperbarui aturan perpustakaan dan data integrasi eksternal.</p>
+            </div>
+            <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Pengaturan
+            </button>
+        </div>
+    </div>
+</form>
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+    <!-- Sync Actions Card -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-circle-question" style="color: var(--secondary); margin-right: 8px;"></i> Panduan Setup</h2>
+            <h2><i class="fa-solid fa-arrows-rotate" style="color: var(--primary); margin-right: 8px;"></i> Aksi Sinkronisasi Data</h2>
         </div>
-        <div class="card-body" style="font-size: 0.85rem; line-height: 1.6; color: var(--gray-700);">
-            <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
+        <div class="card-body" style="padding: 25px;">
+            <p style="font-size: 0.85rem; color: var(--gray-700); margin-bottom: 20px; line-height: 1.5;">
+                Gunakan tombol di bawah untuk langsung memicu proses pengiriman dan sinkronisasi seluruh tabel database lokal (Buku, Anggota, Transaksi) ke dalam Google Spreadsheet Anda.
+            </p>
+
+            @if(!empty($googleSheetsUrl))
+                <form action="{{ route('settings.sync_sheets') }}" method="POST" id="syncForm">
+                    @csrf
+                    <button type="submit" class="btn btn-secondary" id="syncBtn" style="background-color: var(--secondary); border-color: var(--secondary); color: var(--dark); width: 100%; padding: 12px; font-weight: 600;">
+                        <i class="fa-solid fa-rotate" id="syncIcon"></i> Mulai Sinkronisasi Sekarang
+                    </button>
+                </form>
+            @else
+                <div style="background-color: rgba(var(--primary-rgb), 0.05); color: var(--primary); padding: 15px; border-radius: var(--border-radius); font-size: 0.85rem; border: 1px dashed rgba(var(--primary-rgb), 0.2); text-align: center;">
+                    <i class="fa-solid fa-circle-info"></i> Silakan isi dan simpan <strong>Google Sheets Web App URL</strong> di atas terlebih dahulu untuk mengaktifkan sinkronisasi.
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- Help Setup Card -->
+    <div class="card" style="border-color: var(--gray-200);">
+        <div class="card-header" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="toggleGuide()">
+            <h2><i class="fa-solid fa-circle-question" style="color: var(--secondary); margin-right: 8px;"></i> Panduan Setup Google Apps Script</h2>
+            <i class="fa-solid fa-chevron-down" id="guideChevron" style="color: var(--gray-600); transition: var(--transition);"></i>
+        </div>
+        <div class="card-body" id="guideBody" style="font-size: 0.85rem; line-height: 1.6; color: var(--gray-700); display: none; padding: 25px; border-top: 1px solid var(--gray-100);">
+            <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
                 <li>Buat sebuah <strong>Google Spreadsheet</strong> baru di Google Drive Anda.</li>
                 <li>Buka menu <strong>Ekstensi (Extensions)</strong> &gt; <strong>Apps Script</strong>.</li>
                 <li>Hapus kode bawaan, lalu salin dan tempelkan kode skrip di bawah ini:</li>
             </ol>
             
-            <div style="margin-top: 15px; margin-bottom: 15px; position: relative;">
+            <div style="margin-bottom: 15px; position: relative;">
                 <textarea readonly style="width: 100%; height: 160px; font-family: monospace; font-size: 0.75rem; padding: 10px; border-radius: 8px; border: 1px solid var(--gray-300); background-color: var(--gray-50); resize: none;" id="scriptCode">function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -115,23 +202,23 @@
       .setMimeType(ContentService.MimeType.JSON);
   }
 }</textarea>
-                <button onclick="copyScriptCode()" class="btn btn-outline btn-sm" style="margin-top: 5px; width: 100%; font-size: 0.75rem; padding: 6px;">
-                    <i class="fa-solid fa-copy"></i> Salin Skrip
+                <button onclick="copyScriptCode()" type="button" class="btn btn-outline btn-sm" style="margin-top: 5px; width: 100%; font-size: 0.75rem; padding: 6px;">
+                    <i class="fa-solid fa-copy"></i> Salin Skrip Apps Script
                 </button>
             </div>
 
             <ol start="4" style="padding-left: 20px; display: flex; flex-direction: column; gap: 10px;">
                 <li>Klik ikon <strong>Simpan (Save)</strong> proyek.</li>
                 <li>Klik tombol <strong>Terapkan (Deploy)</strong> &gt; <strong>Penerapan baru (New deployment)</strong>.</li>
-                <li>Klik ikon gir di sebelah kiri "Pilih tipe", pilih <strong>Aplikasi web (Web app)</strong>.</li>
+                <li>Pilih tipe <strong>Aplikasi web (Web app)</strong>.</li>
                 <li>Konfigurasikan:
                     <ul style="padding-left: 20px; margin-top: 5px; list-style-type: circle;">
-                        <li><strong>Jalankan sebagai (Execute as):</strong> Diri Anda sendiri (Email Anda)</li>
-                        <li><strong>Yang memiliki akses (Who has access):</strong> Siapa saja (Anyone)</li>
+                        <li><strong>Execute as:</strong> Me (Email Anda)</li>
+                        <li><strong>Who has access:</strong> Anyone (Siapa saja)</li>
                     </ul>
                 </li>
-                <li>Klik <strong>Terapkan (Deploy)</strong>. Berikan izin otorisasi yang diminta (klik Advanced &gt; Go to Untitled project).</li>
-                <li>Salin <strong>URL Aplikasi Web (Web app URL)</strong> yang ditampilkan, lalu tempelkan ke kolom isian konfigurasi di sebelah kiri.</li>
+                <li>Klik <strong>Deploy</strong>, lalu berikan izin otorisasi keamanan yang diminta.</li>
+                <li>Salin <strong>Web app URL</strong> yang terbit, lalu tempelkan ke kolom isian Google Sheets URL di atas.</li>
             </ol>
         </div>
     </div>
@@ -140,6 +227,18 @@
 
 @section('scripts')
 <script>
+    function toggleGuide() {
+        const guide = document.getElementById('guideBody');
+        const chevron = document.getElementById('guideChevron');
+        if (guide.style.display === 'none' || guide.style.display === '') {
+            guide.style.display = 'block';
+            chevron.style.transform = 'rotate(180deg)';
+        } else {
+            guide.style.display = 'none';
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    }
+
     function copyScriptCode() {
         const copyText = document.getElementById("scriptCode");
         copyText.select();

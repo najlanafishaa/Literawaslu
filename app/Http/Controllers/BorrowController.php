@@ -66,12 +66,14 @@ class BorrowController extends Controller
             return back()->with('error', "Batas peminjaman untuk member '{$member->user->name}' telah tercapai (maksimal {$member->borrow_limit} buku).");
         }
 
+        $loanDuration = SettingController::getSetting('loan_duration', 7);
+
         // Process checkout
         Borrow::create([
             'member_id' => $member->id,
             'book_id' => $book->id,
             'borrow_date' => Carbon::today(),
-            'due_date' => Carbon::today()->addDays(7), // 7 days loan period
+            'due_date' => Carbon::today()->addDays($loanDuration),
             'status' => 'borrowed',
         ]);
 
@@ -79,7 +81,7 @@ class BorrowController extends Controller
         $book->decrement('available_stock');
         $book->update(['is_available' => $book->available_stock > 0]);
 
-        return back()->with('success', "Buku '{$book->title}' berhasil dipinjam oleh '{$member->user->name}'. Jatuh tempo pada " . Carbon::today()->addDays(7)->format('d M Y') . ".");
+        return back()->with('success', "Buku '{$book->title}' berhasil dipinjam oleh '{$member->user->name}'. Jatuh tempo pada " . Carbon::today()->addDays($loanDuration)->format('d M Y') . ".");
     }
 
     /**
@@ -115,9 +117,12 @@ class BorrowController extends Controller
         $isLate = $returnDate->greaterThan($dueDate);
         $pointsEarned = 0;
 
-        // Reward points logic (10 points if returned on time)
+        $rewardPointsSetting = SettingController::getSetting('reward_points', 10);
+        $lateFeeSetting = SettingController::getSetting('late_fee', 2000);
+
+        // Reward points logic
         if (!$isLate) {
-            $pointsEarned = 10;
+            $pointsEarned = $rewardPointsSetting;
             $member->points += $pointsEarned;
         }
 
@@ -138,7 +143,8 @@ class BorrowController extends Controller
         $message = "Buku '{$book->title}' berhasil dikembalikan oleh '{$member->user->name}'.";
         if ($isLate) {
             $daysLate = $returnDate->diffInDays($dueDate);
-            return back()->with('warning', $message . " (Terlambat {$daysLate} hari. Member tidak mendapat poin reward).");
+            $fine = $daysLate * $lateFeeSetting;
+            return back()->with('warning', $message . " (Terlambat {$daysLate} hari. Denda Keterlambatan: Rp " . number_format($fine, 0, ',', '.') . ". Member tidak mendapat poin reward).");
         } else {
             return back()->with('success', $message . " Member mendapatkan +{$pointsEarned} poin reward! Saldo poin saat ini: {$member->points}.");
         }
