@@ -47,6 +47,11 @@ class BorrowController extends Controller
             return back()->with('error', "Member dengan kode '{$request->member_code}' tidak ditemukan.");
         }
 
+        // Validate if member is verified
+        if (!$member->is_verified) {
+            return back()->with('error', "Gagal memproses peminjaman. Akun member '{$member->user->name}' belum diverifikasi oleh petugas.");
+        }
+
         // Find book
         $book = Book::where('barcode', $request->barcode)->first();
         if (!$book) {
@@ -66,7 +71,7 @@ class BorrowController extends Controller
             return back()->with('error', "Batas peminjaman untuk member '{$member->user->name}' telah tercapai (maksimal {$member->borrow_limit} buku).");
         }
 
-        $loanDuration = SettingController::getSetting('loan_duration', 7);
+        $loanDuration = (int) SettingController::getSetting('loan_duration', 7);
 
         // Process checkout
         Borrow::create([

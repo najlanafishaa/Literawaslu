@@ -1,0 +1,120 @@
+@extends('layouts.app')
+
+@section('title', 'Ubah Profil')
+@section('header_title', 'Profil Saya')
+
+@section('content')
+<div class="welcome-banner" style="margin-bottom: 25px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;">
+        <div>
+            <h1>Pengaturan Profil Pengguna</h1>
+            <p>Kelola data nama, email, dan kata sandi masuk untuk akun Anda.</p>
+        </div>
+        <div>
+            <i class="fa-solid fa-user-gear" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
+        </div>
+    </div>
+</div>
+
+@if($errors->any())
+    <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+        <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+    </div>
+@endif
+
+<div class="dashboard-grid" style="grid-template-columns: 1fr; gap: 25px; margin-bottom: 25px; max-width: 800px; margin: 0 auto;">
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="fa-solid fa-address-card" style="color: var(--primary); margin-right: 8px;"></i> Data Akun</h2>
+        </div>
+        <div class="card-body" style="padding: 25px;">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
+                @csrf
+                
+                <div class="form-group" style="margin-bottom: 5px;">
+                    <label for="avatar" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                        Foto Profil:
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        @if($user->avatar)
+                            <img src="{{ asset($user->avatar) }}" alt="Foto Profil" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                        @else
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--primary); color: var(--light); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; border: 2px solid var(--secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            </div>
+                        @endif
+                        <div style="flex: 1;">
+                            <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*" style="padding: 8px 12px; font-size: 0.85rem; max-width: 300px;">
+                            <small style="color: var(--gray-600); display: block; margin-top: 5px; font-size: 0.8rem;">
+                                Format gambar: JPEG, PNG, JPG, GIF. Maksimal 512 KB.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label for="name" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                            Nama Lengkap:
+                        </label>
+                        <input type="text" name="name" id="name" class="form-control" 
+                               value="{{ old('name', $user->name) }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                            Alamat Email:
+                        </label>
+                        <input type="email" name="email" id="email" class="form-control" 
+                               value="{{ old('email', $user->email) }}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                        Hak Akses / Role:
+                    </label>
+                    <input type="text" class="form-control" style="background-color: var(--gray-100); cursor: not-allowed;" 
+                           value="{{ auth()->user()->role === 'super_admin' ? 'Super Admin' : (in_array(auth()->user()->role, ['admin', 'petugas']) ? 'Admin' : 'User') }}" disabled>
+                    <small style="color: var(--gray-600); display: block; margin-top: 5px; font-size: 0.8rem;">
+                        Peran akun diatur oleh administrator sistem dan tidak dapat diubah dari profil ini.
+                    </small>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--gray-200); margin: 10px 0;">
+
+                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--dark); margin-bottom: 5px;">
+                    <i class="fa-solid fa-key" style="color: var(--secondary); margin-right: 6px;"></i> Ubah Kata Sandi
+                </h3>
+                <p style="font-size: 0.8rem; color: var(--gray-600); margin-bottom: 10px;">
+                    Kosongkan kolom di bawah ini jika Anda tidak ingin mengubah kata sandi masuk Anda.
+                </p>
+
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label for="password" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                            Kata Sandi Baru:
+                        </label>
+                        <input type="password" name="password" id="password" class="form-control" 
+                               placeholder="Minimal 6 karakter">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirmation" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
+                            Konfirmasi Kata Sandi Baru:
+                        </label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" 
+                               placeholder="Ulangi kata sandi baru">
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="padding: 12px 30px;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection

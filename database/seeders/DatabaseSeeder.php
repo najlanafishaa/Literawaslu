@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+<<<<<<< HEAD
         // 1. Create Super Admin
         User::create([
             'name' => 'Super Admin',
@@ -89,130 +90,235 @@ class DatabaseSeeder extends Seeder
             'points' => 0,
             'borrow_limit' => 1,
         ]);
+=======
+        // 1. Create or update Super Admin
+        $superAdmin = User::updateOrCreate(
+            ['email' => 'admin@literawaslu.com'],
+            [
+                'name' => 'Super Admin',
+                'password' => Hash::make('123'),
+                'role' => 'super_admin',
+            ]
+        );
 
-        // 4. Create Books
-        $book1 = Book::create([
-            'barcode' => '9786020333175',
-            'title' => 'Laskar Pelangi',
-            'author' => 'Andrea Hirata',
-            'publisher' => 'Bentang Pustaka',
-            'year' => 2005,
-            'category' => 'Fiksi',
-            'stock' => 5,
-            'available_stock' => 5,
-            'is_available' => true,
-        ]);
+        // 2. Create or update Admin
+        $admin = User::updateOrCreate(
+            ['email' => 'petugas@literawaslu.com'],
+            [
+                'name' => 'Admin Perpus',
+                'password' => Hash::make('123'),
+                'role' => 'admin',
+            ]
+        );
 
-        $book2 = Book::create([
-            'barcode' => '9786020523315',
-            'title' => 'Bumi Manusia',
-            'author' => 'Pramoedya Ananta Toer',
-            'publisher' => 'Lentera Dipantara',
-            'year' => 1980,
-            'category' => 'Sejarah',
-            'stock' => 3,
-            'available_stock' => 3,
-            'is_available' => true,
-        ]);
+        // 3. Create or update Users and member profiles
+        $user1 = User::updateOrCreate(
+            ['email' => 'ahmad@literawaslu.com'],
+            [
+                'name' => 'Ahmad Yani',
+                'password' => Hash::make('123'),
+                'role' => 'user',
+            ]
+        );
+        $user1->member()->firstOrCreate(
+            ['user_id' => $user1->id],
+            [
+                'member_code' => 'MEM-100001',
+                'total_loans' => 4,
+                'points' => 40,
+                'borrow_limit' => 1,
+                'is_verified' => true,
+            ]
+        );
 
-        $book3 = Book::create([
-            'barcode' => '9789792238419',
-            'title' => 'Perahu Kertas',
-            'author' => 'Dee Lestari',
-            'publisher' => 'Bentang Pustaka',
-            'year' => 2009,
-            'category' => 'Romantis',
-            'stock' => 4,
-            'available_stock' => 3, // Ahmad is borrowing 1 copy right now
-            'is_available' => true,
-        ]);
+        $user2 = User::updateOrCreate(
+            ['email' => 'budi@literawaslu.com'],
+            [
+                'name' => 'Budi Sudarsono',
+                'password' => Hash::make('123'),
+                'role' => 'user',
+            ]
+        );
+        $user2->member()->firstOrCreate(
+            ['user_id' => $user2->id],
+            [
+                'member_code' => 'MEM-100002',
+                'total_loans' => 1,
+                'points' => 10,
+                'borrow_limit' => 1,
+                'is_verified' => true,
+            ]
+        );
 
-        $book4 = Book::create([
-            'barcode' => '9786020822341',
-            'title' => 'Pulang',
-            'author' => 'Tere Liye',
-            'publisher' => 'Republika',
-            'year' => 2015,
-            'category' => 'Fiksi',
-            'stock' => 5,
-            'available_stock' => 5,
-            'is_available' => true,
-        ]);
+        $user3 = User::updateOrCreate(
+            ['email' => 'citra@literawaslu.com'],
+            [
+                'name' => 'Citra Lestari',
+                'password' => Hash::make('123'),
+                'role' => 'user',
+            ]
+        );
+        $user3->member()->firstOrCreate(
+            ['user_id' => $user3->id],
+            [
+                'member_code' => 'MEM-100003',
+                'total_loans' => 0,
+                'points' => 0,
+                'borrow_limit' => 1,
+                'is_verified' => true,
+            ]
+        );
+>>>>>>> origin/pr-1
 
-        $book5 = Book::create([
-            'barcode' => '9786022207321',
-            'title' => 'Negeri 5 Menara',
-            'author' => 'Ahmad Fuadi',
-            'publisher' => 'Gramedia Pustaka Utama',
-            'year' => 2009,
-            'category' => 'Inspiratif',
-            'stock' => 2,
-            'available_stock' => 2,
-            'is_available' => true,
-        ]);
+        // 4. Create or update Books
+        $book1 = Book::updateOrCreate(
+            ['barcode' => '9786020333175'],
+            [
+                'title' => 'Laskar Pelangi',
+                'author' => 'Andrea Hirata',
+                'publisher' => 'Bentang Pustaka',
+                'year' => 2005,
+                'category' => 'Fiksi',
+                'stock' => 5,
+                'available_stock' => 5,
+                'is_available' => true,
+            ]
+        );
 
-        $book6 = Book::create([
-            'barcode' => '9786020633123',
-            'title' => 'Filosofi Teras',
-            'author' => 'Henry Manampiring',
-            'publisher' => 'Kompas',
-            'year' => 2018,
-            'category' => 'Self-Help',
-            'stock' => 3,
-            'available_stock' => 3,
-            'is_available' => true,
-        ]);
+        $book2 = Book::updateOrCreate(
+            ['barcode' => '9786020523315'],
+            [
+                'title' => 'Bumi Manusia',
+                'author' => 'Pramoedya Ananta Toer',
+                'publisher' => 'Lentera Dipantara',
+                'year' => 1980,
+                'category' => 'Sejarah',
+                'stock' => 3,
+                'available_stock' => 3,
+                'is_available' => true,
+            ]
+        );
 
-        // 5. Create Borrow Transactions
-        
-        // Active Borrow (Ahmad - Perahu Kertas)
-        Borrow::create([
-            'member_id' => $member1->id,
-            'book_id' => $book3->id,
-            'borrow_date' => '2026-06-25',
-            'due_date' => '2026-07-02',
-            'return_date' => null,
-            'status' => 'borrowed',
-        ]);
+        $book3 = Book::updateOrCreate(
+            ['barcode' => '9789792238419'],
+            [
+                'title' => 'Perahu Kertas',
+                'author' => 'Dee Lestari',
+                'publisher' => 'Bentang Pustaka',
+                'year' => 2009,
+                'category' => 'Romantis',
+                'stock' => 4,
+                'available_stock' => 3,
+                'is_available' => true,
+            ]
+        );
 
-        // Past Borrow (Ahmad - Laskar Pelangi, returned)
-        Borrow::create([
-            'member_id' => $member1->id,
-            'book_id' => $book1->id,
-            'borrow_date' => '2026-06-10',
-            'due_date' => '2026-06-17',
-            'return_date' => '2026-06-15',
-            'status' => 'returned',
-        ]);
+        $book4 = Book::updateOrCreate(
+            ['barcode' => '9786020822341'],
+            [
+                'title' => 'Pulang',
+                'author' => 'Tere Liye',
+                'publisher' => 'Republika',
+                'year' => 2015,
+                'category' => 'Fiksi',
+                'stock' => 5,
+                'available_stock' => 5,
+                'is_available' => true,
+            ]
+        );
 
-        // Past Borrow (Budi - Bumi Manusia, returned late)
-        Borrow::create([
-            'member_id' => $member2->id,
-            'book_id' => $book2->id,
-            'borrow_date' => '2026-06-18',
-            'due_date' => '2026-06-25',
-            'return_date' => '2026-06-26',
-            'status' => 'returned',
-        ]);
+        $book5 = Book::updateOrCreate(
+            ['barcode' => '9786022207321'],
+            [
+                'title' => 'Negeri 5 Menara',
+                'author' => 'Ahmad Fuadi',
+                'publisher' => 'Gramedia Pustaka Utama',
+                'year' => 2009,
+                'category' => 'Inspiratif',
+                'stock' => 2,
+                'available_stock' => 2,
+                'is_available' => true,
+            ]
+        );
 
-        // Past Borrow (Ahmad - Pulang, returned)
-        Borrow::create([
-            'member_id' => $member1->id,
-            'book_id' => $book4->id,
-            'borrow_date' => '2026-05-01',
-            'due_date' => '2026-05-08',
-            'return_date' => '2026-05-07',
-            'status' => 'returned',
-        ]);
+        $book6 = Book::updateOrCreate(
+            ['barcode' => '9786020633123'],
+            [
+                'title' => 'Filosofi Teras',
+                'author' => 'Henry Manampiring',
+                'publisher' => 'Kompas',
+                'year' => 2018,
+                'category' => 'Self-Help',
+                'stock' => 3,
+                'available_stock' => 3,
+                'is_available' => true,
+            ]
+        );
 
-        // Past Borrow (Ahmad - Negeri 5 Menara, returned)
-        Borrow::create([
-            'member_id' => $member1->id,
-            'book_id' => $book5->id,
-            'borrow_date' => '2026-05-15',
-            'due_date' => '2026-05-22',
-            'return_date' => '2026-05-20',
-            'status' => 'returned',
-        ]);
+        // 5. Create or update Borrow Transactions
+        Borrow::firstOrCreate(
+            [
+                'member_id' => $user1->member->id,
+                'book_id' => $book3->id,
+                'borrow_date' => '2026-06-25',
+            ],
+            [
+                'due_date' => '2026-07-02',
+                'return_date' => null,
+                'status' => 'borrowed',
+            ]
+        );
+
+        Borrow::firstOrCreate(
+            [
+                'member_id' => $user1->member->id,
+                'book_id' => $book1->id,
+                'borrow_date' => '2026-06-10',
+            ],
+            [
+                'due_date' => '2026-06-17',
+                'return_date' => '2026-06-15',
+                'status' => 'returned',
+            ]
+        );
+
+        Borrow::firstOrCreate(
+            [
+                'member_id' => $user2->member->id,
+                'book_id' => $book2->id,
+                'borrow_date' => '2026-06-18',
+            ],
+            [
+                'due_date' => '2026-06-25',
+                'return_date' => '2026-06-26',
+                'status' => 'returned',
+            ]
+        );
+
+        Borrow::firstOrCreate(
+            [
+                'member_id' => $user1->member->id,
+                'book_id' => $book4->id,
+                'borrow_date' => '2026-05-01',
+            ],
+            [
+                'due_date' => '2026-05-08',
+                'return_date' => '2026-05-07',
+                'status' => 'returned',
+            ]
+        );
+
+        Borrow::firstOrCreate(
+            [
+                'member_id' => $user1->member->id,
+                'book_id' => $book5->id,
+                'borrow_date' => '2026-05-15',
+            ],
+            [
+                'due_date' => '2026-05-22',
+                'return_date' => '2026-05-20',
+                'status' => 'returned',
+            ]
+        );
     }
 }

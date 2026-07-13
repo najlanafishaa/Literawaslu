@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Petugas')
-@section('header_title', 'Edit Akun Petugas')
+@section('title', 'Edit Akun')
+@section('header_title', 'Ubah Data Akun')
 
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-user-gear" style="color: var(--primary); margin-right: 8px;"></i> Ubah Kredensial Petugas</h2>
+        <h2><i class="fa-solid fa-user-gear" style="color: var(--primary); margin-right: 8px;"></i> Ubah Kredensial Akun</h2>
         <a href="{{ route('officers.index') }}" class="btn btn-outline btn-sm">
             <i class="fa-solid fa-arrow-left"></i> Kembali
         </a>
@@ -36,7 +36,27 @@
             <div class="form-group">
                 <label for="password">Ganti Password (Opsional)</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah password...">
-                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Hanya isi kolom ini jika ingin menyetel ulang kata sandi petugas.</small>
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Hanya isi kolom ini jika ingin menyetel ulang kata sandi akun.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Hak Akses / Peran</label>
+                @if($officer->id === auth()->id())
+                    <select class="form-control" disabled style="background-color: var(--gray-100); cursor: not-allowed;">
+                        <option value="{{ $officer->role }}" selected>
+                            {{ $officer->role === 'super_admin' ? 'Super Admin' : 'Petugas' }} (Akun Anda)
+                        </option>
+                    </select>
+                    <input type="hidden" name="role" value="{{ $officer->role }}">
+                    <small style="color: var(--gray-600); margin-top: 5px; display: block;">Anda tidak dapat mengubah peran atau hak akses akun Anda sendiri.</small>
+                @else
+                    <select name="role" id="role" class="form-control" required>
+                        <option value="super_admin" {{ old('role', $officer->role) === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+                        <option value="petugas" {{ old('role', $officer->role) === 'petugas' ? 'selected' : '' }}>Petugas (Admin Biasa)</option>
+                        <option value="member" {{ old('role', $officer->role) === 'member' ? 'selected' : '' }}>Member / Anggota</option>
+                    </select>
+                    <small style="color: var(--gray-600); margin-top: 5px; display: block;">Mengubah peran ke 'Member' akan membuat profil anggota baru untuk akun ini.</small>
+                @endif
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">

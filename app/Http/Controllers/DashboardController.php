@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         
-        if ($user->role === 'member') {
+        if (in_array($user->role, ['user', 'member'])) {
             // Member Dashboard
             $member = $user->member;
             
@@ -46,6 +46,9 @@ class DashboardController extends Controller
                 ->where('due_date', '<', now()->toDateString())
                 ->count();
 
+            // Unverified members awaiting approval
+            $unverifiedMembers = Member::where('is_verified', false)->with('user')->orderBy('created_at', 'asc')->get();
+
             // Recent loans
             $recentBorrows = Borrow::with(['member.user', 'book'])
                 ->orderBy('created_at', 'desc')
@@ -65,13 +68,13 @@ class DashboardController extends Controller
                 return view('dashboards.admin', compact(
                     'totalBooks', 'borrowedBooks', 'availableBooks', 
                     'totalMembers', 'totalTransactions', 'overdueCount', 
-                    'recentBorrows', 'popularBooks'
+                    'recentBorrows', 'popularBooks', 'unverifiedMembers'
                 ));
             } else {
                 return view('dashboards.petugas', compact(
                     'totalBooks', 'borrowedBooks', 'availableBooks', 
                     'totalMembers', 'totalTransactions', 'overdueCount', 
-                    'recentBorrows'
+                    'recentBorrows', 'unverifiedMembers'
                 ));
             }
         }

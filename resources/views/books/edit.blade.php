@@ -78,6 +78,7 @@
                 <div class="form-group">
                     <label for="cover_image">Foto Sampul Buku (Opsional)</label>
                     <input type="file" name="cover_image" id="cover_image" class="form-control" accept="image/*" style="padding: 5px;">
+                    <small style="color: var(--gray-600); margin-top: 5px; display: block;">Format: JPG, PNG, GIF. Maksimal 512 KB.</small>
                     @if($book->cover_image)
                         <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
                             <img src="{{ asset($book->cover_image) }}" alt="Sampul" style="height: 45px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">

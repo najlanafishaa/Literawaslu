@@ -17,9 +17,16 @@
 </div>
 
 <div class="card">
-    <div class="card-header">
-        <h2>Daftar Anggota Terdaftar</h2>
-        <span class="badge badge-success">{{ $members->count() }} Anggota</span>
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <h2>Daftar Anggota Terdaftar</h2>
+            <span class="badge badge-success">{{ $members->count() }} Anggota</span>
+        </div>
+        @if(auth()->user()->role === 'super_admin')
+            <a href="{{ route('members.create') }}" class="btn btn-primary btn-sm" style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; font-size: 0.85rem; border-radius: var(--border-radius); text-decoration: none;">
+                <i class="fa-solid fa-user-plus"></i> Tambah Member
+            </a>
+        @endif
     </div>
     
     <div class="card-body">
@@ -37,9 +44,8 @@
                             <th>Total Peminjaman</th>
                             <th>Reward Poin</th>
                             <th>Batas Pinjam</th>
-                            @if(auth()->user()->role === 'super_admin')
-                                <th>Aksi</th>
-                            @endif
+                            <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,22 +68,44 @@
                                     <span class="badge badge-warning" style="font-weight: 700;">{{ $member->points }} Pts</span>
                                 </td>
                                 <td>{{ $member->borrow_limit }} Buku</td>
-                                @if(auth()->user()->role === 'super_admin')
-                                    <td>
-                                        <div style="display: flex; gap: 8px;">
+                                <td>
+                                    @if($member->is_verified)
+                                        <span class="badge badge-success">Terverifikasi</span>
+                                    @else
+                                        <span class="badge badge-danger">Belum Terverifikasi</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                         @if(!$member->is_verified)
+                                             <form action="{{ route('members.verify', $member->id) }}" method="POST" style="margin: 0;">
+                                                 @csrf
+                                                 <button type="submit" class="btn btn-secondary btn-sm" title="Terima Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem; background-color: var(--secondary); border-color: var(--secondary); color: var(--light);">
+                                                     <i class="fa-solid fa-user-check"></i> Terima
+                                                 </button>
+                                             </form>
+                                             <form action="{{ route('members.reject', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak dan menghapus pendaftaran member ini?');" style="margin: 0;">
+                                                 @csrf
+                                                 <button type="submit" class="btn btn-outline btn-sm" title="Tolak Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem; color: var(--primary); border-color: rgba(227,30,36,0.3);">
+                                                     <i class="fa-solid fa-user-xmark"></i> Tolak
+                                                 </button>
+                                             </form>
+                                         @endif
+
+                                        @if(auth()->user()->role === 'super_admin')
                                             <a href="{{ route('members.edit', $member->id) }}" class="btn btn-outline btn-sm" title="Edit Member" style="padding: 6px 10px;">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <form action="{{ route('members.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus member ini dari sistem? Semua data relasi terkait juga akan terhapus.');">
+                                            <form action="{{ route('members.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus member ini dari sistem? Semua data relasi terkait juga akan terhapus.');" style="margin: 0;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline btn-sm" title="Hapus Member" style="padding: 6px 10px; color: var(--primary); border-color: rgba(227,30,36,0.2);">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </form>
-                                        </div>
-                                    </td>
-                                @endif
+                                        @endif
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

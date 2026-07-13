@@ -4,9 +4,16 @@
 @section('header_title', 'Dashboard Petugas')
 
 @section('content')
-<div class="welcome-banner">
-    <h1>Selamat Datang, {{ auth()->user()->name }}</h1>
-    <p>Gunakan panel ini untuk mengelola aktivitas peminjaman buku, scan pengembalian, dan melihat laporan bulanan.</p>
+<div class="welcome-banner" style="display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+    <div style="position: relative; z-index: 5; flex: 1;">
+        <h1>Selamat Datang, {{ auth()->user()->name }}</h1>
+        <p>Gunakan panel ini untuk mengelola aktivitas peminjaman buku, scan pengembalian, dan melihat laporan bulanan.</p>
+    </div>
+    @if(auth()->user()->avatar)
+        <div style="position: relative; z-index: 5;">
+            <img src="{{ asset(auth()->user()->avatar) }}" alt="Foto Profil" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.8); box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
+        </div>
+    @endif
 </div>
 
 <!-- Stats Dashboard Grid -->
@@ -51,6 +58,58 @@
         </div>
     </a>
 </div>
+
+@if($unverifiedMembers->isNotEmpty())
+    <div class="card" style="margin-bottom: 25px; border: 1px solid rgba(227,30,36,0.15); box-shadow: 0 4px 20px rgba(227,30,36,0.05);">
+        <div class="card-header" style="background-color: rgba(227,30,36,0.02); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(227,30,36,0.1);">
+            <h2 style="color: var(--primary); display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.1rem; font-weight: 700;">
+                <i class="fa-solid fa-user-clock" style="color: var(--primary);"></i> Anggota Menunggu Verifikasi
+            </h2>
+            <span class="badge badge-danger" style="background-color: var(--primary); color: var(--light); font-weight: 700;">{{ $unverifiedMembers->count() }} Baru</span>
+        </div>
+        <div class="card-body" style="padding: 15px 20px;">
+            <div class="table-responsive">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th>Kode Member</th>
+                            <th>Nama Lengkap</th>
+                            <th>Email</th>
+                            <th>Tanggal Registrasi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($unverifiedMembers as $unverified)
+                            <tr>
+                                <td style="font-family: monospace; font-weight: 700; color: #b58b00;">{{ $unverified->member_code }}</td>
+                                <td><strong>{{ $unverified->user->name }}</strong></td>
+                                <td>{{ $unverified->user->email }}</td>
+                                <td>{{ $unverified->created_at->format('d M Y') }}</td>
+                                <td>
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                        <form action="{{ route('members.verify', $unverified->id) }}" method="POST" style="margin: 0;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-secondary btn-sm" style="background-color: var(--secondary); border-color: var(--secondary); color: var(--light); padding: 6px 12px; font-size: 0.8rem; border-radius: var(--border-radius); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                                                <i class="fa-solid fa-user-check"></i> Terima
+                                            </button>
+                                        </form>
+                                        <form action="{{ route('members.reject', $unverified->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak dan menghapus pendaftaran member ini?');" style="margin: 0;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-outline btn-sm" style="color: var(--primary); border-color: rgba(227,30,36,0.3); padding: 6px 12px; font-size: 0.8rem; border-radius: var(--border-radius); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                                                <i class="fa-solid fa-user-xmark"></i> Tolak
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endif
 
 <!-- Quick Actions -->
 <div class="card" style="margin-bottom: 25px;">

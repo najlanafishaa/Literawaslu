@@ -97,10 +97,14 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+<<<<<<< HEAD
             'role' => 'member', // default role
             'phone' => $request->phone,
             'security_question' => $request->security_question,
             'security_answer' => strtolower(trim($request->security_answer)), // lowercase and trim for easier comparison
+=======
+            'role' => 'user', // default role
+>>>>>>> origin/pr-1
         ]);
 
         // Generate sequential member code starting from MEM-001
@@ -115,6 +119,7 @@ class AuthController extends Controller
             'total_loans' => 0,
             'points' => 0,
             'borrow_limit' => 1, // initial limit is strictly 1 book
+            'is_verified' => false,
         ]);
 
         // Do not auto log in
@@ -134,5 +139,72 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('success', 'Anda telah berhasil keluar dari sistem.');
+    }
+
+    /**
+     * Show profile edit page.
+     */
+    public function showProfile()
+    {
+        return view('auth.profile', [
+            'user' => Auth::user(),
+        ]);
+    }
+
+    /**
+     * Handle profile update.
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'avatar' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:512',
+        ];
+
+        // Only validate password if the user filled it
+        if ($request->filled('password')) {
+            $rules['password'] = 'required|string|min:6|confirmed';
+        }
+
+        $validated = $request->validate($rules, [
+            'avatar.max' => 'Ukuran foto profil tidak boleh melebihi 512 KB.',
+            'avatar.file' => 'File harus berupa gambar.',
+            'password.min' => 'Kata sandi minimal harus 6 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.'
+        ]);
+
+        // Update fields
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if exists
+            if ($user->avatar && file_exists(public_path($user->avatar))) {
+                @unlink(public_path($user->avatar));
+            }
+
+            $imageName = time() . '_' . $user->id . '.' . $request->avatar->extension();
+            $request->avatar->move(public_path('images/avatars'), $imageName);
+            $user->avatar = 'images/avatars/' . $imageName;
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Profil Anda berhasil diperbarui.');
+    }
+
+    /**
+     * Show unverified account landing page.
+     */
+    public function showUnverified()
+    {
+        return view('auth.unverified');
     }
 }

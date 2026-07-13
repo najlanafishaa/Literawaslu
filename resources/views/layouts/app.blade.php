@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Literawaslu') - Sistem Informasi Perpustakaan</title>
+<<<<<<< HEAD
+=======
+    <script>
+        (function() {
+            const savedWidth = localStorage.getItem('sidebar-width');
+            if (savedWidth) {
+                document.documentElement.style.setProperty('--sidebar-width', savedWidth + 'px');
+            }
+        })();
+    </script>
+>>>>>>> origin/pr-1
     
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -12,9 +23,11 @@
     @yield('styles')
 </head>
 <body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
+<<<<<<< HEAD
             <a href="{{ route('dashboard') }}" style="text-decoration: none; color: inherit; display: block;">
                 <div class="sidebar-brand" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 20px 24px; cursor: pointer;">
                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -25,6 +38,13 @@
                     </div>
                     <div style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-600); font-weight: 700; line-height: 1; margin-left: 2px;">
                         Bawaslu Prov. Lampung
+=======
+            <div class="sidebar-brand" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 20px 24px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" style="height: 38px; width: auto; object-fit: contain;">
+                    <div style="font-size: 1.35rem; font-weight: 700; color: var(--dark); line-height: 1;">
+                        Litera<span style="color: var(--primary);">waslu</span>
+>>>>>>> origin/pr-1
                     </div>
                 </div>
             </a>
@@ -78,7 +98,7 @@
                     @endif
                     
                     <!-- Regular Admin (Petugas) Menus -->
-                    @if(auth()->user()->role === 'petugas')
+                    @if(in_array(auth()->user()->role, ['admin', 'petugas']))
                         <li>
                             <a href="{{ route('borrows.index') }}" class="sidebar-link {{ request()->routeIs('borrows.index') ? 'active' : '' }}">
                                 <i class="fa-solid fa-hand-holding-hand"></i> Peminjaman Buku
@@ -107,7 +127,7 @@
                     @endif
                     
                     <!-- Member Menus -->
-                    @if(auth()->user()->role === 'member')
+                    @if(in_array(auth()->user()->role, ['user', 'member']))
                         <li>
                             <a href="{{ route('catalog') }}" class="sidebar-link {{ request()->routeIs('catalog') ? 'active' : '' }}">
                                 <i class="fa-solid fa-magnifying-glass"></i> Katalog Buku
@@ -145,6 +165,7 @@
             
             <div class="sidebar-footer">
                 @auth
+<<<<<<< HEAD
                     <a href="{{ route('profile.edit') }}" style="text-decoration: none; color: inherit; display: block;">
                         <div class="user-badge" style="cursor: pointer; transition: background-color 0.2s; border-radius: 8px;">
                             <div class="user-avatar">
@@ -163,30 +184,61 @@
                             </p>
                         </div>
                         <i class="fa-solid fa-pen-to-square" style="margin-left: auto; color: var(--gray-500); font-size: 0.8rem;"></i>
+=======
+                    <a href="{{ route('profile.edit') }}" class="user-badge-link" title="Ubah Profil Saya">
+                        <div class="user-badge" style="padding: 6px; margin: -6px; border-radius: var(--border-radius);">
+                            @if(auth()->user()->avatar)
+                                <img src="{{ asset(auth()->user()->avatar) }}" alt="Avatar" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary);">
+                            @else
+                                <div class="user-avatar">
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                </div>
+                            @endif
+                            <div class="user-info">
+                                <h4>{{ auth()->user()->name }}</h4>
+                                <p>
+                                    @if(auth()->user()->role === 'super_admin')
+                                        Super Admin
+                                    @elseif(in_array(auth()->user()->role, ['admin', 'petugas']))
+                                        Admin
+                                    @else
+                                        User
+                                    @endif
+                                </p>
+                            </div>
+>>>>>>> origin/pr-1
                         </div>
                     </a>
                 @else
                     <p style="font-size: 0.8rem; text-align: center; color: rgba(255,255,255,0.4)">Sistem Perpustakaan</p>
                 @endauth
             </div>
+            <div class="sidebar-resizer" id="sidebarResizer"></div>
         </aside>
         
         <!-- Main Wrapper -->
         <div class="main-wrapper">
             <header class="header-nav">
-                <div class="page-title">
-                    @yield('header_title', 'Dashboard')
+                <div class="header-left">
+                    <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Buka menu navigasi">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="page-title">
+                        @yield('header_title', 'Dashboard')
+                    </div>
                 </div>
                 
                 <div class="header-actions">
                     @auth
-                        @if(auth()->user()->role === 'super_admin')
-                            <span class="role-badge role-super">Super Admin</span>
-                        @elseif(auth()->user()->role === 'petugas')
-                            <span class="role-badge role-petugas">Petugas</span>
-                        @else
-                            <span class="role-badge role-member">Member</span>
-                        @endif
+                        <a href="{{ route('profile.edit') }}" style="text-decoration: none;" title="Ubah Profil Saya">
+                            @if(auth()->user()->role === 'super_admin')
+                                <span class="role-badge role-super">Super Admin</span>
+                            @elseif(in_array(auth()->user()->role, ['admin', 'petugas']))
+                                <span class="role-badge role-petugas">Admin</span>
+                            @else
+                                <span class="role-badge role-member">User</span>
+                            @endif
+                        </a>
                         
                         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
@@ -269,6 +321,73 @@
                 }, 300);
             }, 4000);
         }
+
+        // Mobile Sidebar Toggle
+        function toggleSidebar(force) {
+            const shouldOpen = typeof force === 'boolean' ? force : !document.body.classList.contains('sidebar-open');
+            document.body.classList.toggle('sidebar-open', shouldOpen);
+        }
+
+        function closeSidebar() {
+            document.body.classList.remove('sidebar-open');
+        }
+
+        // Sidebar Resizer Logic
+        function initSidebarResizer() {
+            const resizer = document.getElementById('sidebarResizer');
+            if (!resizer) return;
+
+            let isDragging = false;
+
+            resizer.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                resizer.classList.add('is-dragging');
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none'; // prevent text selection
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                // Bounded between 200px and 450px
+                let newWidth = e.clientX;
+                if (newWidth < 200) newWidth = 200;
+                if (newWidth > 450) newWidth = 450;
+                
+                document.documentElement.style.setProperty('--sidebar-width', newWidth + 'px');
+                localStorage.setItem('sidebar-width', newWidth);
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                resizer.classList.remove('is-dragging');
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', () => toggleSidebar());
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', closeSidebar);
+            }
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 992) {
+                    closeSidebar();
+                }
+            });
+
+            initSidebarResizer();
+        });
     </script>
     <style>
         @keyframes slideOut {

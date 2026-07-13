@@ -49,6 +49,14 @@
                     <input type="number" name="borrow_limit" id="borrow_limit" class="form-control" value="{{ old('borrow_limit', $member->borrow_limit) }}" min="1" max="10" required>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="role">Hak Akses / Peran</label>
+                <select name="role" id="role" class="form-control" required>
+                    <option value="user" {{ old('role', $member->user->role) === 'user' ? 'selected' : '' }}>User / Anggota</option>
+                    <option value="admin" {{ old('role', $member->user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
+                </select>
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Mengubah peran ke 'Admin' akan menghapus profil anggota ini namun tetap menyimpan akun pengguna.</small>
+            </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
                 <i class="fa-solid fa-save"></i> Perbarui Status Anggota

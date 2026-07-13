@@ -82,6 +82,7 @@
                 <div class="form-group">
                     <label for="cover_image">Foto Sampul Buku (Opsional)</label>
                     <input type="file" name="cover_image" id="cover_image" class="form-control" accept="image/*" style="padding: 5px;">
+                    <small style="color: var(--gray-600); margin-top: 5px; display: block;">Format: JPG, PNG, GIF. Maksimal 512 KB.</small>
                 </div>
             </div>
 

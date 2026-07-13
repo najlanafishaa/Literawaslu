@@ -19,6 +19,7 @@
     --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --border-radius: 12px;
+    --sidebar-width: 260px;
 }
 
 * {
@@ -59,7 +60,7 @@ body {
 
 /* Sidebar Styling */
 .sidebar {
-    width: 260px;
+    width: var(--sidebar-width);
     background-color: var(--light);
     color: var(--dark);
     display: flex;
@@ -70,6 +71,31 @@ body {
     top: 0;
     z-index: 100;
     border-right: 1px solid var(--gray-200);
+}
+
+.sidebar-resizer {
+    position: absolute;
+    top: 0;
+    right: -8px;
+    width: 16px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 110;
+}
+.sidebar-resizer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 7px;
+    width: 2px;
+    height: 100%;
+    background-color: var(--gray-200);
+    transition: background-color 0.2s, width 0.2s, left 0.2s;
+}
+.sidebar-resizer:hover::after, .sidebar-resizer.is-dragging::after {
+    background-color: var(--primary);
+    width: 4px;
+    left: 6px;
 }
 
 .sidebar-brand {
@@ -95,6 +121,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    overflow-y: auto;
 }
 
 .sidebar-link {
@@ -127,6 +154,17 @@ body {
     gap: 10px;
 }
 
+.user-badge-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+.user-badge-link:hover .user-badge {
+    background-color: rgba(var(--primary-rgb), 0.08);
+}
+
 .user-avatar {
     width: 38px;
     height: 38px;
@@ -154,11 +192,45 @@ body {
 
 /* Main Content Wrapper */
 .main-wrapper {
-    margin-left: 260px;
+    margin-left: var(--sidebar-width);
     flex: 1;
     display: flex;
     flex-direction: column;
     min-width: 0;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.45);
+    z-index: 95;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+body.sidebar-open .sidebar-overlay {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    background: var(--light);
+    color: var(--gray-700);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 /* Header Navbar */
@@ -193,6 +265,13 @@ body {
     font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.role-badge:hover {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .role-super {
@@ -217,6 +296,96 @@ body {
 .content-body {
     padding: 30px;
     flex: 1;
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.18);
+    }
+
+    body.sidebar-open .sidebar {
+        transform: translateX(0);
+    }
+
+    .main-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+    }
+
+    .header-nav {
+        padding: 0 16px;
+        height: 64px;
+    }
+
+    .content-body {
+        padding: 20px 16px 30px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .header-nav {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .header-left {
+        flex: 1;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .page-title {
+        font-size: 1.05rem;
+    }
+
+    .grid-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 18px;
+    }
+
+    .welcome-banner,
+    .card-header,
+    .card-body,
+    .auth-box {
+        padding: 18px;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-sm {
+        width: auto;
+    }
+
+    .auth-box {
+        padding: 24px 18px;
+    }
 }
 
 /* Welcome Banner widget */
