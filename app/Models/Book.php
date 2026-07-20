@@ -20,6 +20,7 @@ class Book extends Model
         'stock',
         'available_stock',
         'cover_image',
+        'drive_link',
         'is_available',
     ];
 
@@ -36,5 +37,29 @@ class Book extends Model
     public function borrows()
     {
         return $this->hasMany(Borrow::class);
+    }
+
+    /**
+     * Get reviews for this book.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(BookReview::class);
+    }
+
+    /**
+     * Get average rating.
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        return round($this->reviews()->avg('rating') ?? 0, 1);
+    }
+
+    /**
+     * Get total review count.
+     */
+    public function getReviewCountAttribute(): int
+    {
+        return $this->reviews()->count();
     }
 }

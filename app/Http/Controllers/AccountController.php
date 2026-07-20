@@ -41,7 +41,7 @@ class AccountController extends Controller
                 'user_id' => $user->id,
                 'member_code' => $code,
                 'total_loans' => 0,
-                'points' => 0,
+                'points' => 10,
                 'borrow_limit' => 1,
                 'status' => 'active', // Langsung active karena dari admin
             ]);

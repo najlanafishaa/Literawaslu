@@ -26,6 +26,7 @@
                             <th>Tanggal Pinjam</th>
                             <th>Jatuh Tempo</th>
                             <th>Tanggal Kembali</th>
+                            <th>Sanksi</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -51,6 +52,18 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if($borrow->fine_amount > 0)
+                                        <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku</div>
+                                        @if($borrow->fine_status === 'unpaid')
+                                            <span class="badge badge-danger" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-exclamation"></i> Wajib Ganti Buku</span>
+                                        @elseif($borrow->fine_status === 'paid')
+                                            <span class="badge badge-success" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-check"></i> Buku Sudah Diganti</span>
+                                        @endif
+                                    @else
+                                        <span style="color: var(--gray-500); font-style: italic; font-size: 0.85rem;">Aman</span>
+                                    @endif
+                                </td>
+                                <td>
                                     @if($borrow->status === 'returned')
                                         @if($borrow->return_date->greaterThan($borrow->due_date))
                                             <span class="badge badge-warning" title="Dikembalikan terlambat"><i class="fa-solid fa-circle-exclamation"></i> Kembali (Terlambat)</span>
@@ -63,8 +76,10 @@
                                         @else
                                             <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Dipinjam</span>
                                         @endif
+                                    @elseif($borrow->status === 'terlambat')
+                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Terlambat {{ abs($diff) }} Hari</span>
                                     @else
-                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Terlambat</span>
+                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> {{ ucfirst($borrow->status) }}</span>
                                     @endif
                                 </td>
                             </tr>

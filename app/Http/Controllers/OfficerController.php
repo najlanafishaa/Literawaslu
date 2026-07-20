@@ -109,7 +109,7 @@ class OfficerController extends Controller
                 'user_id' => $officer->id,
                 'member_code' => $code,
                 'total_loans' => 0,
-                'points' => 0,
+                'points' => 10,
                 'borrow_limit' => 1,
                 'is_verified' => true, // default verified when assigned by super admin
             ]);

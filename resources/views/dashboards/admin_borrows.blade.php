@@ -4,6 +4,35 @@
 @section('header_title', 'Riwayat Transaksi')
 
 @section('content')
+<!-- Date Filter Panel -->
+<div class="card" style="margin-bottom: 25px;">
+    <div class="card-body" style="padding: 15px 20px;">
+        <form action="{{ route('borrows.history') }}" method="GET" style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; margin: 0;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--gray-700); margin-right: 5px;"><i class="fa-solid fa-calendar-days"></i> Filter Waktu:</span>
+                <a href="{{ route('borrows.history', ['filter' => 'all']) }}" class="btn {{ request('filter', 'all') === 'all' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Semua</a>
+                <a href="{{ route('borrows.history', ['filter' => 'today']) }}" class="btn {{ request('filter') === 'today' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Hari Ini</a>
+                <a href="{{ route('borrows.history', ['filter' => 'week']) }}" class="btn {{ request('filter') === 'week' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Minggu Ini</a>
+                <a href="{{ route('borrows.history', ['filter' => 'month']) }}" class="btn {{ request('filter') === 'month' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Bulan Ini</a>
+                <a href="{{ route('borrows.history', ['filter' => 'year']) }}" class="btn {{ request('filter') === 'year' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Tahun Ini</a>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <input type="hidden" name="filter" value="custom">
+                <input type="date" name="start_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('start_date') }}" required>
+                <span style="color: var(--gray-600); font-size: 0.8rem;">s/d</span>
+                <input type="date" name="end_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('end_date') }}" required>
+                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem; height: 32px; background-color: var(--dark); border-color: var(--dark); color: white;">Filter</button>
+            </div>
+        </form>
+        @if(isset($filterLabel))
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--gray-600); font-weight: bold;">
+                <i class="fa-solid fa-filter" style="color: var(--primary); margin-right: 4px;"></i> Periode Aktif: {{ $filterLabel }}
+            </div>
+        @endif
+    </div>
+</div>
+
 <div class="card">
     <div class="card-header">
         <h2><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary); margin-right: 8px;"></i> Seluruh Transaksi Peminjaman & Pengembalian</h2>
@@ -27,7 +56,9 @@
                             <th>Tanggal Pinjam</th>
                             <th>Jatuh Tempo</th>
                             <th>Tanggal Kembali</th>
+                            <th>Sanksi</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,6 +100,18 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if($borrow->fine_amount > 0)
+                                        <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku</div>
+                                        @if($borrow->fine_status === 'unpaid')
+                                            <span class="badge badge-danger" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-exclamation"></i> Wajib Ganti Buku</span>
+                                        @elseif($borrow->fine_status === 'paid')
+                                            <span class="badge badge-success" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-check"></i> Buku Sudah Diganti</span>
+                                        @endif
+                                    @else
+                                        <span style="color: var(--gray-500); font-style: italic; font-size: 0.85rem;">Aman</span>
+                                    @endif
+                                </td>
+                                <td>
                                     @if($borrow->status === 'returned')
                                         @if($borrow->return_date->greaterThan($borrow->due_date))
                                             <span class="badge badge-warning" title="Dikembalikan terlambat"><i class="fa-solid fa-circle-exclamation"></i> Kembali (Terlambat)</span>
@@ -81,8 +124,22 @@
                                         @else
                                             <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Dipinjam</span>
                                         @endif
+                                    @elseif($borrow->status === 'terlambat')
+                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Terlambat {{ abs($diff) }} Hari</span>
                                     @else
-                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Terlambat</span>
+                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> {{ ucfirst($borrow->status) }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($borrow->fine_status === 'unpaid')
+                                        <form action="{{ route('borrows.pay_fine', $borrow->id) }}" method="POST" style="margin: 0;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary btn-sm" style="padding: 5px 10px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px; height: auto;">
+                                                <i class="fa-solid fa-book"></i> Konfirmasi Buku Pengganti
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span style="color: var(--gray-400); font-size: 0.75rem;">-</span>
                                     @endif
                                 </td>
                             </tr>

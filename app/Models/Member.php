@@ -42,13 +42,59 @@ class Member extends Model
     }
 
     /**
+     * Get reviews by this member.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(BookReview::class);
+    }
+
+    /**
+     * Check if member has an active (unreturned) borrow.
+     */
+    public function hasActiveBorrow(): bool
+    {
+        return $this->borrows()->whereIn('status', ['borrowed', 'terlambat'])->exists();
+    }
+
+    /**
+     * Check if member has any unpaid fines.
+     */
+    public function hasUnpaidFine(): bool
+    {
+        return $this->borrows()->where('fine_status', 'unpaid')->exists();
+    }
+
+    /**
+     * Check if member can borrow a new book.
+     * Returns true if no active borrows and no unpaid fines.
+     */
+    public function canBorrow(): bool
+    {
+        return !$this->hasActiveBorrow() && !$this->hasUnpaidFine();
+    }
+
+    /**
+     * Get reason why member cannot borrow.
+     */
+    public function borrowBlockReason(): ?string
+    {
+        if ($this->hasUnpaidFine()) {
+            return 'Anda memiliki denda yang belum dibayar. Selesaikan kewajiban terlebih dahulu.';
+        }
+        if ($this->hasActiveBorrow()) {
+            return 'Anda masih memiliki buku yang sedang dipinjam. Kembalikan buku terlebih dahulu.';
+        }
+        return null;
+    }
+
+    /**
      * Get membership level details dynamically.
      */
     public function getMembershipDetailsAttribute()
     {
         $loans = $this->total_loans;
 
-        // Use a uniform dark aesthetic for all member cards per requirements
         $cardBg = 'linear-gradient(135deg, var(--dark) 0%, #1a1a1a 100%)';
         $badgeBg = 'linear-gradient(135deg, var(--primary) 0%, #99131a 100%)';
         $badgeColor = '#FFFFFF';

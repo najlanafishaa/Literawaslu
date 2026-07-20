@@ -75,15 +75,17 @@
                         <label for="password" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
                             Kata Sandi Baru:
                         </label>
-                        <input type="password" name="password" id="password" class="form-control" 
-                               placeholder="Minimal 6 karakter">
+                        <input type="password" name="password" id="password" class="form-control"
+                               placeholder="Minimal 6 karakter" oninput="checkPasswordStrength(this.value)">
+                        <div id="password-strength-bar" style="height: 5px; border-radius: 3px; margin-top: 6px; transition: all 0.3s; width: 0%; background: #e74c3c;"></div>
+                        <div id="password-strength-label" style="font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></div>
                     </div>
 
                     <div class="form-group">
                         <label for="password_confirmation" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
                             Konfirmasi Kata Sandi Baru:
                         </label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" 
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
                                placeholder="Ulangi kata sandi baru">
                     </div>
                 </div>
@@ -97,4 +99,32 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    function checkPasswordStrength(val) {
+        const bar   = document.getElementById('password-strength-bar');
+        const label = document.getElementById('password-strength-label');
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[a-z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+        if (val.length === 0) {
+            bar.style.width = '0%'; label.textContent = ''; return;
+        }
+        if (score <= 2) {
+            bar.style.width = '33%'; bar.style.background = '#e74c3c';
+            label.style.color = '#e74c3c'; label.textContent = 'Kurang Aman';
+        } else if (score <= 4) {
+            bar.style.width = '66%'; bar.style.background = '#f39c12';
+            label.style.color = '#f39c12'; label.textContent = 'Cukup Aman';
+        } else {
+            bar.style.width = '100%'; bar.style.background = '#27ae60';
+            label.style.color = '#27ae60'; label.textContent = 'Sangat Aman';
+        }
+    }
+</script>
 @endsection

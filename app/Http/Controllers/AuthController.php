@@ -97,33 +97,42 @@ class AuthController extends Controller
             'security_answer.required' => 'Jawaban keamanan wajib diisi.',
         ]);
 
-        // Create User
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'member', // default role
-            'security_question' => $request->security_question,
-            'security_answer' => strtolower(trim($request->security_answer)), // lowercase and trim for easier comparison
-        ]);
+        \Illuminate\Support\Facades\DB::beginTransaction();
 
-        // Generate sequential member code starting from MEM-0000001
-        $lastMember = Member::orderBy('id', 'desc')->first();
-        $nextNum = $lastMember ? ((int) str_replace('MEM-', '', $lastMember->member_code)) + 1 : 1;
-        $code = 'MEM-' . str_pad($nextNum, 7, '0', STR_PAD_LEFT);
+        try {
+            // Create User
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'member', // default role
+                'security_question' => $request->security_question,
+                'security_answer' => strtolower(trim($request->security_answer)), // lowercase and trim for easier comparison
+            ]);
 
-        // Create Member Profile
-        // Automatically activate member account upon registration
-        $member = Member::create([
-            'user_id' => $user->id,
-            'member_code' => $code,
-            'total_loans' => 0,
-            'points' => 0,
-            'borrow_limit' => 1,
-            'status' => 'active',
-        ]);
+            // Generate sequential member code starting from MEM-0000001
+            $lastMember = Member::orderBy('id', 'desc')->first();
+            $nextNum = $lastMember ? ((int) str_replace('MEM-', '', $lastMember->member_code)) + 1 : 1;
+            $code = 'MEM-' . str_pad($nextNum, 7, '0', STR_PAD_LEFT);
 
-        return redirect()->route('login')->with('success', 'Pendaftaran berhasil! Akun Anda telah aktif dan siap digunakan.');
+            // Create Member Profile
+            // Set status to pending so it must be verified by admin
+            $member = Member::create([
+                'user_id' => $user->id,
+                'member_code' => $code,
+                'total_loans' => 0,
+                'points' => 10,
+                'borrow_limit' => 1,
+                'status' => 'pending',
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            return redirect()->route('login')->with('warning', 'Pendaftaran berhasil! Akun Anda sedang menunggu verifikasi dari Admin sebelum dapat digunakan.');
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            return back()->withInput()->withErrors(['email' => 'Terjadi kesalahan saat menyimpan data pendaftaran. Silakan coba lagi.']);
+        }
     }
 
     /**

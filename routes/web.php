@@ -14,6 +14,8 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BookReviewController;
 
 // 1. Root Route
 Route::get('/', function () {
@@ -58,6 +60,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/member/rewards', [MemberController::class, 'rewards'])->name('member.rewards');
         Route::post('/member/redeem', [MemberController::class, 'redeem'])->name('member.redeem');
         Route::post('/member/request-borrow', [MemberController::class, 'requestBorrow'])->name('member.request_borrow');
+        // Book reviews
+        Route::post('/catalog/{book}/review', [BookReviewController::class, 'store'])->name('book.review.store');
+        Route::delete('/reviews/{review}', [BookReviewController::class, 'destroy'])->name('book.review.destroy');
+        // Read online (Google Drive preview)
+        Route::get('/catalog/{book}/read', [BookController::class, 'read'])->name('book.read');
     });
 
     // ============================================
@@ -81,13 +88,22 @@ Route::middleware('auth')->group(function () {
 
         // Books CRUD
         Route::resource('/admin/books', BookController::class)->names([
-            'index' => 'books.index',
-            'create' => 'books.create',
-            'store' => 'books.store',
-            'edit' => 'books.edit',
-            'update' => 'books.update',
+            'index'   => 'books.index',
+            'create'  => 'books.create',
+            'store'   => 'books.store',
+            'edit'    => 'books.edit',
+            'update'  => 'books.update',
             'destroy' => 'books.destroy',
         ])->except(['show']);
+
+        // Pay fine
+        Route::post('/borrows/{borrow}/pay-fine', [BorrowController::class, 'payFine'])->name('borrows.pay_fine');
+
+        // Category CRUD
+        Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::post('/admin/categories', [CategoryController::class, 'store'])->name('categories.store');
+        Route::put('/admin/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
     });
 
     // ============================================

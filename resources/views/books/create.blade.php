@@ -57,22 +57,22 @@
 
             <div class="form-group">
                 <label for="category">Kategori Buku</label>
-                <select name="category" id="category" class="form-control" required style="width: 100%;">
+                <select name="category" id="category" class="form-control" required style="width: 100%;" onchange="toggleNewCategoryInput()">
                     <option value="" disabled {{ old('category') ? '' : 'selected' }}>-- Pilih Kategori Buku --</option>
-                    <option value="Pemerintahan" {{ old('category') == 'Pemerintahan' ? 'selected' : '' }}>Pemerintahan</option>
-                    <option value="Hukum dan Undang-Undang" {{ old('category') == 'Hukum dan Undang-Undang' ? 'selected' : '' }}>Hukum dan Undang-Undang</option>
-                    <option value="Politik" {{ old('category') == 'Politik' ? 'selected' : '' }}>Politik</option>
-                    <option value="Demokrasi" {{ old('category') == 'Demokrasi' ? 'selected' : '' }}>Demokrasi</option>
-                    <option value="Sosial" {{ old('category') == 'Sosial' ? 'selected' : '' }}>Sosial</option>
-                    <option value="Keagamaan" {{ old('category') == 'Keagamaan' ? 'selected' : '' }}>Keagamaan</option>
-                    <option value="Sengketa Pemilu" {{ old('category') == 'Sengketa Pemilu' ? 'selected' : '' }}>Sengketa Pemilu</option>
-                    <option value="Riset Pilkada" {{ old('category') == 'Riset Pilkada' ? 'selected' : '' }}>Riset Pilkada</option>
-                    <option value="Akuntansi" {{ old('category') == 'Akuntansi' ? 'selected' : '' }}>Akuntansi</option>
-                    <option value="Skripsi" {{ old('category') == 'Skripsi' ? 'selected' : '' }}>Skripsi</option>
-                    <option value="Laporan Hasil Pengawasan" {{ old('category') == 'Laporan Hasil Pengawasan' ? 'selected' : '' }}>Laporan Hasil Pengawasan</option>
-                    <option value="Motivasi" {{ old('category') == 'Motivasi' ? 'selected' : '' }}>Motivasi</option>
-                    <option value="Novel" {{ old('category') == 'Novel' ? 'selected' : '' }}>Novel</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat }}" {{ old('category') == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                    @endforeach
+                    <option value="new_category_option" {{ old('category') == 'new_category_option' || old('new_category') ? 'selected' : '' }}>[+] Input Kategori Manual / Baru</option>
                 </select>
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">
+                    Kategori tidak terdaftar? <a href="{{ route('categories.index') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Kelola Kategori Buku di sini</a>.
+                </small>
+            </div>
+
+            <div class="form-group" id="newCategoryInputGroup" style="display: {{ old('category') == 'new_category_option' || old('new_category') ? 'block' : 'none' }};">
+                <label for="new_category">Nama Kategori Baru</label>
+                <input type="text" name="new_category" id="new_category" class="form-control" placeholder="Contoh: Novel, Biografi, Sejarah..." value="{{ old('new_category') }}">
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Kategori baru ini akan otomatis disimpan ke sistem saat Anda menyimpan buku.</small>
             </div>
 
             <div class="form-group">
@@ -93,6 +93,12 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="drive_link"><i class="fa-brands fa-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive) <span style="color: var(--gray-500); font-weight: 400;">(opsional)</span></label>
+                <input type="url" name="drive_link" id="drive_link" class="form-control" placeholder="https://drive.google.com/file/d/FILE_ID/view" value="{{ old('drive_link') }}">
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Masukkan link Google Drive agar member bisa membaca buku secara online. Buku hanya bisa ditampilkan (preview), tidak bisa diunduh.</small>
+            </div>
+
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
                 <i class="fa-solid fa-save"></i> Simpan Buku
             </button>
@@ -111,6 +117,20 @@
         }
         document.getElementById('barcode').value = code;
         showToast('Barcode simulasi acak berhasil dibuat!', 'success');
+    }
+
+    function toggleNewCategoryInput() {
+        const select = document.getElementById('category');
+        const inputGroup = document.getElementById('newCategoryInputGroup');
+        const input = document.getElementById('new_category');
+        if (select.value === 'new_category_option') {
+            inputGroup.style.display = 'block';
+            input.setAttribute('required', 'required');
+            input.focus();
+        } else {
+            inputGroup.style.display = 'none';
+            input.removeAttribute('required');
+        }
     }
 </script>
 @endsection

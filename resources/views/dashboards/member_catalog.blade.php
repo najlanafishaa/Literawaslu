@@ -76,7 +76,22 @@
                     <h3 class="book-title" style="font-size: 0.95rem; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px;">{{ $book->title }}</h3>
                     <p class="book-author" style="font-size: 0.8rem; color: var(--gray-600); margin-bottom: 5px;">Oleh: {{ $book->author }}</p>
                     
-                    <div style="font-size: 0.75rem; color: var(--gray-600); display: flex; justify-content: center; gap: 10px; margin-top: 5px;">
+                    <!-- Overall Rating -->
+                    <div style="margin-top: 5px; display: flex; justify-content: center; align-items: center; gap: 5px; font-size: 0.82rem; color: #f1c40f;">
+                        @if($book->reviews->count() > 0)
+                            <div style="display: flex; gap: 2px;">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="{{ $i <= round($book->average_rating) ? 'fa-solid' : 'fa-regular' }} fa-star"></i>
+                                @endfor
+                            </div>
+                            <span style="color: var(--gray-700); font-weight: bold; margin-left: 3px;">{{ $book->average_rating }}</span>
+                            <span style="color: var(--gray-500); font-size: 0.72rem;">({{ $book->reviews->count() }} Ulasan)</span>
+                        @else
+                            <span style="color: var(--gray-400); font-size: 0.72rem; font-style: italic;">Belum ada ulasan</span>
+                        @endif
+                    </div>
+
+                    <div style="font-size: 0.75rem; color: var(--gray-600); display: flex; justify-content: center; gap: 10px; margin-top: 6px;">
                         <span><i class="fa-solid fa-print"></i> {{ $book->publisher }}</span>
                         <span>•</span>
                         <span>{{ $book->year }}</span>
@@ -113,8 +128,13 @@
                                 </button>
                             </form>
                         @endif
+                        @if($book->drive_link)
+                            <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none;">
+                                <i class="fa-brands fa-google-drive"></i> Baca Online
+                            </a>
+                        @endif
                         <button onclick="showBookDetail({{ $book->id }})" class="btn btn-outline btn-sm" style="width: 100%; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--dark); border-color: var(--gray-300);">
-                            <i class="fa-solid fa-circle-info"></i> Lihat Detail
+                            <i class="fa-solid fa-circle-info"></i> Lihat Detail & Ulasan
                         </button>
                     </div>
                 </div>
@@ -141,7 +161,7 @@
 
 {{-- Book Detail Modal --}}
 <div id="bookDetailModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:var(--light); border-radius:16px; max-width:560px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+    <div style="background:var(--light); border-radius:16px; max-width:600px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
         <div style="display:flex; justify-content:space-between; align-items:center; padding:20px 25px; border-bottom:1px solid var(--gray-100);">
             <h3 id="modalBookTitle" style="font-size:1.1rem; font-weight:700; color:var(--dark); margin:0; line-height:1.4;"></h3>
             <button onclick="closeBookDetail()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--gray-600); line-height:1;">&times;</button>
@@ -160,22 +180,73 @@
                 <p id="modalYear" style="font-size:0.82rem; color:var(--gray-600); margin:0;"></p>
                 <p id="modalBarcode" style="font-size:0.78rem; color:var(--gray-500); font-family:monospace; margin:0;"></p>
                 <div id="modalStock" style="font-size:0.82rem; font-weight:600; margin-top:4px;"></div>
+                <div id="modalRatingHeader" style="margin-top: 5px; font-size:0.85rem;"></div>
             </div>
         </div>
-        <div id="modalDescWrap" style="padding:0 25px 25px;">
+        
+        <div id="modalDescWrap" style="padding:0 25px 15px;">
             <div style="border-top:1px solid var(--gray-100); padding-top:15px;">
                 <p style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--gray-500); margin-bottom:8px;">Deskripsi</p>
                 <p id="modalDesc" style="font-size:0.88rem; color:var(--gray-700); line-height:1.7; margin:0;"></p>
             </div>
         </div>
+
+        {{-- Review Section --}}
+        <div style="padding:0 25px 25px;">
+            <div style="border-top:1px solid var(--gray-100); padding-top:15px;">
+                <p style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--gray-500); margin-bottom:12px;">Ulasan Anggota</p>
+                
+                {{-- Review List --}}
+                <div id="modalReviewList" style="display:flex; flex-direction:column; gap:12px; max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;"></div>
+                
+                {{-- Add Review Form --}}
+                <div id="modalReviewFormWrap" style="display:none; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:15px; margin-top:10px;">
+                    <form id="modalReviewForm" action="" method="POST">
+                        @csrf
+                        <p style="font-size:0.85rem; font-weight:700; color:var(--dark); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-pen-to-square" style="color:var(--primary);"></i> <span id="modalReviewFormTitle">Tulis Ulasan Anda</span>
+                        </p>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                            <label style="font-size:0.8rem; color:var(--gray-700); font-weight:600;">Rating:</label>
+                            <select name="rating" required style="padding:4px 8px; border-radius:4px; border:1px solid var(--gray-300); font-size:0.85rem; color:#f1c40f; font-weight:bold;">
+                                <option value="5">★★★★★ (5)</option>
+                                <option value="4">★★★★☆ (4)</option>
+                                <option value="3">★★★☆☆ (3)</option>
+                                <option value="2">★★☆☆☆ (2)</option>
+                                <option value="1">★☆☆☆☆ (1)</option>
+                            </select>
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <textarea name="review" placeholder="Tulis komentar atau ulasan Anda mengenai buku ini..." style="width:100%; height:60px; border-radius:6px; border:1px solid var(--gray-300); padding:8px; font-size:0.82rem; resize:none;" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Kirim Ulasan</button>
+                    </form>
+                </div>
+                
+                <div id="modalReviewNotEligible" style="display:none; font-size:0.75rem; color:var(--gray-500); background:var(--gray-50); border-radius:8px; padding:10px; border:1px solid var(--gray-100); text-align:center;">
+                    <i class="fa-solid fa-lock" style="margin-right:4px;"></i> Anda harus pernah mengembalikan buku ini atau meminjamnya selama minimal 7 hari untuk dapat memberikan ulasan.
+                </div>
+            </div>
+        </div>
+
         <div id="modalBorrowWrap" style="padding:0 25px 25px; display:none;">
-            <form id="modalBorrowForm" action="{{ route('member.request_borrow') }}" method="POST">
-                @csrf
-                <input type="hidden" id="modalBookId" name="book_id" value="">
-                <button type="submit" class="btn btn-primary" style="width:100%; gap:8px; display:flex; align-items:center; justify-content:center;">
-                    <i class="fa-solid fa-book-open"></i> Pinjam Buku Ini
-                </button>
-            </form>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <form id="modalBorrowForm" action="{{ route('member.request_borrow') }}" method="POST" style="margin:0;">
+                    @csrf
+                    <input type="hidden" id="modalBookId" name="book_id" value="">
+                    <button type="submit" class="btn btn-primary" style="width:100%; gap:8px; display:flex; align-items:center; justify-content:center;">
+                        <i class="fa-solid fa-book-open"></i> Pinjam Buku Ini
+                    </button>
+                </form>
+                <a id="modalReadOnlineBtn" href="#" style="display:none; width:100%; gap:8px; align-items:center; justify-content:center; background-color:#4285F4; color:white; border:none; text-decoration:none; padding:8px 16px; border-radius:var(--border-radius); font-size:0.85rem; font-weight:600; text-align:center;">
+                    <i class="fa-brands fa-google-drive"></i> Baca Online
+                </a>
+            </div>
+        </div>
+        <div id="modalReadOnlyWrap" style="padding:0 25px 25px; display:none;">
+            <a id="modalReadOnlyBtn" href="#" style="width:100%; gap:8px; display:flex; align-items:center; justify-content:center; background-color:#4285F4; color:white; border:none; text-decoration:none; padding:10px 16px; border-radius:var(--border-radius); font-size:0.85rem; font-weight:600;">
+                <i class="fa-brands fa-google-drive"></i> Baca Online
+            </a>
         </div>
     </div>
 </div>
@@ -187,19 +258,37 @@
     $memberStatus = auth()->user()->member->status;
     $bookDataArray = [];
     foreach($books as $b) {
+        $reviews = [];
+        foreach($b->reviews as $r) {
+            $reviews[] = [
+                'id'          => $r->id,
+                'rating'      => $r->rating,
+                'review'      => $r->review,
+                'member_name' => $r->member->user->name,
+                'date'        => $r->created_at->format('d M Y'),
+            ];
+        }
+
         $bookDataArray[$b->id] = [
-            'id'          => $b->id,
-            'title'       => $b->title,
-            'author'      => $b->author,
-            'publisher'   => $b->publisher,
-            'year'        => $b->year,
-            'category'    => $b->category,
-            'barcode'     => $b->barcode,
-            'description' => $b->description,
-            'cover'       => $b->cover_image ? asset($b->cover_image) : null,
-            'stock'       => $b->available_stock,
-            'totalStock'  => $b->stock,
-            'canBorrow'   => $b->available_stock > 0 && $memberStatus === 'active',
+            'id'             => $b->id,
+            'title'          => $b->title,
+            'author'         => $b->author,
+            'publisher'      => $b->publisher,
+            'year'           => $b->year,
+            'category'       => $b->category,
+            'barcode'        => $b->barcode,
+            'description'    => $b->description,
+            'cover'          => $b->cover_image ? asset($b->cover_image) : null,
+            'stock'          => $b->available_stock,
+            'totalStock'     => $b->stock,
+            'canBorrow'      => $b->available_stock > 0 && $memberStatus === 'active',
+            'averageRating'  => $b->average_rating,
+            'reviewsCount'   => $b->reviews->count(),
+            'reviews'        => $reviews,
+            'eligibleReview' => in_array($b->id, $returnedBookIds),
+            'hasReviewed'    => in_array($b->id, $reviewedBookIds),
+            'driveLink'      => $b->drive_link,
+            'readUrl'        => $b->drive_link ? route('book.read', $b->id) : null,
         ];
     }
 @endphp
@@ -224,6 +313,18 @@ function showBookDetail(id) {
         stockEl.innerHTML = `<span style="color:var(--primary)"><i class="fa-solid fa-circle-xmark"></i> Stok Habis</span>`;
     }
 
+    // Average rating display
+    const ratingHeader = document.getElementById('modalRatingHeader');
+    if (b.reviewsCount > 0) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += `<i class="${i <= Math.round(b.averageRating) ? 'fa-solid' : 'fa-regular'} fa-star" style="color:#f1c40f;"></i> `;
+        }
+        ratingHeader.innerHTML = `${stars} <strong style="color:var(--dark); margin-left:4px;">${b.averageRating}</strong> <span style="color:var(--gray-500); font-size:0.75rem;">(${b.reviewsCount} Ulasan)</span>`;
+    } else {
+        ratingHeader.innerHTML = `<span style="color:var(--gray-500); font-style:italic; font-size:0.8rem;">Belum ada rating</span>`;
+    }
+
     const descEl = document.getElementById('modalDesc');
     const descWrap = document.getElementById('modalDescWrap');
     if (b.description && b.description.trim() !== '') {
@@ -246,11 +347,75 @@ function showBookDetail(id) {
     }
 
     const borrowWrap = document.getElementById('modalBorrowWrap');
+    const readOnlineBtn = document.getElementById('modalReadOnlineBtn');
+    const readOnlyWrap = document.getElementById('modalReadOnlyWrap');
+    const readOnlyBtn = document.getElementById('modalReadOnlyBtn');
+
     if (b.canBorrow) {
         document.getElementById('modalBookId').value = b.id;
         borrowWrap.style.display = 'block';
+        if (b.driveLink) {
+            readOnlineBtn.href = b.readUrl;
+            readOnlineBtn.style.display = 'flex';
+        } else {
+            readOnlineBtn.style.display = 'none';
+        }
+        readOnlyWrap.style.display = 'none';
     } else {
         borrowWrap.style.display = 'none';
+        if (b.driveLink) {
+            readOnlyBtn.href = b.readUrl;
+            readOnlyWrap.style.display = 'block';
+        } else {
+            readOnlyWrap.style.display = 'none';
+        }
+    }
+
+    // Render Reviews
+    const reviewList = document.getElementById('modalReviewList');
+    reviewList.innerHTML = '';
+    if (b.reviews.length > 0) {
+        b.reviews.forEach(r => {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<i class="${i <= r.rating ? 'fa-solid' : 'fa-regular'} fa-star" style="color:#f1c40f; font-size:0.75rem;"></i>`;
+            }
+            const item = document.createElement('div');
+            item.style.borderBottom = '1px solid var(--gray-100)';
+            item.style.paddingBottom = '8px';
+            item.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <strong style="font-size:0.82rem; color:var(--dark);">${r.member_name}</strong>
+                    <span style="font-size:0.7rem; color:var(--gray-500);">${r.date}</span>
+                </div>
+                <div style="margin-bottom:4px;">${stars}</div>
+                <p style="font-size:0.8rem; color:var(--gray-700); margin:0; line-height:1.4;">${r.review || '<em style="color:var(--gray-400)">Tidak ada komentar</em>'}</p>
+            `;
+            reviewList.appendChild(item);
+        });
+    } else {
+        reviewList.innerHTML = `<div style="text-align:center; padding:15px; color:var(--gray-500); font-style:italic; font-size:0.82rem;">Belum ada ulasan untuk buku ini.</div>`;
+    }
+
+    // Handle Review Form Eligibility
+    const formWrap = document.getElementById('modalReviewFormWrap');
+    const notEligible = document.getElementById('modalReviewNotEligible');
+    const reviewForm = document.getElementById('modalReviewForm');
+    const formTitle = document.getElementById('modalReviewFormTitle');
+
+    if (b.eligibleReview) {
+        notEligible.style.display = 'none';
+        formWrap.style.display = 'block';
+        reviewForm.action = `/catalog/${b.id}/review`;
+        
+        if (b.hasReviewed) {
+            formTitle.textContent = 'Perbarui Ulasan Anda';
+        } else {
+            formTitle.textContent = 'Tulis Ulasan Anda';
+        }
+    } else {
+        formWrap.style.display = 'none';
+        notEligible.style.display = 'block';
     }
 
     const modal = document.getElementById('bookDetailModal');

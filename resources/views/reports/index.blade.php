@@ -16,6 +16,84 @@
     </div>
 </div>
 
+<!-- Date Filter Panel -->
+<div class="card" style="margin-bottom: 25px;">
+    <div class="card-body" style="padding: 15px 20px;">
+        <form action="{{ route('reports.index') }}" method="GET" style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; margin: 0;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--gray-700); margin-right: 5px;"><i class="fa-solid fa-calendar-days"></i> Filter Waktu Laporan:</span>
+                <a href="{{ route('reports.index', ['filter' => 'all']) }}" class="btn {{ request('filter', 'all') === 'all' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Semua</a>
+                <a href="{{ route('reports.index', ['filter' => 'today']) }}" class="btn {{ request('filter') === 'today' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Hari Ini</a>
+                <a href="{{ route('reports.index', ['filter' => 'week']) }}" class="btn {{ request('filter') === 'week' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Minggu Ini</a>
+                <a href="{{ route('reports.index', ['filter' => 'month']) }}" class="btn {{ request('filter') === 'month' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Bulan Ini</a>
+                <a href="{{ route('reports.index', ['filter' => 'year']) }}" class="btn {{ request('filter') === 'year' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Tahun Ini</a>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <input type="hidden" name="filter" value="custom">
+                <input type="date" name="start_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('start_date') }}" required>
+                <span style="color: var(--gray-600); font-size: 0.8rem;">s/d</span>
+                <input type="date" name="end_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('end_date') }}" required>
+                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem; height: 32px; background-color: var(--dark); border-color: var(--dark); color: white;">Filter</button>
+            </div>
+        </form>
+        @if(isset($filterLabel))
+            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--gray-600); font-weight: bold;">
+                <i class="fa-solid fa-filter" style="color: var(--primary); margin-right: 4px;"></i> Periode Aktif: {{ $filterLabel }}
+            </div>
+        @endif
+    </div>
+</div>
+
+<!-- Laporan Metrics Grid -->
+<div class="grid-stats" style="margin-bottom: 25px;">
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>Total Buku Dipinjam (Periode)</h3>
+            <p>{{ $totalBorrowCount }} Kali</p>
+        </div>
+        <div class="stat-icon red">
+            <i class="fa-solid fa-shuffle"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>Jumlah Keterlambatan</h3>
+            <p style="{{ $lateCount > 0 ? 'color: var(--primary);' : '' }}">{{ $lateCount }} Kali</p>
+        </div>
+        <div class="stat-icon red" style="background-color: rgba(var(--primary-rgb), 0.05);">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>Total Buku Pengganti</h3>
+            <p>{{ $totalFineAmount }} Buku</p>
+        </div>
+        <div class="stat-icon red">
+            <i class="fa-solid fa-book-journal-whills"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>Buku Sudah Diganti</h3>
+            <p style="color: var(--success);">{{ $paidFineAmount }} Buku</p>
+        </div>
+        <div class="stat-icon green" style="background-color: rgba(40,167,69,0.05);">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <h3>Buku Belum Diganti</h3>
+            <p style="color: var(--primary);">{{ $unpaidFineAmount }} Buku</p>
+        </div>
+        <div class="stat-icon yellow">
+            <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+    </div>
+</div>
+
 <!-- Charts Grid -->
 <div class="dashboard-grid" style="margin-bottom: 30px;">
     <!-- Monthly Borrowing Trend -->
@@ -168,6 +246,45 @@
         </div>
     </div>
 </div>
+
+<!-- Reward Member Stats Table -->
+<div class="card" style="margin-top: 30px; margin-bottom: 25px;">
+    <div class="card-header">
+        <h2><i class="fa-solid fa-medal" style="color: #f1c40f; margin-right: 8px;"></i> Statistik Reward Member (Top 10 Poin Terbanyak)</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Peringkat</th>
+                        <th>Nama Anggota</th>
+                        <th>Kode Anggota</th>
+                        <th>Total Peminjaman</th>
+                        <th>Saldo Poin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($memberRewardStats as $index => $mr)
+                        <tr>
+                            <td>
+                                <strong>#{{ $index + 1 }}</strong>
+                            </td>
+                            <td><strong>{{ $mr->user->name }}</strong></td>
+                            <td style="font-family: monospace;">{{ $mr->member_code }}</td>
+                            <td>{{ $mr->total_loans }} Kali</td>
+                            <td>
+                                <span class="badge badge-warning" style="font-weight: bold; font-size: 0.82rem; padding: 4px 8px; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fa-solid fa-star"></i> {{ $mr->points }} Poin
+                                </span>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -239,7 +356,7 @@
             data: {
                 labels: ['Tersedia', 'Sedang Dipinjam'],
                 datasets: [{
-                    data: [{{ $availableBooks }}, {{ $borrowedBooks }}],
+                    data: [{{ $availableBooks }}, {{ $borrowedBooksCount }}],
                     backgroundColor: ['#22c55e', primaryColor],
                     borderWidth: 2,
                     borderColor: '#ffffff'

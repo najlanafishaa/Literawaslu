@@ -23,7 +23,7 @@
             <div class="card-flip-inner" id="membershipCard" onclick="toggleCardFlip()" style="position: relative; width: 100%; height: 100%; text-align: left; transition: transform 0.8s; transform-style: preserve-3d; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); border-radius: 16px;">
                 
                 <!-- CARD FRONT -->
-                <div class="card-front" style="position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; background: linear-gradient(135deg, #b8bcbf 0%, #8e9399 100%) !important; color: #1A1A1A !important; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
+                <div class="card-front" style="position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; background: #b1b5b9 !important; color: #1A1A1A !important; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
                     <!-- Elegant Inner Dashed Border Frame -->
                     <div style="position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px dashed rgba(26,26,26,0.15); border-radius: 12px; pointer-events: none; z-index: 2;"></div>
                     
@@ -31,7 +31,7 @@
                     <div style="position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%); border-radius: 50%; pointer-events: none;"></div>
                     
                     <!-- Center Watermark Logo Bawaslu -->
-                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Watermark Bawaslu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 150px; width: auto; opacity: 0.08; pointer-events: none; z-index: 1; filter: grayscale(100%);">
+                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Watermark Bawaslu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 150px; width: auto; opacity: 0.06; pointer-events: none; z-index: 1; filter: brightness(0);">
                     
                     <div class="digital-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 5;">
                         <div class="card-logo" style="display: flex; align-items: center; gap: 10px;">
@@ -42,31 +42,33 @@
                         </div>
                     </div>
                     
-                    <div class="digital-card-body" style="margin-top: 10px; z-index: 5;">
-                        <div class="member-name" style="font-size: 1.9rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">
-                            {{ auth()->user()->name }}
-                        </div>
-                        <div class="member-id" style="font-size: 1.45rem; color: #1A1A1A; margin-top: 5px; font-family: monospace; letter-spacing: 3px; font-weight: bold;">
-                            {{ $member->member_code }}
+                    <div class="digital-card-body" style="margin-top: 10px; z-index: 5; display: flex; align-items: center; gap: 15px;">
+                        <div>
+                            <div class="member-name" style="font-size: 1.6rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">
+                                {{ auth()->user()->name }}
+                            </div>
+                            <div class="member-id" style="font-size: 1.35rem; color: #1A1A1A; margin-top: 5px; font-family: monospace; letter-spacing: 2px; font-weight: bold;">
+                                {{ $member->member_code }}
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="digital-card-footer" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 5;">
+                    <div class="digital-card-footer" style="margin-top: 5px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 5;">
                         <div class="card-info-item">
                             <label style="font-size: 0.68rem; text-transform: uppercase; color: rgba(0,0,0,0.55); display: block; letter-spacing: 1px; font-weight: 700; margin-bottom: 2px;">Berlaku Sampai</label>
-                            <span style="font-size: 1rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">{{ $member->created_at->addYear(1)->format('d F Y') }}</span>
+                            <span style="font-size: 1rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">{{ strtoupper($member->created_at->addYear(1)->locale('id')->translatedFormat('d F Y')) }}</span>
                         </div>
                     </div>
 
                 </div>
 
                 <!-- CARD BACK -->
-                <div class="card-back" style="position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; transform: rotateY(180deg); background: linear-gradient(135deg, #b8bcbf 0%, #8e9399 100%) !important; color: #1A1A1A !important; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; overflow: hidden;">
+                <div class="card-back" style="position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; transform: rotateY(180deg); background: #b1b5b9 !important; color: #1A1A1A !important; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; overflow: hidden;">
                     <!-- Elegant Inner Dashed Border Frame -->
                     <div style="position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px dashed rgba(26,26,26,0.15); border-radius: 12px; pointer-events: none; z-index: 2;"></div>
                     
                     <!-- Center Watermark Logo Bawaslu -->
-                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Watermark Bawaslu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 150px; width: auto; opacity: 0.08; pointer-events: none; z-index: 1; filter: grayscale(100%);">
+                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Watermark Bawaslu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 150px; width: auto; opacity: 0.06; pointer-events: none; z-index: 1; filter: brightness(0);">
                     
                     <!-- Top Logo Bawaslu Lampung -->
                     <div style="display: flex; align-items: center; gap: 10px; z-index: 5;">
@@ -158,7 +160,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             box-shadow: none !important;
-            background: linear-gradient(135deg, #b8bcbf 0%, #8e9399 100%) !important;
+            background: #b1b5b9 !important;
             color: #1A1A1A !important;
             border: 1px solid rgba(0,0,0,0.1) !important;
             -webkit-print-color-adjust: exact !important;

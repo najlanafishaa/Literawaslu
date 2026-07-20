@@ -48,6 +48,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('categories.index') }}" class="sidebar-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
+                                <i class="fa-solid fa-tags"></i> Kelola Kategori
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('members.index') }}" class="sidebar-link {{ request()->routeIs('members.index') ? 'active' : '' }}">
                                 <i class="fa-solid fa-users"></i> Kelola Member
                             </a>
@@ -94,6 +99,11 @@
                         <li>
                             <a href="{{ route('books.index') }}" class="sidebar-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
                                 <i class="fa-solid fa-book"></i> Kelola Buku
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('categories.index') }}" class="sidebar-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
+                                <i class="fa-solid fa-tags"></i> Kelola Kategori
                             </a>
                         </li>
                         <li>

@@ -39,19 +39,22 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div style="position: relative;">
-                        <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required style="padding-right: 40px;">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required style="padding-right: 40px;" oninput="checkPasswordStrength(this.value)">
                         <button type="button" onclick="togglePassword('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
-                            <i class="fa-regular fa-eye"></i>
+                            <i class="fa-regular fa-eye-slash"></i>
                         </button>
                     </div>
+                    {{-- Indikator kekuatan password --}}
+                    <div id="password-strength-bar" style="height: 5px; border-radius: 3px; margin-top: 6px; transition: all 0.3s; width: 0%; background: #e74c3c;"></div>
+                    <div id="password-strength-label" style="font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="password_confirmation">Konfirmasi Password</label>
                     <div style="position: relative;">
                         <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="••••••••" required style="padding-right: 40px;">
                         <button type="button" onclick="togglePassword('password_confirmation', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
-                            <i class="fa-regular fa-eye"></i>
+                            <i class="fa-regular fa-eye-slash"></i>
                         </button>
                     </div>
                 </div>
@@ -76,7 +79,7 @@
                 Setelah pendaftaran selesai, sistem secara otomatis akan menerbitkan kartu digital perpustakaan dan memberikan poin bonus pendaftaran sebesar <strong>10 Poin</strong>!
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <button type="submit" id="registerBtn" class="btn btn-primary" style="width: 100%; opacity: 0.5; cursor: not-allowed;" disabled>
                 <i class="fa-solid fa-user-plus"></i> Daftar & Terbitkan Kartu
             </button>
         </form>
@@ -93,16 +96,63 @@
     function togglePassword(inputId, button) {
         const input = document.getElementById(inputId);
         const icon = button.querySelector('i');
-        
         if (input.type === 'password') {
             input.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            input.type = 'password';
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
         }
     }
+
+    let passwordIsStrong = false;
+
+    function checkPasswordStrength(val) {
+        const bar   = document.getElementById('password-strength-bar');
+        const label = document.getElementById('password-strength-label');
+        const btn   = document.getElementById('registerBtn');
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[a-z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        if (val.length === 0) {
+            bar.style.width = '0%'; bar.style.background = ''; label.textContent = '';
+            passwordIsStrong = false;
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+            btn.style.cursor = 'not-allowed';
+            return;
+        }
+        if (score <= 2) {
+            bar.style.width = '33%'; bar.style.background = '#e74c3c';
+            label.style.color = '#e74c3c'; label.textContent = '🔴 Lemah — Password belum cukup kuat untuk mendaftar';
+            passwordIsStrong = false;
+        } else if (score === 3 || score === 4) {
+            bar.style.width = '66%'; bar.style.background = '#f39c12';
+            label.style.color = '#f39c12'; label.textContent = '🟡 Sedang — Tambahkan simbol/angka agar lebih kuat';
+            passwordIsStrong = false;
+        } else {
+            bar.style.width = '100%'; bar.style.background = '#27ae60';
+            label.style.color = '#27ae60'; label.textContent = '🟢 Kuat — Password siap digunakan!';
+            passwordIsStrong = true;
+        }
+
+        btn.disabled = !passwordIsStrong;
+        btn.style.opacity = passwordIsStrong ? '1' : '0.5';
+        btn.style.cursor = passwordIsStrong ? 'pointer' : 'not-allowed';
+    }
+
+    // Block form submit if password is not strong
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (!passwordIsStrong) {
+            e.preventDefault();
+            showToast('Password harus berstatus KUAT sebelum Anda dapat mendaftar.', 'danger');
+        }
+    });
 </script>
 @endsection
