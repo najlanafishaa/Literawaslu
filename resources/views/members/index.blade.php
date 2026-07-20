@@ -40,11 +40,11 @@
                             <th>Kode Member</th>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th>Status</th>
+                            <th>Info Keamanan</th>
                             <th>Total Peminjaman</th>
                             <th>Reward Poin</th>
                             <th>Batas Pinjam</th>
-                            <th>Status</th>
+                            <th>Status Verifikasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -55,13 +55,10 @@
                                 <td><strong>{{ $member->user->name }}</strong></td>
                                 <td>{{ $member->user->email }}</td>
                                 <td>
-                                    @if($member->status === 'active')
-                                        <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;"><i class="fa-solid fa-check"></i> Terverifikasi</span>
-                                    @elseif($member->status === 'pending')
-                                        <span class="badge badge-warning" style="background-color: #fef08a; color: #ca8a04;"><i class="fa-solid fa-clock"></i> Pending</span>
-                                    @elseif($member->status === 'rejected')
-                                        <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;"><i class="fa-solid fa-xmark"></i> Ditolak</span>
-                                    @endif
+                                    <div style="font-size: 0.8rem;">
+                                        <div style="color: var(--gray-600);">Tanya: {{ $member->user->security_question }}</div>
+                                        <div style="font-weight: 600; color: var(--dark);">Jawab: {{ $member->user->security_answer }}</div>
+                                    </div>
                                 </td>
                                 <td>{{ $member->total_loans }} Kali</td>
                                 <td>
@@ -69,22 +66,26 @@
                                 </td>
                                 <td>{{ $member->borrow_limit }} Buku</td>
                                 <td>
-                                    @if($member->is_verified)
-                                        <span class="badge badge-success">Terverifikasi</span>
+                                    @if($member->status === 'active')
+                                        <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;"><i class="fa-solid fa-check"></i> Terverifikasi</span>
+                                    @elseif($member->status === 'pending')
+                                        <span class="badge badge-warning" style="background-color: #fef08a; color: #ca8a04;"><i class="fa-solid fa-clock"></i> Pending</span>
+                                    @elseif($member->status === 'rejected')
+                                        <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;"><i class="fa-solid fa-xmark"></i> Ditolak</span>
                                     @else
-                                        <span class="badge badge-danger">Belum Terverifikasi</span>
+                                        <span class="badge badge-secondary">{{ $member->status }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <div style="display: flex; gap: 8px; align-items: center;">
-                                         @if(!$member->is_verified)
-                                             <form action="{{ route('members.verify', $member->id) }}" method="POST" style="margin: 0;">
+                                         @if($member->status === 'pending')
+                                             <form action="{{ route('verifications.member.approve', $member->id) }}" method="POST" style="margin: 0;">
                                                  @csrf
                                                  <button type="submit" class="btn btn-secondary btn-sm" title="Terima Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem; background-color: var(--secondary); border-color: var(--secondary); color: var(--light);">
                                                      <i class="fa-solid fa-user-check"></i> Terima
                                                  </button>
                                              </form>
-                                             <form action="{{ route('members.reject', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak dan menghapus pendaftaran member ini?');" style="margin: 0;">
+                                             <form action="{{ route('verifications.member.reject', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak dan menghapus pendaftaran member ini?');" style="margin: 0;">
                                                  @csrf
                                                  <button type="submit" class="btn btn-outline btn-sm" title="Tolak Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem; color: var(--primary); border-color: rgba(227,30,36,0.3);">
                                                      <i class="fa-solid fa-user-xmark"></i> Tolak

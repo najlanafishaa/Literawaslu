@@ -47,9 +47,9 @@ class BorrowController extends Controller
             return back()->with('error', "Member dengan kode '{$request->member_code}' tidak ditemukan.");
         }
 
-        // Validate if member is verified
-        if (!$member->is_verified) {
-            return back()->with('error', "Gagal memproses peminjaman. Akun member '{$member->user->name}' belum diverifikasi oleh petugas.");
+        // Validate if member is active
+        if ($member->status !== 'active') {
+            return back()->with('error', "Gagal memproses peminjaman. Akun member '{$member->user->name}' tidak aktif.");
         }
 
         // Find book

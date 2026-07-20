@@ -18,41 +18,9 @@
     </div>
     
     <div class="card-body" style="padding: 30px; display: flex; flex-direction: column; align-items: center; gap: 30px;">
-<<<<<<< HEAD
         <!-- Premium 3D Flipping Card Container -->
         <div class="card-flip-container" style="perspective: 1000px; width: 100%; max-width: 450px; height: 260px; cursor: pointer;">
             <div class="card-flip-inner" id="membershipCard" onclick="toggleCardFlip()" style="position: relative; width: 100%; height: 100%; text-align: left; transition: transform 0.8s; transform-style: preserve-3d; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); border-radius: 16px;">
-=======
-        <!-- The Membership Card -->
-        <div class="digital-card" style="width: 100%; max-width: 450px; min-height: 260px; padding: 25px; background: {{ $member->membership_details['card_bg'] }} !important; color: #FFFFFF !important; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); border-radius: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
-            <!-- Shiny Reflection Effect -->
-            <div style="position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(var(--primary-rgb), 0.15) 0%, transparent 60%); border-radius: 50%; pointer-events: none;"></div>
-            
-            <div class="digital-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 5;">
-                <div class="card-logo" style="display: flex; align-items: center; gap: 8px;">
-                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" style="height: 28px; width: auto; object-fit: contain;">
-                    <div style="font-size: 1.2rem; font-weight: 700; color: #FFFFFF; line-height: 1;">
-                        Litera<span style="color: var(--primary);">waslu</span>
-                    </div>
-                </div>
-                <div class="card-type" style="padding: 4px 10px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; background: {{ $member->membership_details['badge_bg'] }}; color: {{ $member->membership_details['badge_color'] }}; border-radius: 20px;">
-                    {{ $member->membership_details['name'] }}
-                </div>
-            </div>
-            
-            <div class="digital-card-body" style="margin-top: 25px; z-index: 5;">
-                <div class="member-name" style="font-size: 1.35rem; font-weight: 600; color: #FFFFFF;">{{ auth()->user()->name }}</div>
-                <div class="member-id" style="font-size: 1.1rem; color: var(--secondary); margin-top: 5px; font-family: monospace; letter-spacing: 2px;">
-                    {{ $member->member_code }}
-                </div>
-            </div>
-            
-            <div class="digital-card-footer" style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 5;">
-                <div class="card-info-item">
-                    <label style="font-size: 0.65rem; text-transform: uppercase; color: rgba(255,255,255,0.4); display: block;">Tanggal Terdaftar</label>
-                    <span style="font-size: 0.85rem; font-weight: 500; color: #FFFFFF;">{{ $member->created_at->format('d F Y') }}</span>
-                </div>
->>>>>>> origin/pr-1
                 
                 <!-- CARD FRONT -->
                 <div class="card-front" style="position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; background: linear-gradient(135deg, #b8bcbf 0%, #8e9399 100%) !important; color: #1A1A1A !important; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;">
@@ -166,7 +134,6 @@
                 <li>Tunjukkan kartu digital ini kepada Petugas Perpustakaan saat ingin melakukan transaksi peminjaman maupun pengembalian.</li>
                 <li>Petugas akan mencari data keanggotaan Anda menggunakan Kode Anggota yang tertera pada sisi depan kartu.</li>
                 <li>Kartu ini bersifat permanen dan tidak dapat dipindahtangankan.</li>
-                <li>Tukarkan poin reward Anda di menu Reward & Poin untuk menaikkan kapasitas pinjaman kartu Anda.</li>
             </ul>
         </div>
     </div>

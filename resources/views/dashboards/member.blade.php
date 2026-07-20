@@ -13,11 +13,7 @@
             <a href="{{ route('member.card') }}" class="btn btn-secondary btn-sm" style="background-color: transparent; border: 1px solid var(--light); color: var(--light);"><i class="fa-solid fa-id-card"></i> Tampilkan Kartu</a>
         </div>
     </div>
-    @if(auth()->user()->avatar)
-        <div style="position: relative; z-index: 5;">
-            <img src="{{ asset(auth()->user()->avatar) }}" alt="Foto Profil" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.8); box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
-        </div>
-    @endif
+
     <div style="position: absolute; right: -50px; bottom: -50px; font-size: 15rem; color: rgba(255,255,255,0.05); transform: rotate(-15deg); pointer-events: none;">
         <i class="fa-solid fa-book"></i>
     </div>
@@ -122,43 +118,39 @@
         </div>
         <div class="card-body" style="padding: 20px;">
             <div class="digital-card-container">
-                <div class="digital-card" style="min-height: 180px; padding: 20px;">
-                    <div class="digital-card-header">
-                        <div class="card-logo">Litera<span>waslu</span></div>
-                        <div class="card-type">
-                            @if($member->points >= 100)
-                                VIP Gold
-                            @else
-                                Member
-                            @endif
-                        </div>
-                    </div>
+                <!-- CARD FRONT (Matched with member_card.blade.php) -->
+                <div class="card-front" style="position: relative; width: 100%; height: 220px; background: linear-gradient(135deg, #b8bcbf 0%, #8e9399 100%) !important; color: #1A1A1A !important; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                    <!-- Elegant Inner Dashed Border Frame -->
+                    <div style="position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px dashed rgba(26,26,26,0.15); border-radius: 12px; pointer-events: none; z-index: 2;"></div>
                     
-                    <div class="digital-card-body" style="margin-top: 15px;">
-                        <div class="member-name" style="font-size: 1.1rem;">{{ auth()->user()->name }}</div>
-                        <div class="member-id" style="font-size: 0.95rem; margin-top: 2px;">{{ $member->member_code }}</div>
-                    </div>
+                    <!-- Shiny Reflection Effect -->
+                    <div style="position: absolute; top: -50%; right: -20%; width: 250px; height: 250px; background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%); border-radius: 50%; pointer-events: none;"></div>
                     
-                    <div class="digital-card-footer" style="margin-top: 15px;">
-                        <div class="card-info-item">
-                            <label>Batas Pinjam</label>
-                            <span>{{ $member->borrow_limit }} Buku</span>
-                        </div>
-                        
-                        <!-- Simple visual CSS barcode -->
-                        <div class="card-barcode" style="padding: 2px 5px;">
-                            <div style="display: flex; gap: 1px; background-color: var(--dark); padding: 4px 6px;">
-                                <!-- Barcode simulation lines -->
-                                <div style="width: 2px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 1px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 3px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 1px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 2px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 1px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 3px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 1px; height: 16px; background-color: var(--light);"></div>
-                                <div style="width: 2px; height: 16px; background-color: var(--light);"></div>
+                    <!-- Center Watermark Logo Bawaslu -->
+                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Watermark Bawaslu" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 120px; width: auto; opacity: 0.08; pointer-events: none; z-index: 1; filter: grayscale(100%);">
+                    
+                    <div class="digital-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 5;">
+                        <div class="card-logo" style="display: flex; align-items: center; gap: 8px;">
+                            <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" style="height: 35px; width: auto; object-fit: contain;">
+                            <div style="font-size: 1.1rem; font-weight: 800; color: #1A1A1A; line-height: 1; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">
+                                Literawaslu
                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="digital-card-body" style="margin-top: 10px; z-index: 5;">
+                        <div class="member-name" style="font-size: 1.3rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            {{ auth()->user()->name }}
+                        </div>
+                        <div class="member-id" style="font-size: 1rem; color: #1A1A1A; margin-top: 2px; font-family: monospace; letter-spacing: 2px; font-weight: bold;">
+                            {{ $member->member_code }}
+                        </div>
+                    </div>
+                    
+                    <div class="digital-card-footer" style="margin-top: 5px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 5;">
+                        <div class="card-info-item">
+                            <label style="font-size: 0.55rem; text-transform: uppercase; color: rgba(0,0,0,0.55); display: block; letter-spacing: 1px; font-weight: 700; margin-bottom: 2px;">Berlaku Sampai</label>
+                            <span style="font-size: 0.85rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">{{ $member->created_at->addYear(1)->format('d F Y') }}</span>
                         </div>
                     </div>
                 </div>

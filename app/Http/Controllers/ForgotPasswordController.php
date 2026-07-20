@@ -102,13 +102,24 @@ class ForgotPasswordController extends Controller
             return back()->with('error', 'Jawaban pertanyaan keamanan salah. Silakan coba lagi.');
         }
 
-        // Simpan permintaan ke admin
-        MemberResetRequest::create([
-            'user_id' => $user->id,
-            'status' => 'pending',
-        ]);
+        // Langsung generate token reset password tanpa persetujuan admin
+        $token = Str::random(60);
 
-        return redirect()->route('login')->with('success', 'Jawaban benar! Permintaan reset password Anda telah diajukan ke Admin. Silakan hubungi Admin untuk persetujuan reset.');
+        MemberResetRequest::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'status' => 'approved',
+                'token' => $token,
+            ]
+        );
+
+        $resetUrl = route('password.reset', ['token' => $token, 'email' => $user->email]);
+
+        // Log link untuk referensi
+        Log::info("Reset Password Link for Member ({$user->email}): {$resetUrl}");
+
+        return redirect()->route('password.reset', ['token' => $token, 'email' => $user->email])
+                         ->with('success', 'Jawaban benar! Silakan atur password baru Anda.');
     }
 
     /**

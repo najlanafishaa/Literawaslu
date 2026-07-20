@@ -52,7 +52,7 @@
             <div class="form-group">
                 <label for="role">Hak Akses / Peran</label>
                 <select name="role" id="role" class="form-control" required>
-                    <option value="user" {{ old('role', $member->user->role) === 'user' ? 'selected' : '' }}>User / Anggota</option>
+                    <option value="user" {{ old('role', $member->user->role) === 'user' ? 'selected' : '' }}>Pengguna / Anggota</option>
                     <option value="admin" {{ old('role', $member->user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">Mengubah peran ke 'Admin' akan menghapus profil anggota ini namun tetap menyimpan akun pengguna.</small>

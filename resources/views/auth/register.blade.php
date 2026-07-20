@@ -32,15 +32,8 @@
             <div class="form-group">
                 <label for="email">Alamat Email</label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="ahmad@literawaslu.com" value="{{ old('email') }}" required>
-<<<<<<< HEAD
             </div>
 
-            <div class="form-group">
-                <label for="phone">Nomor Telepon</label>
-                <input type="text" name="phone" id="phone" class="form-control" placeholder="0812XXXXXXXX" value="{{ old('phone') }}" required>
-=======
->>>>>>> origin/pr-1
-            </div>
 
             <div class="form-row">
                 <div class="form-group">

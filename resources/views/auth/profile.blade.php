@@ -31,26 +31,6 @@
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
                 @csrf
                 
-                <div class="form-group" style="margin-bottom: 5px;">
-                    <label for="avatar" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
-                        Foto Profil:
-                    </label>
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        @if($user->avatar)
-                            <img src="{{ asset($user->avatar) }}" alt="Foto Profil" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                        @else
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background-color: var(--primary); color: var(--light); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; border: 2px solid var(--secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                                {{ strtoupper(substr($user->name, 0, 1)) }}
-                            </div>
-                        @endif
-                        <div style="flex: 1;">
-                            <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*" style="padding: 8px 12px; font-size: 0.85rem; max-width: 300px;">
-                            <small style="color: var(--gray-600); display: block; margin-top: 5px; font-size: 0.8rem;">
-                                Format gambar: JPEG, PNG, JPG, GIF. Maksimal 512 KB.
-                            </small>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
@@ -75,7 +55,7 @@
                         Hak Akses / Role:
                     </label>
                     <input type="text" class="form-control" style="background-color: var(--gray-100); cursor: not-allowed;" 
-                           value="{{ auth()->user()->role === 'super_admin' ? 'Super Admin' : (in_array(auth()->user()->role, ['admin', 'petugas']) ? 'Admin' : 'User') }}" disabled>
+                           value="{{ auth()->user()->role === 'super_admin' ? 'Super Admin' : (in_array(auth()->user()->role, ['admin', 'petugas']) ? 'Admin' : 'Pengguna') }}" disabled>
                     <small style="color: var(--gray-600); display: block; margin-top: 5px; font-size: 0.8rem;">
                         Peran akun diatur oleh administrator sistem dan tidak dapat diubah dari profil ini.
                     </small>

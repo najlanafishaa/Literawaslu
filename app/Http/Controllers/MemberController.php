@@ -34,7 +34,21 @@ class MemberController extends Controller
         }
 
         $books = $query->orderBy('title', 'asc')->get();
-        $categories = Book::select('category')->distinct()->pluck('category');
+        $categories = [
+            'Pemerintahan',
+            'Hukum dan Undang-Undang',
+            'Politik',
+            'Demokrasi',
+            'Sosial',
+            'Keagamaan',
+            'Sengketa Pemilu',
+            'Riset Pilkada',
+            'Akuntansi',
+            'Skripsi',
+            'Laporan Hasil Pengawasan',
+            'Motivasi',
+            'Novel'
+        ];
 
         return view('dashboards.member_catalog', compact('books', 'categories'));
     }
@@ -129,16 +143,24 @@ class MemberController extends Controller
             return back()->with('error', "Batas peminjaman Anda sudah tercapai (maksimal {$member->borrow_limit} buku sekaligus).");
         }
 
-        // Create pending request
+        // Auto-approve: langsung proses peminjaman tanpa pending
         $loanDuration = SettingController::getSetting('loan_duration', 7);
         Borrow::create([
             'member_id' => $member->id,
             'book_id' => $book->id,
             'borrow_date' => now(),
             'due_date' => now()->addDays($loanDuration),
-            'status' => 'pending',
+            'status' => 'borrowed',
         ]);
 
-        return back()->with('success', 'Permintaan peminjaman berhasil dikirim. Silakan tunggu persetujuan dari Petugas/Admin.');
+        // Kurangi stok buku
+        $book->decrement('available_stock');
+        $book->update(['is_available' => $book->available_stock > 0]);
+
+        // Tambah total pinjaman dan poin
+        $member->increment('total_loans');
+        $member->increment('points', 10);
+
+        return back()->with('success', "Peminjaman buku '{$book->title}' berhasil! Harap diambil ke perpustakaan. Jatuh tempo: " . now()->addDays($loanDuration)->format('d M Y') . ".");
     }
 }

@@ -5,17 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Literawaslu') - Sistem Informasi Perpustakaan</title>
-<<<<<<< HEAD
-=======
-    <script>
-        (function() {
-            const savedWidth = localStorage.getItem('sidebar-width');
-            if (savedWidth) {
-                document.documentElement.style.setProperty('--sidebar-width', savedWidth + 'px');
-            }
-        })();
-    </script>
->>>>>>> origin/pr-1
+
     
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -27,7 +17,6 @@
     <div class="app-container">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
-<<<<<<< HEAD
             <a href="{{ route('dashboard') }}" style="text-decoration: none; color: inherit; display: block;">
                 <div class="sidebar-brand" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 20px 24px; cursor: pointer;">
                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -38,13 +27,6 @@
                     </div>
                     <div style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-600); font-weight: 700; line-height: 1; margin-left: 2px;">
                         Bawaslu Prov. Lampung
-=======
-            <div class="sidebar-brand" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 20px 24px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" style="height: 38px; width: auto; object-fit: contain;">
-                    <div style="font-size: 1.35rem; font-weight: 700; color: var(--dark); line-height: 1;">
-                        Litera<span style="color: var(--primary);">waslu</span>
->>>>>>> origin/pr-1
                     </div>
                 </div>
             </a>
@@ -165,7 +147,6 @@
             
             <div class="sidebar-footer">
                 @auth
-<<<<<<< HEAD
                     <a href="{{ route('profile.edit') }}" style="text-decoration: none; color: inherit; display: block;">
                         <div class="user-badge" style="cursor: pointer; transition: background-color 0.2s; border-radius: 8px;">
                             <div class="user-avatar">
@@ -184,29 +165,6 @@
                             </p>
                         </div>
                         <i class="fa-solid fa-pen-to-square" style="margin-left: auto; color: var(--gray-500); font-size: 0.8rem;"></i>
-=======
-                    <a href="{{ route('profile.edit') }}" class="user-badge-link" title="Ubah Profil Saya">
-                        <div class="user-badge" style="padding: 6px; margin: -6px; border-radius: var(--border-radius);">
-                            @if(auth()->user()->avatar)
-                                <img src="{{ asset(auth()->user()->avatar) }}" alt="Avatar" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary);">
-                            @else
-                                <div class="user-avatar">
-                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                                </div>
-                            @endif
-                            <div class="user-info">
-                                <h4>{{ auth()->user()->name }}</h4>
-                                <p>
-                                    @if(auth()->user()->role === 'super_admin')
-                                        Super Admin
-                                    @elseif(in_array(auth()->user()->role, ['admin', 'petugas']))
-                                        Admin
-                                    @else
-                                        User
-                                    @endif
-                                </p>
-                            </div>
->>>>>>> origin/pr-1
                         </div>
                     </a>
                 @else
@@ -236,7 +194,7 @@
                             @elseif(in_array(auth()->user()->role, ['admin', 'petugas']))
                                 <span class="role-badge role-petugas">Admin</span>
                             @else
-                                <span class="role-badge role-member">User</span>
+                                <span class="role-badge role-member">Pengguna</span>
                             @endif
                         </a>
                         

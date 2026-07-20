@@ -87,6 +87,8 @@ class MemberAdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'security_question' => 'required|string|max:255',
+            'security_answer' => 'required|string|max:255',
         ], [
             'email.unique' => 'Email ini sudah digunakan.'
         ]);
@@ -95,7 +97,9 @@ class MemberAdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
-            'role' => 'user',
+            'role' => 'member',
+            'security_question' => $request->security_question,
+            'security_answer' => strtolower(trim($request->security_answer)),
         ]);
 
         // Generate member code
@@ -109,7 +113,7 @@ class MemberAdminController extends Controller
             'total_loans' => 0,
             'points' => 0,
             'borrow_limit' => 1,
-            'is_verified' => true, // Automatically verified since registered manually by admin
+            'status' => 'active', 
         ]);
 
         return redirect()->route('members.index')->with('success', 'Member baru berhasil didaftarkan secara manual.');

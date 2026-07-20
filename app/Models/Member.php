@@ -15,11 +15,7 @@ class Member extends Model
         'total_loans',
         'points',
         'borrow_limit',
-<<<<<<< HEAD
         'status',
-=======
-        'is_verified',
->>>>>>> origin/pr-1
     ];
 
     protected $casts = [
@@ -52,26 +48,31 @@ class Member extends Model
     {
         $loans = $this->total_loans;
 
+        // Use a uniform dark aesthetic for all member cards per requirements
+        $cardBg = 'linear-gradient(135deg, var(--dark) 0%, #1a1a1a 100%)';
+        $badgeBg = 'linear-gradient(135deg, var(--primary) 0%, #99131a 100%)';
+        $badgeColor = '#FFFFFF';
+
         if ($loans >= 30) {
             return [
                 'name' => 'Gold Member',
-                'card_bg' => 'linear-gradient(135deg, #4d3a12 0%, #151003 100%)',
-                'badge_bg' => 'linear-gradient(135deg, #F5B025 0%, #a37b17 100%)',
-                'badge_color' => '#FFFFFF',
+                'card_bg' => $cardBg,
+                'badge_bg' => $badgeBg,
+                'badge_color' => $badgeColor,
             ];
         } elseif ($loans >= 11) {
             return [
                 'name' => 'Silver Member',
-                'card_bg' => 'linear-gradient(135deg, #2d3340 0%, #0f121a 100%)',
-                'badge_bg' => 'linear-gradient(135deg, #c0c0c0 0%, #7f7f7f 100%)',
-                'badge_color' => '#FFFFFF',
+                'card_bg' => $cardBg,
+                'badge_bg' => $badgeBg,
+                'badge_color' => $badgeColor,
             ];
         } else {
             return [
                 'name' => 'Bronze Member',
-                'card_bg' => 'linear-gradient(135deg, #3d2d1e 0%, #130e09 100%)',
-                'badge_bg' => 'linear-gradient(135deg, #cd7f32 0%, #8c531d 100%)',
-                'badge_color' => '#FFFFFF',
+                'card_bg' => $cardBg,
+                'badge_bg' => $badgeBg,
+                'badge_color' => $badgeColor,
             ];
         }
     }

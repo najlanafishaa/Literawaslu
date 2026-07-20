@@ -57,22 +57,29 @@
 
             <div class="form-group">
                 <label for="category">Kategori Buku</label>
-                <input type="text" name="category" id="category" class="form-control" placeholder="Fiksi, Sejarah, Sains, Komputer, Dsb." value="{{ old('category') }}" required list="category_suggestions">
-                <datalist id="category_suggestions">
-                    <option value="Pemerintahan">
-                    <option value="Hukum dan Undang-Undang">
-                    <option value="Politik">
-                    <option value="Demokrasi">
-                    <option value="Sosial">
-                    <option value="Keagamaan">
-                    <option value="Sengketa Pemilu">
-                    <option value="Riset Pilkada">
-                    <option value="Akuntansi">
-                    <option value="Skripsi">
-                    <option value="Laporan Hasil Pengawasan">
-                    <option value="Motivasi">
-                    <option value="Novel">
-                </datalist>
+                <select name="category" id="category" class="form-control" required style="width: 100%;">
+                    <option value="" disabled {{ old('category') ? '' : 'selected' }}>-- Pilih Kategori Buku --</option>
+                    <option value="Pemerintahan" {{ old('category') == 'Pemerintahan' ? 'selected' : '' }}>Pemerintahan</option>
+                    <option value="Hukum dan Undang-Undang" {{ old('category') == 'Hukum dan Undang-Undang' ? 'selected' : '' }}>Hukum dan Undang-Undang</option>
+                    <option value="Politik" {{ old('category') == 'Politik' ? 'selected' : '' }}>Politik</option>
+                    <option value="Demokrasi" {{ old('category') == 'Demokrasi' ? 'selected' : '' }}>Demokrasi</option>
+                    <option value="Sosial" {{ old('category') == 'Sosial' ? 'selected' : '' }}>Sosial</option>
+                    <option value="Keagamaan" {{ old('category') == 'Keagamaan' ? 'selected' : '' }}>Keagamaan</option>
+                    <option value="Sengketa Pemilu" {{ old('category') == 'Sengketa Pemilu' ? 'selected' : '' }}>Sengketa Pemilu</option>
+                    <option value="Riset Pilkada" {{ old('category') == 'Riset Pilkada' ? 'selected' : '' }}>Riset Pilkada</option>
+                    <option value="Akuntansi" {{ old('category') == 'Akuntansi' ? 'selected' : '' }}>Akuntansi</option>
+                    <option value="Skripsi" {{ old('category') == 'Skripsi' ? 'selected' : '' }}>Skripsi</option>
+                    <option value="Laporan Hasil Pengawasan" {{ old('category') == 'Laporan Hasil Pengawasan' ? 'selected' : '' }}>Laporan Hasil Pengawasan</option>
+                    <option value="Motivasi" {{ old('category') == 'Motivasi' ? 'selected' : '' }}>Motivasi</option>
+                    <option value="Novel" {{ old('category') == 'Novel' ? 'selected' : '' }}>Novel</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Deskripsi Buku <span style="color: var(--gray-500); font-weight: 400;">(opsional)</span></label>
+                <textarea name="description" id="description" class="form-control" rows="4" placeholder="Tulis ringkasan atau deskripsi singkat buku ini...">{{ old('description') }}</textarea>
+            </div>
+
             <div class="form-row">
                 <div class="form-group">
                     <label for="stock">Jumlah Stok / Salinan Buku</label>
