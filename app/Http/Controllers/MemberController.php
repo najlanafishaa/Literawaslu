@@ -33,8 +33,14 @@ class MemberController extends Controller
         }
 
         $books = $query->with('reviews')->orderBy('title', 'asc')->get();
-        $categories = Category::orderBy('name')->pluck('name');
-
+        $defaultCategories = [
+            'pemerintahan', 'november', 'hukum dan undang-undang', 'motivasi', 
+            'politik', 'sosial', 'demokrasi', 'keagamaan', 'sengketa pemilu', 
+            'riset pilkada', 'akuntansi', 'skripsi', 'laporan hasil pengawasan'
+        ];
+        $dbCategories = Category::orderBy('name')->pluck('name')->toArray();
+        $categories = array_unique(array_merge($defaultCategories, $dbCategories));
+        sort($categories);
         $member = Auth::user()->member;
 
         // Get books this member is eligible to review: returned OR borrowed for 7 days or more
@@ -108,7 +114,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Request online borrowing.
+     * Request online borrowing (requires admin verification before taking effect).
      */
     public function requestBorrow(Request $request)
     {
@@ -125,14 +131,23 @@ class MemberController extends Controller
             return back()->with('error', 'Pendaftaran Anda ditolak. Hubungi petugas perpustakaan.');
         }
 
-        // Rule: tidak bisa pinjam kalau ada pinjaman aktif
+        // Rule: tidak bisa pinjam kalau ada pinjaman aktif atau permintaan yang sedang diproses
         if ($member->hasActiveBorrow()) {
             return back()->with('error', 'Anda masih memiliki buku yang sedang dipinjam. Kembalikan terlebih dahulu sebelum meminjam buku lain.');
         }
 
-        // Rule: tidak bisa pinjam kalau ada denda belum dibayar
+        // Cek apakah sudah ada permintaan pending untuk buku yang sama
+        $alreadyRequested = Borrow::where('member_id', $member->id)
+            ->where('book_id', $request->book_id)
+            ->where('status', 'pending')
+            ->exists();
+        if ($alreadyRequested) {
+            return back()->with('error', 'Anda sudah mengajukan permintaan peminjaman untuk buku ini. Tunggu persetujuan Admin/Petugas.');
+        }
+
+        // Rule: tidak bisa pinjam kalau ada sanksi belum diselesaikan
         if ($member->hasUnpaidFine()) {
-            return back()->with('error', 'Anda memiliki denda yang belum dibayar. Selesaikan kewajiban terlebih dahulu.');
+            return back()->with('error', 'Anda memiliki sanksi ganti buku yang belum diselesaikan. Hubungi petugas perpustakaan.');
         }
 
         $book = Book::find($request->book_id);
@@ -143,24 +158,19 @@ class MemberController extends Controller
 
         $loanDuration = SettingController::getSetting('loan_duration', 7);
 
+        // Buat permintaan peminjaman dengan status 'pending' (menunggu verifikasi admin)
         Borrow::create([
-            'member_id'  => $member->id,
-            'book_id'    => $book->id,
+            'member_id'   => $member->id,
+            'book_id'     => $book->id,
             'borrow_date' => now(),
             'due_date'    => now()->addDays($loanDuration),
-            'status'      => 'borrowed',
+            'status'      => 'pending',
             'fine_amount' => 0,
             'fine_status' => 'none',
         ]);
 
-        // Kurangi stok
-        $book->decrement('available_stock');
-        $book->update(['is_available' => $book->available_stock > 0]);
+        // Stok & poin BELUM dikurangi/ditambah — menunggu verifikasi admin
 
-        // +5 poin saat pinjam (bukan +10 seperti sebelumnya)
-        $member->increment('total_loans');
-        $member->increment('points', 5);
-
-        return back()->with('success', "Peminjaman buku '{$book->title}' berhasil! Jatuh tempo: " . now()->addDays($loanDuration)->format('d M Y') . ". (+5 poin reward)");
+        return back()->with('success', "Permintaan peminjaman buku '{$book->title}' berhasil diajukan! Silakan tunggu persetujuan dari Petugas/Admin. Poin akan diberikan setelah buku dikembalikan.");
     }
 }

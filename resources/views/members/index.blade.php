@@ -40,7 +40,9 @@
                             <th>Kode Member</th>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th>Info Keamanan</th>
+                            @if(auth()->user()->role === 'super_admin')
+                                <th>Info Keamanan</th>
+                            @endif
                             <th>Total Peminjaman</th>
                             <th>Reward Poin</th>
                             <th>Batas Pinjam</th>
@@ -54,12 +56,14 @@
                                 <td style="font-family: monospace; font-weight: 700; color: #b58b00;">{{ $member->member_code }}</td>
                                 <td><strong>{{ $member->user->name }}</strong></td>
                                 <td>{{ $member->user->email }}</td>
-                                <td>
-                                    <div style="font-size: 0.8rem;">
-                                        <div style="color: var(--gray-600);">Tanya: {{ $member->user->security_question }}</div>
-                                        <div style="font-weight: 600; color: var(--dark);">Jawab: {{ $member->user->security_answer }}</div>
-                                    </div>
-                                </td>
+                                @if(auth()->user()->role === 'super_admin')
+                                    <td>
+                                        <div style="font-size: 0.8rem;">
+                                            <div style="color: var(--gray-600);">Tanya: {{ $member->user->security_question }}</div>
+                                            <div style="font-weight: 600; color: var(--dark);">Jawab: {{ $member->user->security_answer }}</div>
+                                        </div>
+                                    </td>
+                                @endif
                                 <td>{{ $member->total_loans }} Kali</td>
                                 <td>
                                     <span class="badge badge-warning" style="font-weight: 700;">{{ $member->points }} Pts</span>

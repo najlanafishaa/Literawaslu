@@ -72,10 +72,19 @@
                             </td>
                             <td>
                                 @if($user->role === 'super_admin' && auth()->id() !== $user->id)
-                                    <form action="{{ route('accounts.demote', $user->id) }}" method="POST" onsubmit="return confirm('Turunkan Super Admin ini menjadi Admin Biasa?');">
+                                    <form action="{{ route('accounts.demote', $user->id) }}" method="POST" onsubmit="return confirm('Turunkan Super Admin ini menjadi Admin Biasa?');" style="display:inline;">
                                         @csrf
                                         <button type="submit" class="btn btn-outline btn-sm" style="color: var(--primary); border-color: rgba(227,30,36,0.3);">
                                             <i class="fa-solid fa-arrow-down"></i> Demote
+                                        </button>
+                                    </form>
+                                @endif
+                                @if(auth()->id() !== $user->id)
+                                    <form action="{{ route('accounts.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini secara permanen?');" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline btn-sm" style="color: #e31e24; border-color: rgba(227,30,36,0.3);">
+                                            <i class="fa-solid fa-trash"></i> Hapus
                                         </button>
                                     </form>
                                 @endif

@@ -31,7 +31,15 @@ class BookController extends Controller
      */
     public function create()
     {
-        $categories = Category::orderBy('name')->pluck('name');
+        $defaultCategories = [
+            'pemerintahan', 'november', 'hukum dan undang-undang', 'motivasi', 
+            'politik', 'sosial', 'demokrasi', 'keagamaan', 'sengketa pemilu', 
+            'riset pilkada', 'akuntansi', 'skripsi', 'laporan hasil pengawasan'
+        ];
+        $dbCategories = Category::orderBy('name')->pluck('name')->toArray();
+        $categories = array_unique(array_merge($defaultCategories, $dbCategories));
+        sort($categories);
+        
         return view('books.create', compact('categories'));
     }
 
@@ -90,7 +98,15 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        $categories = Category::orderBy('name')->pluck('name');
+        $defaultCategories = [
+            'pemerintahan', 'november', 'hukum dan undang-undang', 'motivasi', 
+            'politik', 'sosial', 'demokrasi', 'keagamaan', 'sengketa pemilu', 
+            'riset pilkada', 'akuntansi', 'skripsi', 'laporan hasil pengawasan'
+        ];
+        $dbCategories = Category::orderBy('name')->pluck('name')->toArray();
+        $categories = array_unique(array_merge($defaultCategories, $dbCategories));
+        sort($categories);
+
         return view('books.edit', compact('book', 'categories'));
     }
 
@@ -176,6 +192,29 @@ class BookController extends Controller
     {
         if (!$book->drive_link) {
             return back()->with('error', 'Buku ini tidak memiliki link baca online.');
+        }
+
+        $user = auth()->user();
+        if ($user->role === 'member') {
+            $memberId = $user->member->id;
+
+            // Cek apakah masih pending (belum diverifikasi)
+            $hasPendingBorrow = \App\Models\Borrow::where('member_id', $memberId)
+                ->where('book_id', $book->id)
+                ->where('status', 'pending')
+                ->exists();
+            if ($hasPendingBorrow) {
+                return back()->with('error', 'Permintaan peminjaman Anda untuk buku ini sedang menunggu verifikasi Admin. Baca online baru bisa dilakukan setelah disetujui.');
+            }
+
+            $hasActiveBorrow = \App\Models\Borrow::where('member_id', $memberId)
+                ->where('book_id', $book->id)
+                ->where('status', 'borrowed')
+                ->exists();
+                
+            if (!$hasActiveBorrow) {
+                return back()->with('error', 'Anda harus meminjam dan mendapat persetujuan Admin terlebih dahulu untuk membaca buku ini secara online.');
+            }
         }
 
         // Convert Google Drive link to embeddable preview URL

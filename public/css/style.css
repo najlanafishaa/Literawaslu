@@ -390,7 +390,7 @@ body.sidebar-open .sidebar-overlay {
 
 /* Welcome Banner widget */
 .welcome-banner {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background-color: var(--primary);
     color: var(--light);
     border-radius: var(--border-radius);
     padding: 30px;

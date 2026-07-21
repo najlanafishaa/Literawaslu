@@ -65,7 +65,7 @@
                     <option value="new_category_option" {{ old('category') == 'new_category_option' || old('new_category') ? 'selected' : '' }}>[+] Input Kategori Manual / Baru</option>
                 </select>
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">
-                    Kategori tidak terdaftar? <a href="{{ route('categories.index') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Kelola Kategori Buku di sini</a>.
+                    Pilih kategori yang sudah ada, atau pilih <strong>[+] Input Kategori Manual / Baru</strong> untuk menambah kategori baru langsung.
                 </small>
             </div>
 

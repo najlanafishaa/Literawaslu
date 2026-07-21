@@ -128,7 +128,7 @@ class AuthController extends Controller
 
             \Illuminate\Support\Facades\DB::commit();
 
-            return redirect()->route('login')->with('warning', 'Pendaftaran berhasil! Akun Anda sedang menunggu verifikasi dari Admin sebelum dapat digunakan.');
+            return redirect()->route('unverified');
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
             return back()->withInput()->withErrors(['email' => 'Terjadi kesalahan saat menyimpan data pendaftaran. Silakan coba lagi.']);

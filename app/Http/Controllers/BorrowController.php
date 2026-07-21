@@ -60,10 +60,7 @@ class BorrowController extends Controller
             return back()->with('error', "Member '{$member->user->name}' masih memiliki buku yang sedang dipinjam. Harus dikembalikan terlebih dahulu.");
         }
 
-        // Rule: Member cannot borrow if they have unpaid fines
-        if ($member->hasUnpaidFine()) {
-            return back()->with('error', "Member '{$member->user->name}' memiliki denda yang belum dibayar. Selesaikan kewajiban terlebih dahulu.");
-        }
+
 
         // Find book
         $book = Book::where('barcode', $request->barcode)->first();
@@ -129,21 +126,19 @@ class BorrowController extends Controller
             ? (int) $returnDate->diffInDays($dueDate)
             : 0;
 
-        // Update return date & status
         $borrow->return_date = $returnDate;
         $borrow->status = 'returned';
 
         // Hitung deduction poin berdasarkan keterlambatan: 10 poin per hari
         $pointDeduction = $daysLate * 10;
 
-        // Sanksi ganti buku berlaku jika terlambat mencapai 3 hari atau lebih
+        // Sanksi ganti buku jika terlambat >= 3 hari
         if ($daysLate >= 3) {
-            $borrow->fine_amount = 1; // Merepresentasikan 1 buku yang wajib diganti
-            $borrow->fine_status = 'unpaid'; // Status 'unpaid' di UI akan menjadi 'Wajib Ganti Buku'
+            $borrow->fine_status = 'unpaid'; // wajib ganti 1 buku fisik
         } else {
-            $borrow->fine_amount = 0;
             $borrow->fine_status = 'none';
         }
+        $borrow->fine_amount = 0; // tidak ada denda uang
 
         $borrow->save();
 
@@ -152,7 +147,11 @@ class BorrowController extends Controller
             $member->points = max(0, $member->points - $pointDeduction);
         }
 
-        $member->total_loans += 1;
+        $member->total_loans += 1; // sudah dihitung di approveBorrow, tapi checkin manual dari petugas perlu ini
+        // Berikan +10 poin reward saat buku dikembalikan (dikurangi penalti keterlambatan)
+        $basePoints = 10;
+        $netPoints = max(0, $basePoints - $pointDeduction);
+        $member->points = ($member->points ?? 0) + $netPoints;
         $member->save();
 
         // Kembalikan stok buku
@@ -162,31 +161,17 @@ class BorrowController extends Controller
         $message = "Buku '{$book->title}' berhasil dikembalikan oleh '{$member->user->name}'.";
 
         if ($daysLate >= 3) {
-            return back()->with('warning', $message . " Terlambat {$daysLate} hari. Poin berkurang -{$pointDeduction}. Sanksi: Wajib Ganti Buku Fisik. Status: Menunggu Penggantian Buku.");
+            return back()->with('warning', $message . " Terlambat {$daysLate} hari. ⚠️ SANKSI: Member wajib mengganti 1 buku fisik ke perpustakaan. Poin berkurang -{$pointDeduction} (reward kembali +{$basePoints}). Net poin: +{$netPoints}.");
         } elseif ($daysLate > 0) {
-            return back()->with('warning', $message . " Terlambat {$daysLate} hari. Poin berkurang -{$pointDeduction}. Saldo poin: {$member->points}.");
+            return back()->with('warning', $message . " Terlambat {$daysLate} hari. Poin: +{$basePoints} reward - {$pointDeduction} penalti = +{$netPoints}. Saldo poin: {$member->points}.");
         } else {
-            return back()->with('success', $message . " Pengembalian tepat waktu! Saldo poin: {$member->points}.");
+            return back()->with('success', $message . " Pengembalian tepat waktu! +{$basePoints} poin reward. Saldo poin: {$member->points}.");
         }
     }
 
-    /**
-     * Pay a fine for a borrow record.
-     */
     public function payFine(Borrow $borrow)
     {
-        if ($borrow->fine_status !== 'unpaid') {
-            return back()->with('error', 'Tidak ada kewajiban ganti buku untuk transaksi ini.');
-        }
-
-        $member = $borrow->member;
-
-        $borrow->update(['fine_status' => 'paid']);
-
-        // +10 poin sebagai apresiasi menyelesaikan kewajiban
-        $member->increment('points', 10);
-
-        return back()->with('success', "Buku pengganti telah diterima dari '{$member->user->name}'. Member mendapat apresiasi +10 poin!");
+        return back()->with('error', 'Fitur denda telah dinonaktifkan.');
     }
 
     public function history(Request $request)
@@ -254,16 +239,10 @@ class BorrowController extends Controller
 
         $needsSave = false;
 
-        // Hari ke-3 -> status jadi terlambat
+        // Hari ke-3 -> status jadi terlambat & wajib ganti buku
         if ($daysLate >= 3 && $borrow->status !== 'terlambat') {
             $borrow->status = 'terlambat';
-            $needsSave = true;
-        }
-
-        // On day 3, member must replace book
-        if ($daysLate >= 3 && $borrow->fine_status === 'none') {
-            $borrow->fine_amount = 1; // Represents 1 book to replace
-            $borrow->fine_status = 'unpaid';
+            $borrow->fine_status = 'unpaid'; // Perlu ganti 1 buku fisik
             $needsSave = true;
         }
 

@@ -11,7 +11,15 @@ class AccountController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('role')->get();
+        // Exclude members who are still pending or rejected verification
+        $users = User::orderBy('role')
+            ->where(function ($q) {
+                $q->where('role', '!=', 'member')
+                  ->orWhereHas('member', function ($mq) {
+                      $mq->where('status', 'active');
+                  });
+            })
+            ->get();
         return view('dashboards.admin_accounts', compact('users'));
     }
 
@@ -63,5 +71,24 @@ class AccountController extends Controller
         $user->update(['role' => 'petugas']);
         
         return back()->with('success', "Akun {$user->name} berhasil diturunkan (demote) menjadi Admin Biasa (Petugas).");
+    }
+
+    public function destroy(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+        }
+
+        if ($user->role === 'super_admin' && User::where('role', 'super_admin')->count() <= 1) {
+            return back()->with('error', 'Tidak bisa menghapus satu-satunya super admin!');
+        }
+        
+        if ($user->member) {
+            $user->member->delete();
+        }
+        
+        $user->delete();
+        
+        return back()->with('success', "Akun {$user->name} berhasil dihapus.");
     }
 }

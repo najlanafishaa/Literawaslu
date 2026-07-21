@@ -62,11 +62,14 @@ class VerificationController extends Controller
         
         $borrow->update(['status' => 'borrowed']);
         
-        // Kurangi stok buku
+        // Kurangi stok buku saat disetujui
         $borrow->book->decrement('available_stock');
         $borrow->book->update(['is_available' => $borrow->book->available_stock > 0]);
+
+        // Tambah total_loans member saat disetujui
+        $borrow->member->increment('total_loans');
         
-        return back()->with('success', "Peminjaman buku '{$borrow->book->title}' disetujui.");
+        return back()->with('success', "Peminjaman buku '{$borrow->book->title}' oleh '{$borrow->member->user->name}' disetujui.");
     }
     
     /**

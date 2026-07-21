@@ -9,34 +9,6 @@
     <p>Akses penuh sistem perpustakaan Literawaslu. Kelola buku, data anggota, petugas, dan pantau laporan transaksi.</p>
 </div>
 
-<!-- Date Filter Panel -->
-<div class="card" style="margin-bottom: 25px; margin-top: 25px;">
-    <div class="card-body" style="padding: 15px 20px;">
-        <form action="{{ route('dashboard') }}" method="GET" style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; margin: 0;">
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-                <span style="font-size: 0.85rem; font-weight: 700; color: var(--gray-700); margin-right: 5px;"><i class="fa-solid fa-calendar-days"></i> Filter Waktu:</span>
-                <a href="{{ route('dashboard', ['filter' => 'all']) }}" class="btn {{ request('filter', 'all') === 'all' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Semua</a>
-                <a href="{{ route('dashboard', ['filter' => 'today']) }}" class="btn {{ request('filter') === 'today' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Hari Ini</a>
-                <a href="{{ route('dashboard', ['filter' => 'week']) }}" class="btn {{ request('filter') === 'week' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Minggu Ini</a>
-                <a href="{{ route('dashboard', ['filter' => 'month']) }}" class="btn {{ request('filter') === 'month' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Bulan Ini</a>
-                <a href="{{ route('dashboard', ['filter' => 'year']) }}" class="btn {{ request('filter') === 'year' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Tahun Ini</a>
-            </div>
-            
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <input type="hidden" name="filter" value="custom">
-                <input type="date" name="start_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('start_date') }}" required>
-                <span style="color: var(--gray-600); font-size: 0.8rem;">s/d</span>
-                <input type="date" name="end_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('end_date') }}" required>
-                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem; height: 32px; background-color: var(--dark); border-color: var(--dark); color: white;">Filter</button>
-            </div>
-        </form>
-        @if(isset($filterLabel))
-            <div style="margin-top: 10px; font-size: 0.8rem; color: var(--gray-600); font-weight: bold;">
-                <i class="fa-solid fa-filter" style="color: var(--primary); margin-right: 4px;"></i> Periode Aktif: {{ $filterLabel }}
-            </div>
-        @endif
-    </div>
-</div>
 
 <!-- Stats Dashboard Grid -->
 <div class="grid-stats">
@@ -81,48 +53,6 @@
     </a>
 </div>
 
-<!-- Stats Sanksi Grid -->
-<div class="grid-stats" style="margin-top: 20px;">
-    <div class="stat-card">
-        <div class="stat-info">
-            <h3>Total Buku Pengganti</h3>
-            <p>{{ $totalFine }} Buku</p>
-        </div>
-        <div class="stat-icon red">
-            <i class="fa-solid fa-book-journal-whills"></i>
-        </div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-info">
-            <h3>Belum Diganti</h3>
-            <p style="color: var(--primary);">{{ $unpaidFine }} Buku</p>
-        </div>
-        <div class="stat-icon yellow">
-            <i class="fa-solid fa-circle-exclamation"></i>
-        </div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-info">
-            <h3>Sudah Diganti</h3>
-            <p style="color: var(--success);">{{ $paidFine }} Buku</p>
-        </div>
-        <div class="stat-icon green" style="background-color: rgba(40,167,69,0.05);">
-            <i class="fa-solid fa-circle-check" style="color: var(--success);"></i>
-        </div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-info">
-            <h3>Transaksi Periode Ini</h3>
-            <p>{{ $totalTransactions }} Transaksi</p>
-        </div>
-        <div class="stat-icon black" style="background-color: rgba(0,0,0,0.05);">
-            <i class="fa-solid fa-shuffle"></i>
-        </div>
-    </div>
-</div>
 
 
 
@@ -218,4 +148,5 @@
         </div>
     </div>
 </div>
+
 @endsection

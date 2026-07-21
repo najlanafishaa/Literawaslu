@@ -53,14 +53,6 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="late_fee" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
-                            Denda Keterlambatan per Hari (Rp):
-                        </label>
-                        <input type="number" name="late_fee" id="late_fee" class="form-control" 
-                               value="{{ $lateFee }}" placeholder="2000" required min="0">
-                    </div>
-                    
-                    <div class="form-group">
                         <label for="reward_points" style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--dark);">
                             Poin Reward per Transaksi Sukses:
                         </label>

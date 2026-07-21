@@ -14,7 +14,6 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BookReviewController;
 
 // 1. Root Route
@@ -28,6 +27,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/unverified', [AuthController::class, 'showUnverified'])->name('unverified');
     
     // Forgot Password routes
     Route::get('/forgot-password', [ForgotPasswordController::class, 'showRequestForm'])->name('password.request');
@@ -99,11 +99,7 @@ Route::middleware('auth')->group(function () {
         // Pay fine
         Route::post('/borrows/{borrow}/pay-fine', [BorrowController::class, 'payFine'])->name('borrows.pay_fine');
 
-        // Category CRUD
-        Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');
-        Route::post('/admin/categories', [CategoryController::class, 'store'])->name('categories.store');
-        Route::put('/admin/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
-        Route::delete('/admin/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
     });
 
     // ============================================
@@ -115,6 +111,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/accounts', [AccountController::class, 'index'])->name('accounts.index');
         Route::post('/admin/accounts', [AccountController::class, 'store'])->name('accounts.store');
         Route::post('/admin/accounts/{user}/demote', [AccountController::class, 'demote'])->name('accounts.demote');
+        Route::delete('/admin/accounts/{user}', [AccountController::class, 'destroy'])->name('accounts.destroy');
 
         // Member Adjustment
         Route::get('/admin/members/create', [MemberAdminController::class, 'create'])->name('members.create');

@@ -138,7 +138,7 @@
             passwordIsStrong = false;
         } else {
             bar.style.width = '100%'; bar.style.background = '#27ae60';
-            label.style.color = '#27ae60'; label.textContent = '🟢 Kuat — Password siap digunakan!';
+            label.style.color = '#27ae60'; label.textContent = 'Kuat - Kata sandi aman dan siap digunakan';
             passwordIsStrong = true;
         }
 

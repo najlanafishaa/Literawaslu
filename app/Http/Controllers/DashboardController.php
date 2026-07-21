@@ -19,19 +19,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'member') {
-            $member = $user->member;
-
-            $activeBorrows = Borrow::where('member_id', $member->id)
-                ->where('status', 'borrowed')
-                ->with('book')
-                ->get();
-
-            $totalBorrows = Borrow::where('member_id', $member->id)->count();
-            $availableBooksCount = Book::where('is_available', true)->count();
-
-            return view('dashboards.member', compact('member', 'activeBorrows', 'totalBorrows', 'availableBooksCount'));
-        } else {
+        if (in_array($user->role, ['super_admin', 'admin', 'petugas'])) {
             // Build date filter
             [$startDate, $endDate, $filterLabel] = $this->resolveDateFilter($request);
 
@@ -52,17 +40,14 @@ class DashboardController extends Controller
                 ->where('due_date', '<', now()->toDateString())
                 ->count();
 
-            // Book replacement stats (count instead of sum)
-            $totalFine = (clone $borrowQuery)->whereIn('fine_status', ['unpaid', 'paid'])->count();
-            $unpaidFine = (clone $borrowQuery)->where('fine_status', 'unpaid')->count();
-            $paidFine = (clone $borrowQuery)->where('fine_status', 'paid')->count();
-
-            $recentBorrows = Borrow::with(['member.user', 'book'])
+            $recentBorrows = (clone $borrowQuery)
+                ->with(['member.user', 'book'])
                 ->orderBy('created_at', 'desc')
                 ->limit(5)
                 ->get();
 
-            $popularBooks = Borrow::select('book_id')
+            $popularBooks = (clone $borrowQuery)
+                ->select('book_id')
                 ->selectRaw('count(book_id) as total')
                 ->groupBy('book_id')
                 ->orderBy('total', 'desc')
@@ -75,7 +60,6 @@ class DashboardController extends Controller
                     'totalBooks', 'borrowedBooks', 'availableBooks',
                     'totalMembers', 'totalTransactions', 'overdueCount',
                     'recentBorrows', 'popularBooks',
-                    'totalFine', 'unpaidFine', 'paidFine',
                     'filterLabel', 'startDate', 'endDate'
                 ));
             } else {
@@ -85,6 +69,18 @@ class DashboardController extends Controller
                     'recentBorrows'
                 ));
             }
+        } else {
+            $member = $user->member;
+
+            $activeBorrows = $member ? Borrow::where('member_id', $member->id)
+                ->where('status', 'borrowed')
+                ->with('book')
+                ->get() : collect();
+
+            $totalBorrows = $member ? Borrow::where('member_id', $member->id)->count() : 0;
+            $availableBooksCount = Book::where('is_available', true)->count();
+
+            return view('dashboards.member', compact('member', 'activeBorrows', 'totalBorrows', 'availableBooksCount'));
         }
     }
 

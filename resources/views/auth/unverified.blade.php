@@ -196,7 +196,7 @@
 <body>
     <div class="container">
         <div class="brand-logo">
-            Litera<span>waslu</span>
+            Literawaslu
         </div>
         
         <div class="card">
@@ -212,25 +212,14 @@
             
             <div class="user-details">
                 <div class="detail-row">
-                    <span class="detail-label">Nama Lengkap:</span>
-                    <span class="detail-value">{{ auth()->user()->name }}</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">Alamat Email:</span>
-                    <span class="detail-value">{{ auth()->user()->email }}</span>
-                </div>
-                <div class="detail-row">
                     <span class="detail-label">Status Verifikasi:</span>
                     <span class="detail-value" style="color: var(--primary);"><i class="fa-solid fa-hourglass-half"></i> Belum Aktif</span>
                 </div>
             </div>
             
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-logout">
-                    <i class="fa-solid fa-right-from-bracket"></i> Keluar dari Akun
-                </button>
-            </form>
+            <a href="{{ route('login') }}" class="btn btn-logout">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Halaman Login
+            </a>
         </div>
         
         <p class="footer-text">
