@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('member_code')->unique();
+            $table->string('member_code', 50)->unique();
             $table->integer('total_loans')->default(0);
             $table->integer('points')->default(0);
-            $table->integer('borrow_limit')->default(1); // default max borrowing limit is 1 book
+            $table->integer('borrow_limit')->default(3);
             $table->boolean('is_verified')->default(false);
+            $table->string('status', 50)->default('pending');
             $table->timestamps();
         });
     }

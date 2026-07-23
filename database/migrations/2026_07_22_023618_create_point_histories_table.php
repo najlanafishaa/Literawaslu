@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('point_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
-            $table->enum('type', ['earn', 'deduct', 'redeem']);
             $table->integer('points');
+            $table->string('type', 50);
             $table->string('description');
             $table->timestamps();
         });

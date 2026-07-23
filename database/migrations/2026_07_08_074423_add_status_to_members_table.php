@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('members', function (Blueprint $table) {
-            $table->string('status')->default('pending')->after('user_id');
+            if (!Schema::hasColumn('members', 'status')) {
+                $table->string('status', 50)->default('pending')->after('user_id');
+            }
         });
     }
 

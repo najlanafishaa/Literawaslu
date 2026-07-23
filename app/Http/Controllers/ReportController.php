@@ -91,11 +91,11 @@ class ReportController extends Controller
     }
 
     /**
-     * Export borrowing activity report to Excel (CSV compatible format).
+     * Render printable PDF report view.
      */
-    public function exportExcel(Request $request)
+    public function exportPdf(Request $request)
     {
-        [$startDate, $endDate] = $this->resolveDateFilter($request);
+        [$startDate, $endDate, $filterLabel] = $this->resolveDateFilter($request);
 
         $borrowQuery = Borrow::query();
         if ($startDate && $endDate) {
@@ -103,6 +103,67 @@ class ReportController extends Controller
         }
 
         $borrows = $borrowQuery->with(['member.user', 'book'])->orderBy('borrow_date', 'desc')->get();
+
+        $totalBorrowCount = $borrows->count();
+
+        $today = Carbon::today()->toDateString();
+        $overdueBorrows = (clone $borrowQuery)->whereIn('status', ['borrowed', 'terlambat'])
+            ->where('due_date', '<', $today)
+            ->get();
+
+        $returnedLateBorrows = $borrows->filter(function ($b) {
+            return $b->status === 'returned' && $b->return_date && Carbon::parse($b->return_date)->greaterThan(Carbon::parse($b->due_date));
+        })->values();
+
+        $lateCount = $overdueBorrows->count() + $returnedLateBorrows->count();
+
+        $totalFineAmount  = (clone $borrowQuery)->whereIn('fine_status', ['unpaid', 'paid'])->count();
+        $unpaidFineAmount = (clone $borrowQuery)->where('fine_status', 'unpaid')->count();
+        $paidFineAmount   = (clone $borrowQuery)->where('fine_status', 'paid')->count();
+
+        return view('reports.pdf', compact(
+            'borrows',
+            'totalBorrowCount',
+            'lateCount',
+            'totalFineAmount',
+            'paidFineAmount',
+            'unpaidFineAmount',
+            'filterLabel',
+            'startDate',
+            'endDate'
+        ));
+    }
+
+    /**
+     * Export borrowing activity report to Excel (CSV compatible format).
+     */
+    public function exportExcel(Request $request)
+    {
+        [$startDate, $endDate, $filterLabel] = $this->resolveDateFilter($request);
+
+        $borrowQuery = Borrow::query();
+        if ($startDate && $endDate) {
+            $borrowQuery->whereBetween('borrow_date', [$startDate, $endDate]);
+        }
+
+        $borrows = $borrowQuery->with(['member.user', 'book'])->orderBy('borrow_date', 'desc')->get();
+
+        $totalBorrowCount = $borrows->count();
+
+        $today = Carbon::today()->toDateString();
+        $overdueBorrows = (clone $borrowQuery)->whereIn('status', ['borrowed', 'terlambat'])
+            ->where('due_date', '<', $today)
+            ->get();
+
+        $returnedLateBorrows = $borrows->filter(function ($b) {
+            return $b->status === 'returned' && $b->return_date && Carbon::parse($b->return_date)->greaterThan(Carbon::parse($b->due_date));
+        })->values();
+
+        $lateCount = $overdueBorrows->count() + $returnedLateBorrows->count();
+
+        $totalFineAmount  = (clone $borrowQuery)->whereIn('fine_status', ['unpaid', 'paid'])->count();
+        $unpaidFineAmount = (clone $borrowQuery)->where('fine_status', 'unpaid')->count();
+        $paidFineAmount   = (clone $borrowQuery)->where('fine_status', 'paid')->count();
 
         $filename = 'Laporan_Aktivitas_Perpustakaan_' . date('Y-m-d_H-i') . '.csv';
 
@@ -114,30 +175,53 @@ class ReportController extends Controller
             'Expires' => '0'
         ];
 
-        $callback = function () use ($borrows) {
+        $callback = function () use ($borrows, $filterLabel, $totalBorrowCount, $lateCount, $totalFineAmount, $paidFineAmount, $unpaidFineAmount) {
             $file = fopen('php://output', 'w');
             // Add UTF-8 BOM for Excel alignment
             fputs($file, "\xEF\xBB\xBF");
 
-            // CSV Header
+            // Header metadata
+            fputcsv($file, ['LAPORAN REKAPITULASI HASIL PEMINJAMAN & PENGEMBALIAN BUKU']);
+            fputcsv($file, ['PERPUSTAKAAN DIGITAL LITERAWASLU']);
+            fputcsv($file, ['Periode Laporan:', $filterLabel]);
+            fputcsv($file, ['Tanggal Dicetak:', now()->format('d M Y H:i')]);
+            fputcsv($file, []);
+
+            // Summary stats table
+            fputcsv($file, ['--- RINGKASAN STATISTIK LAPORAN ---']);
+            fputcsv($file, ['Total Peminjaman', 'Jumlah Keterlambatan', 'Total Sanksi Donasi Buku', 'Donasi Buku Dipenuhi', 'Donasi Buku Belum Dipenuhi']);
             fputcsv($file, [
-                'Judul Buku',
+                $totalBorrowCount . ' Transaksi',
+                $lateCount . ' Kali',
+                $totalFineAmount . ' Buku',
+                $paidFineAmount . ' Buku',
+                $unpaidFineAmount . ' Buku'
+            ]);
+            fputcsv($file, []);
+
+            // Main CSV Header (10 columns)
+            fputcsv($file, [
+                'No',
+                'Kode Member',
                 'Nama Member',
+                'Judul Buku',
+                'Barcode Buku',
                 'Tanggal Pinjam',
+                'Tanggal Jatuh Tempo',
                 'Tanggal Kembali',
                 'Status Peminjaman',
                 'Keterangan Keterlambatan / Sanksi'
             ]);
 
-            foreach ($borrows as $borrow) {
+            foreach ($borrows as $index => $borrow) {
                 $due = Carbon::parse($borrow->due_date);
                 $returnDate = $borrow->return_date ? Carbon::parse($borrow->return_date) : null;
                 
                 $lateDays = 0;
                 if ($returnDate && $returnDate->greaterThan($due)) {
-                    $lateDays = $returnDate->diffInDays($due);
+                    $lateDays = (int) $returnDate->diffInDays($due);
                 } elseif (!$returnDate && Carbon::now()->startOfDay()->greaterThan($due)) {
-                    $lateDays = Carbon::now()->startOfDay()->diffInDays($due);
+                    $lateDays = (int) Carbon::now()->startOfDay()->diffInDays($due);
                 }
 
                 $keterangan = 'Tepat Waktu';
@@ -149,7 +233,7 @@ class ReportController extends Controller
                     } elseif ($lateDays == 3) {
                         $keterangan = "Terlambat 3 hari (-30 Poin)";
                     } else {
-                        $keterangan = "Terlambat {$lateDays} hari (Wajib Mendonasikan 1 Buku Fisik)";
+                        $keterangan = "Terlambat {$lateDays} hari (Wajib Donasi 1 Buku Fisik)";
                     }
                 }
 
@@ -158,13 +242,18 @@ class ReportController extends Controller
                     'borrowed' => 'Sedang Dipinjam',
                     'pending' => 'Menunggu Verifikasi',
                     'terlambat' => 'Terlambat',
+                    'rejected' => 'Ditolak',
                     default => ucfirst($borrow->status)
                 };
 
                 fputcsv($file, [
-                    $borrow->book ? $borrow->book->title : '-',
+                    $index + 1,
+                    $borrow->member ? $borrow->member->member_code : '-',
                     $borrow->member && $borrow->member->user ? $borrow->member->user->name : '-',
+                    $borrow->book ? $borrow->book->title : '-',
+                    $borrow->book ? $borrow->book->barcode : '-',
                     $borrow->borrow_date ? Carbon::parse($borrow->borrow_date)->format('d/m/Y') : '-',
+                    $borrow->due_date ? Carbon::parse($borrow->due_date)->format('d/m/Y') : '-',
                     $borrow->return_date ? Carbon::parse($borrow->return_date)->format('d/m/Y') : 'Belum Kembali',
                     $statusText,
                     $keterangan

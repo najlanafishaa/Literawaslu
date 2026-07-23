@@ -14,6 +14,7 @@ class BookReview extends Model
         'member_id',
         'rating',
         'review',
+        'comment',
     ];
 
     protected $casts = [
@@ -28,5 +29,13 @@ class BookReview extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    /**
+     * Get review or comment attribute dynamically.
+     */
+    public function getReviewAttribute()
+    {
+        return $this->attributes['comment'] ?? $this->attributes['review'] ?? null;
     }
 }

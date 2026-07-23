@@ -18,7 +18,11 @@ return new class extends Migration
             $table->date('borrow_date');
             $table->date('due_date');
             $table->date('return_date')->nullable();
-            $table->string('status')->default('borrowed'); // borrowed, returned, overdue
+            $table->string('status', 50)->default('pending');
+            $table->integer('late_days')->default(0);
+            $table->decimal('fine_amount', 10, 2)->default(0.00);
+            $table->string('fine_status', 50)->default('none');
+            $table->string('fine_type', 50)->default('none');
             $table->timestamps();
         });
     }

@@ -20,9 +20,9 @@
             <a href="{{ route('reports.export', request()->all()) }}" class="btn btn-secondary btn-sm no-print" style="background-color: #16a34a; border-color: #16a34a; color: white; font-weight: 600;">
                 <i class="fa-solid fa-file-excel"></i> Export ke Excel
             </a>
-            <button onclick="window.print()" class="btn btn-primary btn-sm no-print" style="background-color: var(--light); color: var(--primary); font-weight: 600;">
-                <i class="fa-solid fa-file-pdf"></i> Cetak Laporan
-            </button>
+            <a href="{{ route('reports.pdf', request()->all()) }}" target="_blank" class="btn btn-primary btn-sm no-print" style="background-color: var(--light); color: var(--primary); font-weight: 600;">
+                <i class="fa-solid fa-file-pdf"></i> Cetak Laporan / PDF
+            </a>
         </div>
     </div>
 </div>

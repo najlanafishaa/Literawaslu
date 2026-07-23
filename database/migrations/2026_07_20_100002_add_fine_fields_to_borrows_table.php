@@ -9,8 +9,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('borrows', function (Blueprint $table) {
-            $table->decimal('fine_amount', 10, 2)->default(0)->after('status');
-            $table->enum('fine_status', ['none', 'unpaid', 'paid'])->default('none')->after('fine_amount');
+            if (!Schema::hasColumn('borrows', 'late_days')) {
+                $table->integer('late_days')->default(0)->after('status');
+            }
+            if (!Schema::hasColumn('borrows', 'fine_amount')) {
+                $table->decimal('fine_amount', 10, 2)->default(0)->after('late_days');
+            }
+            if (!Schema::hasColumn('borrows', 'fine_status')) {
+                $table->string('fine_status', 50)->default('none')->after('fine_amount');
+            }
+            if (!Schema::hasColumn('borrows', 'fine_type')) {
+                $table->string('fine_type', 50)->default('none')->after('fine_status');
+            }
         });
     }
 

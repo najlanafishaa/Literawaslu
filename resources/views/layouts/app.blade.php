@@ -222,7 +222,7 @@
 
             <footer class="app-footer" style="padding: 16px 24px; text-align: center; background-color: var(--light); border-top: 1px solid var(--gray-200); margin-top: auto; font-size: 0.82rem; color: var(--gray-600);">
                 <div style="font-weight: 600; color: var(--dark);">&copy; 2026 Bawaslu Provinsi Lampung</div>
-                <div style="font-size: 0.77rem; color: var(--gray-600); margin-top: 2px;">Developed by Najla Princess&#x1F478;&#x1F3FB;</div>
+                <div style="font-size: 0.77rem; color: var(--gray-600); margin-top: 2px;">Developed by Najla Princess&#x1F478;&#x1F3FB; &amp; Annisa Manis&#x1F36C;</div>
             </footer>
         </div>
     </div>

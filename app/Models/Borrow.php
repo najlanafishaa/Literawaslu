@@ -17,14 +17,17 @@ class Borrow extends Model
         'due_date',
         'return_date',
         'status',
+        'late_days',
         'fine_amount',
         'fine_status',
+        'fine_type',
     ];
 
     protected $casts = [
         'borrow_date' => 'date',
         'due_date' => 'date',
         'return_date' => 'date',
+        'late_days' => 'integer',
         'fine_amount' => 'decimal:2',
     ];
 

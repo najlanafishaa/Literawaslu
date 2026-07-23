@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('barcode')->unique();
+            $table->string('barcode', 100)->unique();
             $table->string('title');
             $table->string('author');
             $table->string('publisher');
             $table->integer('year');
-            $table->string('category');
+            $table->string('category', 100);
             $table->integer('stock')->default(1);
             $table->integer('available_stock')->default(1);
             $table->string('cover_image')->nullable();
+            $table->text('description')->nullable();
+            $table->text('drive_link')->nullable();
             $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
