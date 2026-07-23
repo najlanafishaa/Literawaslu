@@ -32,6 +32,16 @@ class MemberController extends Controller
             $query->where('category', $request->category);
         }
 
+        if ($request->filled('borrow_type')) {
+            if ($request->borrow_type === 'online_only') {
+                $query->whereNotNull('drive_link')->where('stock', 0);
+            } elseif ($request->borrow_type === 'offline_only') {
+                $query->whereNull('drive_link');
+            } elseif ($request->borrow_type === 'both') {
+                $query->whereNotNull('drive_link')->where('stock', '>', 0);
+            }
+        }
+
         $books = $query->with('reviews')->orderBy('title', 'asc')->get();
         $defaultCategories = [
             'pemerintahan', 'november', 'hukum dan undang-undang', 'motivasi', 
@@ -171,8 +181,8 @@ class MemberController extends Controller
 
         $book = Book::find($request->book_id);
 
-        if ($book->available_stock <= 0) {
-            return back()->with('error', 'Maaf, buku ini sedang tidak tersedia (stok habis).');
+        if ($book->available_stock <= 0 && empty($book->drive_link)) {
+            return back()->with('error', 'Maaf, buku fisik ini sedang tidak tersedia (stok habis).');
         }
 
         $loanDuration = SettingController::getSetting('loan_duration', 7);

@@ -80,10 +80,20 @@
                 <textarea name="description" id="description" class="form-control" rows="4" placeholder="Tulis ringkasan atau deskripsi singkat buku ini...">{{ old('description') }}</textarea>
             </div>
 
+            <div class="form-group">
+                <label for="book_type">Tipe Akses Buku</label>
+                <select name="book_type" id="book_type" class="form-control" required onchange="toggleBookTypeFields()">
+                    <option value="offline" {{ old('book_type') == 'offline' ? 'selected' : '' }}>Hanya Buku Fisik</option>
+                    <option value="online" {{ old('book_type') == 'online' ? 'selected' : '' }}>Hanya E-Book (Digital)</option>
+                    <option value="both" {{ old('book_type') == 'both' ? 'selected' : '' }}>Fisik & E-Book</option>
+                </select>
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Tentukan apakah buku ini berupa fisik, E-book, atau keduanya.</small>
+            </div>
+
             <div class="form-row">
-                <div class="form-group">
+                <div class="form-group" id="stockGroup">
                     <label for="stock">Jumlah Stok / Salinan Buku</label>
-                    <input type="number" name="stock" id="stock" class="form-control" placeholder="1" value="{{ old('stock', 1) }}" required min="1">
+                    <input type="number" name="stock" id="stock" class="form-control" placeholder="1" value="{{ old('stock', 1) }}" min="0">
                 </div>
                 
                 <div class="form-group">
@@ -93,8 +103,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="drive_link"><i class="fa-brands fa-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive) <span style="color: var(--gray-500); font-weight: 400;">(opsional)</span></label>
+            <div class="form-group" id="driveLinkGroup">
+                <label for="drive_link"><i class="fa-brands fa-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive)</label>
                 <input type="url" name="drive_link" id="drive_link" class="form-control" placeholder="https://drive.google.com/file/d/FILE_ID/view" value="{{ old('drive_link') }}">
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">Masukkan link Google Drive agar member bisa membaca buku secara online. Buku hanya bisa ditampilkan (preview), tidak bisa diunduh.</small>
             </div>
@@ -132,5 +142,32 @@
             input.removeAttribute('required');
         }
     }
+    function toggleBookTypeFields() {
+        const type = document.getElementById('book_type').value;
+        const stockGroup = document.getElementById('stockGroup');
+        const stockInput = document.getElementById('stock');
+        const driveLinkGroup = document.getElementById('driveLinkGroup');
+        const driveLinkInput = document.getElementById('drive_link');
+
+        if (type === 'offline') {
+            stockGroup.style.display = 'block';
+            stockInput.setAttribute('required', 'required');
+            driveLinkGroup.style.display = 'none';
+            driveLinkInput.removeAttribute('required');
+        } else if (type === 'online') {
+            stockGroup.style.display = 'none';
+            stockInput.removeAttribute('required');
+            stockInput.value = 0;
+            driveLinkGroup.style.display = 'block';
+            driveLinkInput.setAttribute('required', 'required');
+        } else {
+            stockGroup.style.display = 'block';
+            stockInput.setAttribute('required', 'required');
+            driveLinkGroup.style.display = 'block';
+            driveLinkInput.setAttribute('required', 'required');
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', toggleBookTypeFields);
 </script>
 @endsection

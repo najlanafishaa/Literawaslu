@@ -67,7 +67,7 @@ class BookController extends Controller
             'year' => 'required|integer|min:1000|max:' . date('Y'),
             'category' => 'required|string|max:100',
             'description' => 'nullable|string',
-            'stock' => 'required|integer|min:1',
+            'stock' => 'required|integer|min:0',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:512',
             'drive_link' => 'nullable|url|max:500',
         ], [
@@ -134,7 +134,7 @@ class BookController extends Controller
             'year' => 'required|integer|min:1000|max:' . date('Y'),
             'category' => 'required|string|max:100',
             'description' => 'nullable|string',
-            'stock' => 'required|integer|min:1',
+            'stock' => 'required|integer|min:0',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:512',
             'drive_link' => 'nullable|url|max:500',
         ], [

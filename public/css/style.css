@@ -1126,6 +1126,52 @@ body.sidebar-open .sidebar-overlay {
     gap: 12px;
 }
 
+/* Filter Form */
+.catalog-filter-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.filter-search {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-select {
+    min-width: 160px;
+    flex: 0 1 200px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+select option {
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .catalog-filter-form {
+        flex-direction: column;
+    }
+    .filter-search, .filter-select {
+        min-width: 100%;
+        width: 100%;
+        flex: none;
+    }
+    .filter-actions {
+        width: 100%;
+        display: flex;
+    }
+    .filter-actions .btn {
+        flex: 1;
+    }
+}
+
 /* Catalog Grid */
 .catalog-grid {
     display: grid;

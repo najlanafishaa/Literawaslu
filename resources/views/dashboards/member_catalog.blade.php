@@ -17,12 +17,12 @@
 
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-body">
-        <form id="catalogFilter" action="{{ route('catalog') }}" method="GET" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch;">
-            <div style="flex: 1; min-width: 200px;">
+        <form id="catalogFilter" action="{{ route('catalog') }}" method="GET" class="catalog-filter-form">
+            <div class="filter-search">
                 <input type="text" name="search" class="form-control" placeholder="Cari judul buku, penulis, atau barcode..." value="{{ request('search') }}">
             </div>
             
-            <div style="min-width: 160px; flex: 0 1 200px;">
+            <div class="filter-select">
                 <select name="category" class="form-control" onchange="this.form.submit()">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $category)
@@ -31,11 +31,20 @@
                 </select>
             </div>
             
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="filter-select">
+                <select name="borrow_type" class="form-control" onchange="this.form.submit()">
+                    <option value="">Semua Tipe Akses</option>
+                    <option value="online_only" {{ request('borrow_type') === 'online_only' ? 'selected' : '' }}>Hanya E-Book (Digital)</option>
+                    <option value="offline_only" {{ request('borrow_type') === 'offline_only' ? 'selected' : '' }}>Hanya Buku Fisik</option>
+                    <option value="both" {{ request('borrow_type') === 'both' ? 'selected' : '' }}>Fisik & E-Book</option>
+                </select>
+            </div>
+            
+            <div class="filter-actions">
                 <button type="submit" class="btn btn-primary">
                     <i class="fa-solid fa-magnifying-glass"></i> Cari
                 </button>
-                @if(request()->anyFilled(['search', 'category']))
+                @if(request()->anyFilled(['search', 'category', 'borrow_type']))
                     <a href="{{ route('catalog') }}" class="btn btn-outline">
                         <i class="fa-solid fa-rotate-left"></i> Reset
                     </a>
@@ -100,14 +109,14 @@
                 
                 <div style="border-top: 1px solid var(--gray-100); padding-top: 12px; margin-top: 12px;">
                     <!-- Stock Ratio Info -->
-                    <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 8px; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 8px; align-items: center; flex-wrap: wrap; gap: 4px;">
                         <span style="color: var(--gray-600);"><i class="fa-solid fa-layer-group"></i> Stok Tersedia:</span>
                         <span style="font-weight: 700; color: {{ $book->available_stock > 0 ? 'var(--success)' : 'var(--primary)' }}">
                             {{ $book->available_stock }} / {{ $book->stock }} Buku
                         </span>
                     </div>
                     
-                    <div class="book-footer" style="border: none; padding: 0; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="book-footer" style="border: none; padding: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
                         <span class="book-status">
                             @if($book->available_stock > 0)
                                 <span class="badge badge-success" style="background-color: rgba(40,167,69,0.1); color: var(--success);"><i class="fa-solid fa-circle-check"></i> Tersedia</span>
@@ -119,12 +128,12 @@
                     </div>
                     
                     <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
-                        @if($book->available_stock > 0 && auth()->user()->member->status === 'active')
+                        @if(($book->available_stock > 0 || $book->drive_link) && auth()->user()->member->status === 'active')
                             <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
                                 @csrf
                                 <input type="hidden" name="book_id" value="{{ $book->id }}">
                                 <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                    <i class="fa-solid fa-book-open"></i> Pinjam Buku Ini
+                                    <i class="fa-solid fa-book-open"></i> {{ $book->available_stock > 0 ? 'Pinjam Buku' : 'Minta Akses Baca' }}
                                 </button>
                             </form>
                         @endif
@@ -136,17 +145,17 @@
                                     ->exists();
                             @endphp
                             @if($hasApprovedBorrow)
-                                <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none;">
-                                    <i class="fa-brands fa-google-drive"></i> Baca Online (Akses Disetujui)
+                                <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none; white-space: normal; text-align: center;">
+                                    <i class="fa-brands fa-google-drive"></i> Baca Online
                                 </a>
                             @else
-                                <button type="button" class="btn btn-sm" disabled style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: var(--gray-200); color: var(--gray-600); border: none; cursor: not-allowed;" title="Ajukan peminjaman & tunggu persetujuan petugas untuk membuka akses ini">
-                                    <i class="fa-solid fa-lock"></i> Baca Online (Menunggu Persetujuan)
+                                <button type="button" class="btn btn-sm" disabled style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: var(--gray-200); color: var(--gray-600); border: none; cursor: not-allowed; white-space: normal; text-align: center;" title="Ajukan peminjaman & tunggu persetujuan petugas untuk membuka akses ini">
+                                    <i class="fa-solid fa-lock"></i> Menunggu Akses
                                 </button>
                             @endif
                         @endif
-                        <button onclick="showBookDetail({{ $book->id }})" class="btn btn-outline btn-sm" style="width: 100%; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--dark); border-color: var(--gray-300);">
-                            <i class="fa-solid fa-circle-info"></i> Lihat Detail & Ulasan
+                        <button onclick="showBookDetail({{ $book->id }})" class="btn btn-outline btn-sm" style="width: 100%; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--dark); border-color: var(--gray-300); white-space: normal; text-align: center;">
+                            <i class="fa-solid fa-circle-info"></i> Detail Buku
                         </button>
                     </div>
                 </div>
@@ -178,7 +187,7 @@
             <h3 id="modalBookTitle" style="font-size:1.1rem; font-weight:700; color:var(--dark); margin:0; line-height:1.4;"></h3>
             <button onclick="closeBookDetail()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--gray-600); line-height:1;">&times;</button>
         </div>
-        <div style="display:flex; gap:20px; padding:20px 25px;">
+        <div style="display:flex; flex-wrap:wrap; gap:20px; padding:20px 25px;">
             <div id="modalCoverWrap" style="flex-shrink:0; width:110px; height:155px; border-radius:10px; overflow:hidden; background:var(--gray-100); display:flex; align-items:center; justify-content:center;">
                 <img id="modalCover" src="" alt="" style="width:100%; height:100%; object-fit:cover; display:none;">
                 <div id="modalCoverIcon" style="width:100%; height:100%; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex; flex-direction:column; align-items:center; justify-content:center; color:white;">
@@ -293,7 +302,7 @@
             'cover'          => $b->cover_image ? asset($b->cover_image) : null,
             'stock'          => $b->available_stock,
             'totalStock'     => $b->stock,
-            'canBorrow'      => $b->available_stock > 0 && $memberStatus === 'active',
+            'canBorrow'      => ($b->available_stock > 0 || !empty($b->drive_link)) && $memberStatus === 'active',
             'averageRating'  => $b->average_rating,
             'reviewsCount'   => $b->reviews->count(),
             'reviews'        => $reviews,
@@ -366,6 +375,11 @@ function showBookDetail(id) {
     if (b.canBorrow) {
         document.getElementById('modalBookId').value = b.id;
         borrowWrap.style.display = 'block';
+        if (b.stock > 0) {
+            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-open"></i> Pinjam Buku Ini';
+        } else {
+            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-open"></i> Minta Akses Baca';
+        }
         if (b.driveLink) {
             readOnlineBtn.href = b.readUrl;
             readOnlineBtn.style.display = 'flex';
