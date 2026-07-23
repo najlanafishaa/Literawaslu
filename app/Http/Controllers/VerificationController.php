@@ -68,8 +68,18 @@ class VerificationController extends Controller
 
         // Tambah total_loans member saat disetujui
         $borrow->member->increment('total_loans');
+
+        // Tambah 1 Poin Reward setelah disetujui Admin
+        $borrow->member->increment('points', 1);
+
+        \App\Models\PointHistory::create([
+            'member_id' => $borrow->member->id,
+            'type' => 'earn',
+            'points' => 1,
+            'description' => "Bonus 1 Poin Peminjaman Online buku '{$borrow->book->title}' (Disetujui Admin)",
+        ]);
         
-        return back()->with('success', "Peminjaman buku '{$borrow->book->title}' oleh '{$borrow->member->user->name}' disetujui.");
+        return back()->with('success', "Peminjaman buku '{$borrow->book->title}' oleh '{$borrow->member->user->name}' disetujui. (+1 Poin Reward diberikan ke member).");
     }
     
     /**

@@ -107,13 +107,20 @@ class MemberAdminController extends Controller
             $code = 'MEM-' . rand(100000, 999999);
         } while (Member::where('member_code', $code)->exists());
 
-        Member::create([
+        $member = Member::create([
             'user_id' => $user->id,
             'member_code' => $code,
             'total_loans' => 0,
             'points' => 10,
             'borrow_limit' => 1,
             'status' => 'active', 
+        ]);
+
+        \App\Models\PointHistory::create([
+            'member_id' => $member->id,
+            'type' => 'earn',
+            'points' => 10,
+            'description' => 'Bonus Poin Registrasi Akun Baru',
         ]);
 
         return redirect()->route('members.index')->with('success', 'Member baru berhasil didaftarkan secara manual.');

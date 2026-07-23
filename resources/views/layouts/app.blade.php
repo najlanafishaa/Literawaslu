@@ -8,6 +8,9 @@
 
     
     <!-- CSS Dependencies -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     @yield('styles')
@@ -179,16 +182,16 @@
         <!-- Main Wrapper -->
         <div class="main-wrapper">
             <header class="header-nav">
-                <div class="header-left">
+                <div class="header-left" style="flex:1; min-width:0;">
                     <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Buka menu navigasi">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <div class="page-title">
+                    <div class="page-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                         @yield('header_title', 'Dashboard')
                     </div>
                 </div>
                 
-                <div class="header-actions">
+                <div class="header-actions" style="flex-shrink:0;">
                     @auth
                         <a href="{{ route('profile.edit') }}" style="text-decoration: none;" title="Ubah Profil Saya">
                             @if(auth()->user()->role === 'super_admin')
@@ -203,7 +206,8 @@
                         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
                             <button type="submit" class="btn btn-outline btn-sm" title="Log Out">
-                                <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                <span class="btn-label-desktop">Keluar</span>
                             </button>
                         </form>
                     @else
@@ -215,6 +219,11 @@
             <main class="content-body">
                 @yield('content')
             </main>
+
+            <footer class="app-footer" style="padding: 16px 24px; text-align: center; background-color: var(--light); border-top: 1px solid var(--gray-200); margin-top: auto; font-size: 0.82rem; color: var(--gray-600);">
+                <div style="font-weight: 600; color: var(--dark);">&copy; 2026 Bawaslu Provinsi Lampung</div>
+                <div style="font-size: 0.77rem; color: var(--gray-600); margin-top: 2px;">Developed by Najla Princess&#x1F478;&#x1F3FB;</div>
+            </footer>
         </div>
     </div>
     

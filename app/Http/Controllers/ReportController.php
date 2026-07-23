@@ -90,6 +90,93 @@ class ReportController extends Controller
         ));
     }
 
+    /**
+     * Export borrowing activity report to Excel (CSV compatible format).
+     */
+    public function exportExcel(Request $request)
+    {
+        [$startDate, $endDate] = $this->resolveDateFilter($request);
+
+        $borrowQuery = Borrow::query();
+        if ($startDate && $endDate) {
+            $borrowQuery->whereBetween('borrow_date', [$startDate, $endDate]);
+        }
+
+        $borrows = $borrowQuery->with(['member.user', 'book'])->orderBy('borrow_date', 'desc')->get();
+
+        $filename = 'Laporan_Aktivitas_Perpustakaan_' . date('Y-m-d_H-i') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ];
+
+        $callback = function () use ($borrows) {
+            $file = fopen('php://output', 'w');
+            // Add UTF-8 BOM for Excel alignment
+            fputs($file, "\xEF\xBB\xBF");
+
+            // CSV Header
+            fputcsv($file, [
+                'Judul Buku',
+                'Nama Member',
+                'Tanggal Pinjam',
+                'Tanggal Kembali',
+                'Status Peminjaman',
+                'Keterangan Keterlambatan / Sanksi'
+            ]);
+
+            foreach ($borrows as $borrow) {
+                $due = Carbon::parse($borrow->due_date);
+                $returnDate = $borrow->return_date ? Carbon::parse($borrow->return_date) : null;
+                
+                $lateDays = 0;
+                if ($returnDate && $returnDate->greaterThan($due)) {
+                    $lateDays = $returnDate->diffInDays($due);
+                } elseif (!$returnDate && Carbon::now()->startOfDay()->greaterThan($due)) {
+                    $lateDays = Carbon::now()->startOfDay()->diffInDays($due);
+                }
+
+                $keterangan = 'Tepat Waktu';
+                if ($lateDays > 0) {
+                    if ($lateDays == 1) {
+                        $keterangan = "Terlambat 1 hari (-10 Poin)";
+                    } elseif ($lateDays == 2) {
+                        $keterangan = "Terlambat 2 hari (-20 Poin)";
+                    } elseif ($lateDays == 3) {
+                        $keterangan = "Terlambat 3 hari (-30 Poin)";
+                    } else {
+                        $keterangan = "Terlambat {$lateDays} hari (Wajib Mendonasikan 1 Buku Fisik)";
+                    }
+                }
+
+                $statusText = match($borrow->status) {
+                    'returned' => 'Dikembalikan',
+                    'borrowed' => 'Sedang Dipinjam',
+                    'pending' => 'Menunggu Verifikasi',
+                    'terlambat' => 'Terlambat',
+                    default => ucfirst($borrow->status)
+                };
+
+                fputcsv($file, [
+                    $borrow->book ? $borrow->book->title : '-',
+                    $borrow->member && $borrow->member->user ? $borrow->member->user->name : '-',
+                    $borrow->borrow_date ? Carbon::parse($borrow->borrow_date)->format('d/m/Y') : '-',
+                    $borrow->return_date ? Carbon::parse($borrow->return_date)->format('d/m/Y') : 'Belum Kembali',
+                    $statusText,
+                    $keterangan
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     private function resolveDateFilter(Request $request): array
     {
         $filter = $request->get('filter', 'all');

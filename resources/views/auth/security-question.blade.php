@@ -38,9 +38,14 @@
                 <input type="text" name="security_answer" id="security_answer" class="form-control" placeholder="Masukkan jawaban Anda..." required autofocus autocomplete="off">
             </div>
 
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
-                <i class="fa-solid fa-paper-plane"></i> Ajukan Reset ke Admin
-            </button>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fa-solid fa-key"></i> Verifikasi Jawaban & Buat Password Baru
+                </button>
+                <button type="submit" name="request_admin" value="1" class="btn btn-outline" style="width: 100%; border-color: var(--gray-300); color: var(--dark);" onclick="return confirm('Ajukan bantuan reset password secara manual ke Admin/Petugas perpustakaan?');">
+                    <i class="fa-solid fa-headset"></i> Lupa Jawaban? Ajukan Reset ke Admin
+                </button>
+            </div>
         </form>
 
         <div style="text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--gray-600);">

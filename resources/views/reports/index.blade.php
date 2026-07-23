@@ -4,15 +4,26 @@
 @section('header_title', 'Laporan & Analitik')
 
 @section('content')
-<div class="welcome-banner" style="margin-bottom: 25px;">
+<div class="print-header">
+    <h2 style="margin: 0; font-size: 1.4rem; font-weight: bold; text-transform: uppercase;">LAPORAN REKAPITULASI HASIL PEMINJAMAN & PENGEMBALIAN BUKU</h2>
+    <h4 style="margin: 5px 0 0 0; font-size: 1rem; color: #333;">PERPUSTAKAAN LITERAWASLU</h4>
+    <p style="margin: 3px 0 0 0; font-size: 0.85rem; color: #555;">Periode Laporan: {{ $filterLabel ?? 'Semua Waktu' }} &bull; Dicetak Pada: {{ now()->format('d M Y H:i') }}</p>
+</div>
+
+<div class="welcome-banner no-print" style="margin-bottom: 25px;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;">
         <div>
             <h1>Laporan Aktivitas Perpustakaan</h1>
             <p>Rekap statistik data anggota, sirkulasi peminjaman, buku populer, dan catatan keterlambatan.</p>
         </div>
-        <button onclick="window.print()" class="btn btn-primary btn-sm" style="background-color: var(--light); color: var(--primary);">
-            <i class="fa-solid fa-file-pdf"></i> Cetak Laporan
-        </button>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="{{ route('reports.export', request()->all()) }}" class="btn btn-secondary btn-sm no-print" style="background-color: #16a34a; border-color: #16a34a; color: white; font-weight: 600;">
+                <i class="fa-solid fa-file-excel"></i> Export ke Excel
+            </a>
+            <button onclick="window.print()" class="btn btn-primary btn-sm no-print" style="background-color: var(--light); color: var(--primary); font-weight: 600;">
+                <i class="fa-solid fa-file-pdf"></i> Cetak Laporan
+            </button>
+        </div>
     </div>
 </div>
 
@@ -67,7 +78,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-info">
-            <h3>Total Buku Pengganti</h3>
+            <h3>Total Sanksi Donasi Buku</h3>
             <p>{{ $totalFineAmount }} Buku</p>
         </div>
         <div class="stat-icon red">
@@ -76,7 +87,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-info">
-            <h3>Buku Sudah Diganti</h3>
+            <h3>Buku Fisik Sudah Dipenuhi</h3>
             <p style="color: var(--success);">{{ $paidFineAmount }} Buku</p>
         </div>
         <div class="stat-icon green" style="background-color: rgba(40,167,69,0.05);">
@@ -85,7 +96,7 @@
     </div>
     <div class="stat-card">
         <div class="stat-info">
-            <h3>Buku Belum Diganti</h3>
+            <h3>Buku Fisik Belum Dipenuhi</h3>
             <p style="color: var(--primary);">{{ $unpaidFineAmount }} Buku</p>
         </div>
         <div class="stat-icon yellow">
@@ -159,55 +170,92 @@
     <!-- Left Column: Overdue and Late Return Audit -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-triangle-exclamation" style="color: var(--primary); margin-right: 8px;"></i> Catatan Keterlambatan Pengembalian</h2>
+            <h2><i class="fa-solid fa-triangle-exclamation" style="color: var(--primary); margin-right: 8px;"></i> Daftar Denda & Sanksi Keterlambatan</h2>
         </div>
         <div class="card-body">
-            <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 12px;">Peminjaman Terlambat Saat Ini (Overdue):</h4>
-            @if($overdueBorrows->isEmpty())
-                <p style="font-size: 0.85rem; color: var(--gray-600); margin-bottom: 25px;">Tidak ada keterlambatan aktif saat ini.</p>
-            @else
-                <div class="table-responsive" style="margin-bottom: 25px;">
-                    <table class="table-custom">
-                        <thead>
-                            <tr>
-                                <th>Buku</th>
-                                <th>Member</th>
-                                <th>Jatuh Tempo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($overdueBorrows as $ob)
-                                <tr>
-                                    <td>{{ $ob->book->title }}</td>
-                                    <td>{{ $ob->member->user->name }}</td>
-                                    <td style="color: var(--primary); font-weight: 600;">{{ $ob->due_date->format('d M Y') }}</td>
-                                </tr>
-                            @empty
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-
-            <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 12px; border-top: 1px solid var(--gray-200); padding-top: 20px;">Riwayat Pengembalian Terlambat:</h4>
-            @if(empty($returnedLateBorrows))
-                <p style="font-size: 0.85rem; color: var(--gray-600);">Tidak ada catatan pengembalian terlambat.</p>
+            @if($overdueBorrows->isEmpty() && empty($returnedLateBorrows))
+                <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; padding: 20px 0;">Tidak ada catatan denda / sanksi keterlambatan saat ini.</p>
             @else
                 <div class="table-responsive">
                     <table class="table-custom">
                         <thead>
                             <tr>
-                                <th>Buku</th>
-                                <th>Member</th>
-                                <th>Tanggal Pengembalian</th>
+                                <th>Nama Member</th>
+                                <th>Judul Buku</th>
+                                <th>Tanggal Jatuh Tempo</th>
+                                <th>Hari Terlambat</th>
+                                <th>Jenis Sanksi</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($returnedLateBorrows as $rl)
+                            @foreach($overdueBorrows as $ob)
+                                @php
+                                    $due = \Carbon\Carbon::parse($ob->due_date);
+                                    $lateDays = \Carbon\Carbon::now()->startOfDay()->diffInDays($due);
+                                @endphp
                                 <tr>
+                                    <td><strong>{{ $ob->member->user->name }}</strong></td>
+                                    <td>{{ $ob->book->title }}</td>
+                                    <td>{{ $due->format('d M Y') }}</td>
+                                    <td><span style="color: var(--primary); font-weight: 700;">{{ $lateDays }} Hari</span></td>
+                                    <td>
+                                        @if($lateDays == 1)
+                                            Pengurangan 10 Poin
+                                        @elseif($lateDays == 2)
+                                            Pengurangan 20 Poin
+                                        @elseif($lateDays == 3)
+                                            Pengurangan 30 Poin
+                                        @else
+                                            Wajib Donasi 1 Buku Fisik
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($lateDays <= 3)
+                                            <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Diproses Otomatis</span>
+                                        @else
+                                            @if($ob->fine_status === 'paid')
+                                                <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Sudah Dipenuhi</span>
+                                            @else
+                                                <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;">Belum Dipenuhi</span>
+                                            @endif
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @foreach($returnedLateBorrows as $rl)
+                                @php
+                                    $due = \Carbon\Carbon::parse($rl->due_date);
+                                    $return = \Carbon\Carbon::parse($rl->return_date);
+                                    $lateDays = $return->diffInDays($due);
+                                @endphp
+                                <tr>
+                                    <td><strong>{{ $rl->member->user->name }}</strong></td>
                                     <td>{{ $rl->book->title }}</td>
-                                    <td>{{ $rl->member->user->name }}</td>
-                                    <td style="color: #b58b00; font-weight: 500;">{{ $rl->return_date->format('d M Y') }} (Late)</td>
+                                    <td>{{ $due->format('d M Y') }}</td>
+                                    <td><span style="color: #b45309; font-weight: 700;">{{ $lateDays }} Hari</span></td>
+                                    <td>
+                                        @if($lateDays == 1)
+                                            Pengurangan 10 Poin
+                                        @elseif($lateDays == 2)
+                                            Pengurangan 20 Poin
+                                        @elseif($lateDays == 3)
+                                            Pengurangan 30 Poin
+                                        @else
+                                            Wajib Donasi 1 Buku Fisik
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($lateDays <= 3)
+                                            <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Sudah Dipenuhi</span>
+                                        @else
+                                            @if($rl->fine_status === 'paid')
+                                                <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Sudah Dipenuhi</span>
+                                            @else
+                                                <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;">Belum Dipenuhi</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -384,19 +432,50 @@
 
 <style>
     @media print {
-        .sidebar, .header-nav, .btn, .card-header .btn {
+        body {
+            background: #fff !important;
+            color: #000 !important;
+            font-family: Arial, sans-serif !important;
+        }
+        .sidebar, .header-nav, .welcome-banner, .no-print, form, .btn, .card-header .btn {
             display: none !important;
         }
         .main-wrapper {
             margin-left: 0 !important;
+            padding: 0 !important;
         }
         .content-body {
             padding: 0 !important;
         }
         .card {
-            border: none !important;
+            border: 1px solid #ccc !important;
             box-shadow: none !important;
+            margin-bottom: 20px !important;
+            break-inside: avoid;
         }
+        .table-custom {
+            width: 100% !important;
+            border-collapse: collapse !important;
+        }
+        .table-custom th, .table-custom td {
+            border: 1px solid #000 !important;
+            padding: 6px 8px !important;
+            font-size: 11px !important;
+        }
+        .table-custom th {
+            background-color: #f0f0f0 !important;
+            color: #000 !important;
+        }
+        .print-header {
+            display: block !important;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+    }
+    .print-header {
+        display: none;
     }
 </style>
 @endsection

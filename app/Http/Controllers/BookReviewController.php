@@ -26,19 +26,6 @@ class BookReviewController extends Controller
 
         $member = Auth::user()->member;
 
-        // Check if member has returned this book OR has borrowed it for 7 days or more
-        $hasBorrowed = Borrow::where('member_id', $member->id)
-            ->where('book_id', $book->id)
-            ->where(function ($q) {
-                $q->where('status', 'returned')
-                  ->orWhere('borrow_date', '<=', now()->subDays(7));
-            })
-            ->exists();
-
-        if (!$hasBorrowed) {
-            return back()->with('error', 'Anda hanya dapat memberikan ulasan untuk buku yang sudah pernah Anda kembalikan atau telah Anda pinjam selama minimal 7 hari.');
-        }
-
         // Check if member already reviewed this book
         $existing = BookReview::where('member_id', $member->id)
             ->where('book_id', $book->id)

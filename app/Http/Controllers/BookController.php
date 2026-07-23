@@ -195,26 +195,20 @@ class BookController extends Controller
         }
 
         $user = auth()->user();
-        if ($user->role === 'member') {
-            $memberId = $user->member->id;
+        $member = $user ? $user->member : null;
 
-            // Cek apakah masih pending (belum diverifikasi)
-            $hasPendingBorrow = \App\Models\Borrow::where('member_id', $memberId)
-                ->where('book_id', $book->id)
-                ->where('status', 'pending')
-                ->exists();
-            if ($hasPendingBorrow) {
-                return back()->with('error', 'Permintaan peminjaman Anda untuk buku ini sedang menunggu verifikasi Admin. Baca online baru bisa dilakukan setelah disetujui.');
-            }
+        if (!$member) {
+            return back()->with('error', 'Anda harus terdaftar sebagai member untuk membaca online.');
+        }
 
-            $hasActiveBorrow = \App\Models\Borrow::where('member_id', $memberId)
-                ->where('book_id', $book->id)
-                ->where('status', 'borrowed')
-                ->exists();
-                
-            if (!$hasActiveBorrow) {
-                return back()->with('error', 'Anda harus meminjam dan mendapat persetujuan Admin terlebih dahulu untuk membaca buku ini secara online.');
-            }
+        // Check if member has an approved borrow request for this book
+        $approvedBorrow = \App\Models\Borrow::where('member_id', $member->id)
+            ->where('book_id', $book->id)
+            ->where('status', 'borrowed')
+            ->first();
+
+        if (!$approvedBorrow) {
+            return back()->with('error', 'Akses Baca Online Ditolak! Peminjaman buku online harus melalui proses pengajuan & verifikasi persetujuan petugas terlebih dahulu.');
         }
 
         // Convert Google Drive link to embeddable preview URL

@@ -35,6 +35,20 @@ class ForgotPasswordController extends Controller
             return back()->with('error', 'Alamat email tidak terdaftar di sistem.');
         }
 
+        // Limit: Maksimal 5 pengajuan reset password per hari (24 jam)
+        $todayResetCount = DB::table('password_reset_tokens')
+            ->where('email', $user->email)
+            ->where('created_at', '>=', now()->startOfDay())
+            ->count();
+
+        $todayMemberReqCount = MemberResetRequest::where('user_id', $user->id)
+            ->where('created_at', '>=', now()->startOfDay())
+            ->count();
+
+        if (($todayResetCount + $todayMemberReqCount) >= 5) {
+            return back()->with('error', 'Anda telah mencapai batas maksimal pengajuan reset password hari ini. Silakan coba kembali besok.');
+        }
+
         if ($user->role === 'member') {
             // Member -> Lanjut ke verifikasi pertanyaan keamanan
             return redirect()->route('password.security', ['email' => $user->email]);
@@ -95,31 +109,50 @@ class ForgotPasswordController extends Controller
             return redirect()->route('password.request')->with('error', 'Akses tidak sah.');
         }
 
-        $inputAnswer = strtolower(trim($request->security_answer));
-        $actualAnswer = strtolower(trim($user->security_answer));
+        // Limit check
+        $todayReqCount = MemberResetRequest::where('user_id', $user->id)
+            ->where('created_at', '>=', now()->startOfDay())
+            ->count();
 
-        if ($inputAnswer !== $actualAnswer) {
-            return back()->with('error', 'Jawaban pertanyaan keamanan salah. Silakan coba lagi.');
+        if ($todayReqCount >= 5) {
+            return redirect()->route('password.request')->with('error', 'Anda telah mencapai batas maksimal pengajuan reset password hari ini. Silakan coba kembali besok.');
         }
 
-        // Langsung generate token reset password tanpa persetujuan admin
+        $inputAnswer = strtolower(trim($request->security_answer ?? ''));
+        $actualAnswer = strtolower(trim($user->security_answer ?? ''));
+
+        // Jika user memilih untuk langsung kirim pengajuan ke Admin (misal lupa jawaban)
+        if ($request->has('request_admin')) {
+            MemberResetRequest::create([
+                'user_id' => $user->id,
+                'status' => 'pending',
+            ]);
+
+            return redirect()->route('login')->with('success', 'Pengajuan reset password telah dikirimkan ke Admin. Silakan tunggu verifikasi/persetujuan dari Admin atau Petugas.');
+        }
+
+        if ($inputAnswer !== $actualAnswer) {
+            return back()->with('error', 'Jawaban pertanyaan keamanan salah. Silakan coba lagi atau kirim pengajuan bantuan ke Admin.')
+                         ->with('show_admin_option', true);
+        }
+
+        // Simpan pengajuan reset password dengan status 'approved' dan generate token
         $token = Str::random(60);
 
-        MemberResetRequest::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'status' => 'approved',
-                'token' => $token,
-            ]
-        );
+        MemberResetRequest::create([
+            'user_id' => $user->id,
+            'status' => 'approved',
+            'token' => $token,
+        ]);
 
         $resetUrl = route('password.reset', ['token' => $token, 'email' => $user->email]);
 
-        // Log link untuk referensi
+        // Log link untuk referensi / kirim email
         Log::info("Reset Password Link for Member ({$user->email}): {$resetUrl}");
 
         return redirect()->route('password.reset', ['token' => $token, 'email' => $user->email])
-                         ->with('success', 'Jawaban benar! Silakan atur password baru Anda.');
+                         ->with('success', 'Jawaban benar! Silakan atur password baru Anda.')
+                         ->with('simulated_link', $resetUrl);
     }
 
     /**

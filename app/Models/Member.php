@@ -50,11 +50,35 @@ class Member extends Model
     }
 
     /**
+     * Get point history records for this member.
+     */
+    public function pointHistories()
+    {
+        return $this->hasMany(PointHistory::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get active borrows count.
+     */
+    public function activeBorrowCount(): int
+    {
+        return $this->borrows()->whereIn('status', ['pending', 'borrowed', 'terlambat'])->count();
+    }
+
+    /**
+     * Check if member has reached maximum online borrow limit (3 books).
+     */
+    public function hasReachedBorrowLimit(): bool
+    {
+        return $this->activeBorrowCount() >= 3;
+    }
+
+    /**
      * Check if member has an active (unreturned) borrow.
      */
     public function hasActiveBorrow(): bool
     {
-        return $this->borrows()->whereIn('status', ['borrowed', 'terlambat'])->exists();
+        return $this->hasReachedBorrowLimit();
     }
 
     /**

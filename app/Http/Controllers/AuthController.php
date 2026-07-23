@@ -126,6 +126,14 @@ class AuthController extends Controller
                 'status' => 'pending',
             ]);
 
+            // Record initial bonus point history
+            \App\Models\PointHistory::create([
+                'member_id' => $member->id,
+                'type' => 'earn',
+                'points' => 10,
+                'description' => 'Bonus Poin Registrasi Akun Baru',
+            ]);
+
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('unverified');

@@ -84,23 +84,23 @@
 
 <div class="card" style="margin-top: 25px; margin-bottom: 25px;">
     <div class="card-header" style="background-color: rgba(var(--primary-rgb), 0.05);">
-        <h2><i class="fa-solid fa-money-bill-wave" style="color: var(--primary); margin-right: 8px;"></i> Daftar Denda Menunggu Pembayaran</h2>
+        <h2><i class="fa-solid fa-book-medical" style="color: var(--primary); margin-right: 8px;"></i> Daftar Sanksi Wajib Donasi Buku Fisik (> 3 Hari Terlambat)</h2>
         <span class="badge badge-danger">{{ $unpaidFines->count() }} Transaksi</span>
     </div>
     <div class="card-body">
         @if($unpaidFines->isEmpty())
-            <p style="text-align: center; color: var(--gray-600); padding: 30px;">Tidak ada denda yang menunggu pembayaran saat ini.</p>
+            <p style="text-align: center; color: var(--gray-600); padding: 30px;">Tidak ada sanksi buku fisik yang belum dipenuhi saat ini.</p>
         @else
             <div class="table-responsive">
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th>Buku</th>
-                            <th>Anggota</th>
-                            <th>Jatuh Tempo</th>
-                            <th>Tgl Kembali</th>
-                            <th>Jumlah Denda</th>
-                            <th>Aksi</th>
+                            <th>Buku Dipinjam</th>
+                            <th>Nama Member</th>
+                            <th>Tanggal Jatuh Tempo</th>
+                            <th>Tanggal Kembali</th>
+                            <th>Sanksi Wajib</th>
+                            <th>Aksi Konfirmasi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,13 +117,13 @@
                                 <td>{{ $fineBorrow->due_date->format('d M Y') }}</td>
                                 <td>{{ $fineBorrow->return_date ? $fineBorrow->return_date->format('d M Y') : '-' }}</td>
                                 <td>
-                                    <strong style="color: var(--primary); font-size: 0.95rem;">Rp {{ number_format($fineBorrow->fine_amount, 0, ',', '.') }}</strong>
+                                    <strong style="color: var(--primary); font-size: 0.9rem;">1 Buku Fisik Baru</strong>
                                 </td>
                                 <td>
                                     <form action="{{ route('borrows.pay_fine', $fineBorrow->id) }}" method="POST" style="margin: 0;">
                                         @csrf
                                         <button type="submit" class="btn btn-primary btn-sm" style="font-size: 0.75rem; padding: 6px 12px; display: inline-flex; align-items: center; gap: 4px; height: auto;">
-                                            <i class="fa-solid fa-hand-holding-dollar"></i> Bayar Denda
+                                            <i class="fa-solid fa-check"></i> Konfirmasi Terima Buku
                                         </button>
                                     </form>
                                 </td>

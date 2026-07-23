@@ -17,12 +17,12 @@
 
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-body">
-        <form id="catalogFilter" action="{{ route('catalog') }}" method="GET" style="display: flex; gap: 15px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px;">
+        <form id="catalogFilter" action="{{ route('catalog') }}" method="GET" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch;">
+            <div style="flex: 1; min-width: 200px;">
                 <input type="text" name="search" class="form-control" placeholder="Cari judul buku, penulis, atau barcode..." value="{{ request('search') }}">
             </div>
             
-            <div style="width: 200px; min-width: 150px;">
+            <div style="min-width: 160px; flex: 0 1 200px;">
                 <select name="category" class="form-control" onchange="this.form.submit()">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $category)
@@ -31,7 +31,7 @@
                 </select>
             </div>
             
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                 <button type="submit" class="btn btn-primary">
                     <i class="fa-solid fa-magnifying-glass"></i> Cari
                 </button>
@@ -129,9 +129,21 @@
                             </form>
                         @endif
                         @if($book->drive_link)
-                            <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none;">
-                                <i class="fa-brands fa-google-drive"></i> Baca Online
-                            </a>
+                            @php
+                                $hasApprovedBorrow = \App\Models\Borrow::where('member_id', auth()->user()->member->id)
+                                    ->where('book_id', $book->id)
+                                    ->where('status', 'borrowed')
+                                    ->exists();
+                            @endphp
+                            @if($hasApprovedBorrow)
+                                <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none;">
+                                    <i class="fa-brands fa-google-drive"></i> Baca Online (Akses Disetujui)
+                                </a>
+                            @else
+                                <button type="button" class="btn btn-sm" disabled style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: var(--gray-200); color: var(--gray-600); border: none; cursor: not-allowed;" title="Ajukan peminjaman & tunggu persetujuan petugas untuk membuka akses ini">
+                                    <i class="fa-solid fa-lock"></i> Baca Online (Menunggu Persetujuan)
+                                </button>
+                            @endif
                         @endif
                         <button onclick="showBookDetail({{ $book->id }})" class="btn btn-outline btn-sm" style="width: 100%; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--dark); border-color: var(--gray-300);">
                             <i class="fa-solid fa-circle-info"></i> Lihat Detail & Ulasan
@@ -403,19 +415,14 @@ function showBookDetail(id) {
     const reviewForm = document.getElementById('modalReviewForm');
     const formTitle = document.getElementById('modalReviewFormTitle');
 
-    if (b.eligibleReview) {
-        notEligible.style.display = 'none';
-        formWrap.style.display = 'block';
-        reviewForm.action = `/catalog/${b.id}/review`;
-        
-        if (b.hasReviewed) {
-            formTitle.textContent = 'Perbarui Ulasan Anda';
-        } else {
-            formTitle.textContent = 'Tulis Ulasan Anda';
-        }
+    notEligible.style.display = 'none';
+    formWrap.style.display = 'block';
+    reviewForm.action = `/catalog/${b.id}/review`;
+    
+    if (b.hasReviewed) {
+        formTitle.textContent = 'Perbarui Ulasan Anda';
     } else {
-        formWrap.style.display = 'none';
-        notEligible.style.display = 'block';
+        formTitle.textContent = 'Tulis Ulasan Anda';
     }
 
     const modal = document.getElementById('bookDetailModal');

@@ -47,7 +47,7 @@
                 <p style="font-size: 0.85rem; margin-top: 5px;">Transaksi peminjaman buku akan tercatat secara otomatis di sini.</p>
             </div>
         @else
-            <div class="table-responsive">
+            <div class="table-responsive" style="-webkit-overflow-scrolling:touch;">
                 <table class="table-custom">
                     <thead>
                         <tr>
@@ -56,9 +56,8 @@
                             <th>Tanggal Pinjam</th>
                             <th>Jatuh Tempo</th>
                             <th>Tanggal Kembali</th>
-                            <th>Sanksi</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th>Keterangan Sanksi</th>
+                            <th>Status Peminjaman</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,14 +100,14 @@
                                 </td>
                                 <td>
                                     @if($borrow->fine_amount > 0)
-                                        <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku</div>
+                                        <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku Fisik</div>
                                         @if($borrow->fine_status === 'unpaid')
-                                            <span class="badge badge-danger" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-exclamation"></i> Wajib Ganti Buku</span>
+                                            <span class="badge badge-danger" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-exclamation"></i> Belum Dipenuhi</span>
                                         @elseif($borrow->fine_status === 'paid')
-                                            <span class="badge badge-success" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-check"></i> Buku Sudah Diganti</span>
+                                            <span class="badge badge-success" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-check"></i> Sudah Dipenuhi</span>
                                         @endif
                                     @else
-                                        <span style="color: var(--gray-500); font-style: italic; font-size: 0.85rem;">Aman</span>
+                                        <span style="color: #16a34a; font-size: 0.85rem; font-weight: 500;">Tepat Waktu</span>
                                     @endif
                                 </td>
                                 <td>
@@ -128,18 +127,6 @@
                                         <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Terlambat {{ abs($diff) }} Hari</span>
                                     @else
                                         <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> {{ ucfirst($borrow->status) }}</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($borrow->fine_status === 'unpaid')
-                                        <form action="{{ route('borrows.pay_fine', $borrow->id) }}" method="POST" style="margin: 0;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary btn-sm" style="padding: 5px 10px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px; height: auto;">
-                                                <i class="fa-solid fa-book"></i> Konfirmasi Buku Pengganti
-                                            </button>
-                                        </form>
-                                    @else
-                                        <span style="color: var(--gray-400); font-size: 0.75rem;">-</span>
                                     @endif
                                 </td>
                             </tr>

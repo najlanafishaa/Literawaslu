@@ -22,64 +22,85 @@
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th>Buku</th>
+                            <th>Judul Buku</th>
                             <th>Tanggal Pinjam</th>
                             <th>Jatuh Tempo</th>
                             <th>Tanggal Kembali</th>
-                            <th>Sanksi</th>
-                            <th>Status</th>
+                            <th>Status Peminjaman</th>
+                            <th>Keterangan Keterlambatan / Sanksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($borrows as $borrow)
                             @php
                                 $due = \Carbon\Carbon::parse($borrow->due_date);
-                                $now = \Carbon\Carbon::now()->startOfDay();
-                                $diff = $now->diffInDays($due, false);
+                                $borrowDate = \Carbon\Carbon::parse($borrow->borrow_date);
+                                $returnDate = $borrow->return_date ? \Carbon\Carbon::parse($borrow->return_date) : null;
+                                
+                                // Calculate late days
+                                $lateDays = 0;
+                                if ($returnDate && $returnDate->greaterThan($due)) {
+                                    $lateDays = $returnDate->diffInDays($due);
+                                } elseif (!$returnDate && \Carbon\Carbon::now()->startOfDay()->greaterThan($due)) {
+                                    $lateDays = \Carbon\Carbon::now()->startOfDay()->diffInDays($due);
+                                }
                             @endphp
                             <tr>
                                 <td>
                                     <div style="font-weight: 600; color: var(--dark);">{{ $borrow->book->title }}</div>
-                                    <div style="font-size: 0.8rem; color: var(--gray-600); font-family: monospace;">{{ $borrow->book->barcode }}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-600); font-family: monospace;">Barcode: {{ $borrow->book->barcode }}</div>
                                 </td>
-                                <td>{{ $borrow->borrow_date->format('d M Y') }}</td>
-                                <td>{{ $borrow->due_date->format('d M Y') }}</td>
+                                <td>{{ $borrowDate->format('d M Y') }}</td>
+                                <td>{{ $due->format('d M Y') }}</td>
                                 <td>
-                                    @if($borrow->return_date)
-                                        {{ $borrow->return_date->format('d M Y') }}
+                                    @if($returnDate)
+                                        {{ $returnDate->format('d M Y') }}
                                     @else
-                                        <span style="color: var(--gray-600); font-style: italic;">Belum kembali</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($borrow->fine_amount > 0)
-                                        <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku</div>
-                                        @if($borrow->fine_status === 'unpaid')
-                                            <span class="badge badge-danger" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-exclamation"></i> Wajib Ganti Buku</span>
-                                        @elseif($borrow->fine_status === 'paid')
-                                            <span class="badge badge-success" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-check"></i> Buku Sudah Diganti</span>
-                                        @endif
-                                    @else
-                                        <span style="color: var(--gray-500); font-style: italic; font-size: 0.85rem;">Aman</span>
+                                        <span style="color: var(--gray-600); font-style: italic;">Belum Kembali</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if($borrow->status === 'returned')
-                                        @if($borrow->return_date->greaterThan($borrow->due_date))
-                                            <span class="badge badge-warning" title="Dikembalikan terlambat"><i class="fa-solid fa-circle-exclamation"></i> Kembali (Terlambat)</span>
+                                        @if($lateDays > 0)
+                                            <span class="badge badge-warning" style="background-color: #fef3c7; color: #b45309;"><i class="fa-solid fa-circle-exclamation"></i> Selesai (Terlambat)</span>
                                         @else
-                                            <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Selesai</span>
+                                            <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;"><i class="fa-solid fa-circle-check"></i> Selesai</span>
                                         @endif
                                     @elseif($borrow->status === 'borrowed')
-                                        @if($diff < 0)
-                                            <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Terlambat {{ abs($diff) }} Hari</span>
+                                        @if($lateDays > 0)
+                                            <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;"><i class="fa-solid fa-circle-xmark"></i> Terlambat</span>
                                         @else
-                                            <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Dipinjam</span>
+                                            <span class="badge badge-warning" style="background-color: #e0f2fe; color: #0284c7;"><i class="fa-solid fa-clock"></i> Dipinjam</span>
                                         @endif
-                                    @elseif($borrow->status === 'terlambat')
-                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Terlambat {{ abs($diff) }} Hari</span>
+                                    @elseif($borrow->status === 'pending')
+                                        <span class="badge badge-warning" style="background-color: #fef3c7; color: #b45309;"><i class="fa-solid fa-clock"></i> Menunggu Verifikasi</span>
                                     @else
-                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> {{ ucfirst($borrow->status) }}</span>
+                                        <span class="badge badge-danger">{{ ucfirst($borrow->status) }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($lateDays > 0)
+                                        <div style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">
+                                            Terlambat {{ $lateDays }} Hari
+                                        </div>
+                                        <div style="font-size: 0.78rem; color: var(--gray-700); margin-top: 2px;">
+                                            @if($lateDays == 1)
+                                                Sanksi: Pengurangan 10 Poin
+                                            @elseif($lateDays == 2)
+                                                Sanksi: Pengurangan 20 Poin
+                                            @elseif($lateDays == 3)
+                                                Sanksi: Pengurangan 30 Poin
+                                            @else
+                                                Sanksi: Wajib Donasi 1 Buku Fisik
+                                                @if($borrow->fine_status === 'paid')
+                                                    <span class="badge badge-success" style="font-size: 0.7rem; padding: 2px 6px; display: inline-block; margin-top: 3px;"><i class="fa-solid fa-check"></i> Sudah Dipenuhi</span>
+                                                @else
+                                                    <span class="badge badge-danger" style="font-size: 0.7rem; padding: 2px 6px; display: inline-block; margin-top: 3px;"><i class="fa-solid fa-circle-exclamation"></i> Belum Dipenuhi</span>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    @else
+                                        <span style="color: #16a34a; font-weight: 500; font-size: 0.85rem;"><i class="fa-solid fa-check-double"></i> Tepat Waktu</span>
                                     @endif
                                 </td>
                             </tr>

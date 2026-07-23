@@ -26,20 +26,19 @@
         <iframe 
             src="{{ $embedUrl }}" 
             style="width: 100%; height: 100%; border: none;"
-            sandbox="allow-scripts allow-same-origin allow-popups"
-            allow="autoplay"
+            sandbox="allow-scripts allow-same-origin"
             loading="lazy"
         ></iframe>
         
-        {{-- Overlay to prevent right-click download attempts --}}
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 40px; background: transparent; z-index: 10;" oncontextmenu="return false;"></div>
+        {{-- Overlay to prevent popout and right-click download --}}
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: transparent; z-index: 10;" oncontextmenu="return false;"></div>
     </div>
 </div>
 
 <div style="margin-top: 15px; padding: 12px 20px; background-color: rgba(66,133,244,0.05); border: 1px solid rgba(66,133,244,0.2); border-radius: var(--border-radius); display: flex; align-items: center; gap: 10px;">
-    <i class="fa-solid fa-circle-info" style="color: #4285F4; font-size: 1.1rem;"></i>
+    <i class="fa-solid fa-eye" style="color: #4285F4; font-size: 1.1rem;"></i>
     <span style="font-size: 0.82rem; color: var(--gray-700);">
-        Buku ini ditampilkan dalam mode <strong>preview saja</strong>. Anda hanya bisa membaca secara online tanpa mengunduh file. Silakan pinjam buku fisik melalui katalog untuk koleksi pribadi.
+        Mode <strong>baca online saja</strong>. Unduh file tidak diizinkan.
     </span>
 </div>
 @endsection

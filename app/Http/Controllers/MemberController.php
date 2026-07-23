@@ -90,25 +90,44 @@ class MemberController extends Controller
     public function rewards()
     {
         $member = Auth::user()->member;
-        return view('dashboards.member_rewards', compact('member'));
+        $pointHistories = $member ? $member->pointHistories : collect();
+        return view('dashboards.member_rewards', compact('member', 'pointHistories'));
     }
 
     /**
      * Redeem rewards (exchange points to increase borrowing limit).
+     * Rules: 100 pts -> 1 book limit, 200 pts -> 2 books limit, 300 pts -> 3 books limit.
+     * Points do NOT decrease upon redemption.
      */
     public function redeem(Request $request)
     {
         $member = Auth::user()->member;
+        $targetLimit = (int) $request->input('target_limit');
 
-        $cost = 50;
-
-        if ($member->points < $cost) {
-            return back()->with('error', "Poin Anda tidak mencukupi. Butuh {$cost} poin, poin saat ini: {$member->points}.");
+        if (!in_array($targetLimit, [1, 2, 3])) {
+            return back()->with('error', 'Pilihan penukaran tidak valid.');
         }
 
-        $member->points -= $cost;
-        $member->borrow_limit += 1;
+        $requiredPoints = $targetLimit * 100;
+
+        if ($member->points < $requiredPoints) {
+            return back()->with('error', "Poin Anda tidak mencukupi. Butuh {$requiredPoints} poin untuk membuka batas {$targetLimit} buku.");
+        }
+
+        if ($member->borrow_limit >= $targetLimit) {
+            return back()->with('error', "Batas peminjaman Anda sudah {$member->borrow_limit} buku.");
+        }
+
+        $member->borrow_limit = $targetLimit;
         $member->save();
+
+        // Record history for point redemption
+        \App\Models\PointHistory::create([
+            'member_id' => $member->id,
+            'type' => 'redeem',
+            'points' => $requiredPoints,
+            'description' => "Klaim peningkatan batas pinjam menjadi {$targetLimit} buku ({$requiredPoints} poin tercapai)",
+        ]);
 
         return redirect()->route('member.rewards')->with('success', "Penukaran berhasil! Batas peminjaman Anda bertambah menjadi {$member->borrow_limit} buku.");
     }
@@ -131,9 +150,9 @@ class MemberController extends Controller
             return back()->with('error', 'Pendaftaran Anda ditolak. Hubungi petugas perpustakaan.');
         }
 
-        // Rule: tidak bisa pinjam kalau ada pinjaman aktif atau permintaan yang sedang diproses
-        if ($member->hasActiveBorrow()) {
-            return back()->with('error', 'Anda masih memiliki buku yang sedang dipinjam. Kembalikan terlebih dahulu sebelum meminjam buku lain.');
+        // Rule: Maksimal 3 buku pinjaman aktif (pending / borrowed / terlambat)
+        if ($member->hasReachedBorrowLimit()) {
+            return back()->with('error', 'Anda telah mencapai batas maksimal 3 buku peminjaman online aktif. Kembalikan buku terlebih dahulu sebelum mengajukan peminjaman baru.');
         }
 
         // Cek apakah sudah ada permintaan pending untuk buku yang sama

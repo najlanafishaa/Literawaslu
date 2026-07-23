@@ -55,32 +55,56 @@ class DashboardController extends Controller
                 ->with('book')
                 ->get();
 
+            $pendingBorrowsList = Borrow::where('status', 'pending')
+                ->with(['member.user', 'book'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            $totalReturns = (clone $borrowQuery)->where('status', 'returned')->count();
+
+            // Monthly trends calculation (for Chart.js)
+            $allBorrowsForChart = (clone $borrowQuery)->get();
+            $monthlyTrends = [];
+            foreach ($allBorrowsForChart as $b) {
+                $monthKey = Carbon::parse($b->borrow_date)->format('Y-m (F)');
+                $monthlyTrends[$monthKey] = ($monthlyTrends[$monthKey] ?? 0) + 1;
+            }
+            ksort($monthlyTrends);
+
             if ($user->role === 'super_admin') {
                 return view('dashboards.admin', compact(
                     'totalBooks', 'borrowedBooks', 'availableBooks',
-                    'totalMembers', 'totalTransactions', 'overdueCount',
-                    'recentBorrows', 'popularBooks',
+                    'totalMembers', 'totalTransactions', 'totalReturns', 'overdueCount',
+                    'recentBorrows', 'popularBooks', 'pendingBorrowsList', 'monthlyTrends',
                     'filterLabel', 'startDate', 'endDate'
                 ));
             } else {
                 return view('dashboards.petugas', compact(
                     'totalBooks', 'borrowedBooks', 'availableBooks',
-                    'totalMembers', 'totalTransactions', 'overdueCount',
-                    'recentBorrows'
+                    'totalMembers', 'totalTransactions', 'totalReturns', 'overdueCount',
+                    'recentBorrows', 'popularBooks', 'pendingBorrowsList', 'monthlyTrends'
                 ));
             }
         } else {
             $member = $user->member;
 
             $activeBorrows = $member ? Borrow::where('member_id', $member->id)
-                ->where('status', 'borrowed')
+                ->whereIn('status', ['borrowed', 'terlambat'])
                 ->with('book')
                 ->get() : collect();
+
+            $onlineBorrowRequests = $member ? Borrow::where('member_id', $member->id)
+                ->with('book')
+                ->orderBy('created_at', 'desc')
+                ->get() : collect();
+
+            $activeCount = $member ? $member->activeBorrowCount() : 0;
+            $remainingQuota = max(0, 3 - $activeCount);
 
             $totalBorrows = $member ? Borrow::where('member_id', $member->id)->count() : 0;
             $availableBooksCount = Book::where('is_available', true)->count();
 
-            return view('dashboards.member', compact('member', 'activeBorrows', 'totalBorrows', 'availableBooksCount'));
+            return view('dashboards.member', compact('member', 'activeBorrows', 'onlineBorrowRequests', 'remainingQuota', 'totalBorrows', 'availableBooksCount'));
         }
     }
 
