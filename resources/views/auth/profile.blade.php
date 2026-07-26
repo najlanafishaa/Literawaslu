@@ -17,7 +17,7 @@
 </div>
 
 @if($errors->any())
-    <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+    <div class="alert alert-danger">
         <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
     </div>
 @endif
@@ -77,7 +77,7 @@
                         </label>
                         <input type="password" name="password" id="password" class="form-control"
                                placeholder="Minimal 6 karakter" oninput="checkPasswordStrength(this.value)">
-                        <div id="password-strength-bar" style="height: 5px; border-radius: 3px; margin-top: 6px; transition: all 0.3s; width: 0%; background: #e74c3c;"></div>
+                        <div id="password-strength-bar" style="height: 5px; border-radius: 3px; margin-top: 6px; transition: all 0.3s; width: 0%; background: var(--primary);"></div>
                         <div id="password-strength-label" style="font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></div>
                     </div>
 
@@ -116,14 +116,14 @@
             bar.style.width = '0%'; label.textContent = ''; return;
         }
         if (score <= 2) {
-            bar.style.width = '33%'; bar.style.background = '#e74c3c';
-            label.style.color = '#e74c3c'; label.textContent = 'Kurang Aman';
+            bar.style.width = '33%'; bar.style.background = 'var(--primary)';
+            label.style.color = 'var(--primary)'; label.textContent = 'Kurang Aman';
         } else if (score <= 4) {
-            bar.style.width = '66%'; bar.style.background = '#f39c12';
-            label.style.color = '#f39c12'; label.textContent = 'Cukup Aman';
+            bar.style.width = '66%'; bar.style.background = 'var(--secondary)';
+            label.style.color = 'var(--secondary)'; label.textContent = 'Cukup Aman';
         } else {
-            bar.style.width = '100%'; bar.style.background = '#27ae60';
-            label.style.color = '#27ae60'; label.textContent = 'Sangat Aman';
+            bar.style.width = '100%'; bar.style.background = 'var(--dark)';
+            label.style.color = 'var(--dark)'; label.textContent = 'Sangat Aman';
         }
     }
 </script>

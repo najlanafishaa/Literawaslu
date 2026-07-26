@@ -160,9 +160,32 @@ class MemberController extends Controller
             return back()->with('error', 'Pendaftaran Anda ditolak. Hubungi petugas perpustakaan.');
         }
 
-        // Rule: Maksimal 3 buku pinjaman aktif (pending / borrowed / terlambat)
-        if ($member->hasReachedBorrowLimit()) {
-            return back()->with('error', 'Anda telah mencapai batas maksimal 3 buku peminjaman online aktif. Kembalikan buku terlebih dahulu sebelum mengajukan peminjaman baru.');
+        $book = Book::find($request->book_id);
+
+        $isOnlineBook = !empty($book->drive_link);
+
+        if ($isOnlineBook) {
+            // Count active online borrows for member
+            $activeOnlineCount = Borrow::where('member_id', $member->id)
+                ->whereIn('status', ['pending', 'borrowed', 'terlambat'])
+                ->whereHas('book', function ($q) {
+                    $q->whereNotNull('drive_link')->where('drive_link', '!=', '');
+                })->count();
+
+            if ($activeOnlineCount >= 3) {
+                return back()->with('error', 'Pengajuan tidak dapat diproses. Anda telah mencapai batas maksimal 3 buku online dalam waktu bersamaan.');
+            }
+        } else {
+            // Count active offline borrows for member
+            $activeOfflineCount = Borrow::where('member_id', $member->id)
+                ->whereIn('status', ['pending', 'borrowed', 'terlambat'])
+                ->whereHas('book', function ($q) {
+                    $q->whereNull('drive_link')->orWhere('drive_link', '');
+                })->count();
+
+            if ($activeOfflineCount >= 1) {
+                return back()->with('error', 'Pengajuan tidak dapat diproses. Anda telah mencapai batas maksimal 1 buku offline dalam waktu bersamaan.');
+            }
         }
 
         // Cek apakah sudah ada permintaan pending untuk buku yang sama
@@ -171,12 +194,12 @@ class MemberController extends Controller
             ->where('status', 'pending')
             ->exists();
         if ($alreadyRequested) {
-            return back()->with('error', 'Anda sudah mengajukan permintaan peminjaman untuk buku ini. Tunggu persetujuan Admin/Petugas.');
+            return back()->with('error', 'Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.');
         }
 
         // Rule: tidak bisa pinjam kalau ada sanksi belum diselesaikan
         if ($member->hasUnpaidFine()) {
-            return back()->with('error', 'Anda memiliki sanksi ganti buku yang belum diselesaikan. Hubungi petugas perpustakaan.');
+            return back()->with('error', 'Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.');
         }
 
         $book = Book::find($request->book_id);
@@ -185,9 +208,9 @@ class MemberController extends Controller
             return back()->with('error', 'Maaf, buku fisik ini sedang tidak tersedia (stok habis).');
         }
 
-        $loanDuration = SettingController::getSetting('loan_duration', 7);
+        $loanDuration = 7; // Fixed 7 days for online according to business rules
 
-        // Buat permintaan peminjaman dengan status 'pending' (menunggu verifikasi admin)
+        // Buat permintaan peminjaman dengan status 'pending'
         Borrow::create([
             'member_id'   => $member->id,
             'book_id'     => $book->id,
@@ -198,8 +221,6 @@ class MemberController extends Controller
             'fine_status' => 'none',
         ]);
 
-        // Stok & poin BELUM dikurangi/ditambah — menunggu verifikasi admin
-
-        return back()->with('success', "Permintaan peminjaman buku '{$book->title}' berhasil diajukan! Silakan tunggu persetujuan dari Petugas/Admin. Poin akan diberikan setelah buku dikembalikan.");
+        return back()->with('success', "Pengajuan peminjaman berhasil dikirim. Permintaan Anda akan diproses oleh Admin.");
     }
 }

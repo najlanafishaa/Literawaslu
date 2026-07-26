@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan & Interaktif: Responsive Web Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --accent-primary: #6366f1;
+            --accent-secondary: #06b6d4;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --code-bg: #090d16;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Header */
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-desc {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 48px;
+        }
+
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.3s ease;
+        }
+
+        .section-card:hover {
+            border-color: #475569;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title span.icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        .section-text {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-size: 1.025rem;
+        }
+
+        /* Code View */
+        .code-container {
+            background-color: var(--code-bg);
+            border: 1px solid #1e293b;
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.925rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        .code-container .keyword { color: #f472b6; }
+        .code-container .selector { color: #38bdf8; }
+        .code-container .property { color: #a7f3d0; }
+        .code-container .number { color: #fbbf24; }
+
+        /* Interactive Demo Box */
+        .demo-box {
+            background: var(--bg-dark);
+            border: 1px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            position: relative;
+        }
+
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .demo-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .width-indicator {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            background: #1e293b;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: #38bdf8;
+        }
+
+        /* Range Slider */
+        .slider-control {
+            margin-bottom: 20px;
+        }
+        .slider-control label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .slider-control input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            outline: none;
+            accent-color: var(--accent-primary);
+        }
+
+        /* Media Query Demo Elements */
+        .product-container {
+            display: flex;
+            gap: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .product-card {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .product-card h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .product-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Grid for Techniques */
+        .techniques-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .technique-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .technique-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #818cf8;
+        }
+
+        .technique-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        /* Responsive Image Demo */
+        .img-demo-wrap {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            position: relative;
+        }
+
+        .responsive-img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .unit-badge {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            padding: 2px 8px;
+            background: rgba(6, 182, 212, 0.15);
+            color: #22d3ee;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* Mobile First Visual */
+        .mobile-first-steps {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .step-box {
+            flex: 1;
+            min-width: 140px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .step-box .step-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        .step-box h5 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        .step-box span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .section-card { padding: 20px; }
+            .hero-desc { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <span class="badge">Web Development Tutorial</span>
+            <h1>Responsive Web Design</h1>
+            <p class="hero-desc">
+                Teknik dan pendekatan modern untuk memastikan tampilan web optimal di berbagai ukuran layar, mulai dari smartphone hingga desktop monitor.
+            </p>
+        </header>
+
+        <!-- Media Query Section -->
+        <section>
+            <div class="section-card">
+                <h2 class="section-title">
+                    <span class="icon">⚡</span>
+                    1. Media Query
+                </h2>
+                <p class="section-text">
+                    Media Query adalah salah satu teknik utama dalam CSS yang memungkinkan developer menerapkan style berbeda berdasarkan ukuran viewport atau lebar layar perangkat.
+                </p>
+
+                <!-- Code Block -->
+                <div class="code-container">
+                    <span class="keyword">@media</span> (<span class="property">max-width</span>: <span class="number">768px</span>) {<br>
+                    &nbsp;&nbsp;<span class="selector">.product</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="property">flex-direction</span>: column;<br>
+                    &nbsp;&nbsp;}<br>
+                    }
+                </div>
+
+                <p class="section-text" style="font-size: 0.95rem;">
+                    💡 <strong>Penjelasan:</strong> Saat lebar layar berada di bawah <strong>768 piksel</strong>, susunan elemen produk yang sebelumnya menyamping (horizontal) akan otomatis berubah menjadi vertikal (stacked).
+                </p>
+
+                <!-- Interactive Demo -->
+                <div class="demo-box">
+                    <div class="demo-header">
+                        <span class="demo-label">Simulasi Perubahan Layout Live</span>
+                        <span class="width-indicator" id="widthDisplay">Simulasi Lebar: 850px</span>
+                    </div>
+
+                    <div class="slider-control">
+                        <label for="widthSlider">Geser slider untuk mengubah lebar layar simulated:</label>
+                        <input type="range" id="widthSlider" min="360" max="900" value="850">
+                    </div>
+
+                    <div class="product-container" id="productDemo" style="flex-direction: row;">
+                        <div class="product-card">
+                            <div style="background: linear-gradient(135deg, #6366f1, #a855f7); height: 80px; border-radius: 6px; margin-bottom: 8px;"></div>
+                            <h4>Produk A</h4>
+                            <p>Rp 150.000</p>
+                        </div>
+                        <div class="product-card">
+                            <div style="background: linear-gradient(135deg, #06b6d4, #3b82f6); height: 80px; border-radius: 6px; margin-bottom: 8px;"></div>
+                            <h4>Produk B</h4>
+                            <p>Rp 200.000</p>
+                        </div>
+                        <div class="product-card">
+                            <div style="background: linear-gradient(135deg, #10b981, #059669); height: 80px; border-radius: 6px; margin-bottom: 8px;"></div>
+                            <h4>Produk C</h4>
+                            <p>Rp 350.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Combining Techniques Section -->
+        <section>
+            <h2 style="font-size: 1.75rem; margin-bottom: 20px;">Kombinasi Teknik Responsive Web Design</h2>
+            <p class="section-text">
+                Responsive Web Design bukan cuma soal Media Query. Developer biasanya menggabungkan beberapa teknik pendukung berikut untuk menciptakan pengalaman pengguna yang fleksibel dan responsif:
+            </p>
+
+            <div class="techniques-grid">
+
+                <!-- 1. Flexible Layout -->
+                <div class="technique-card">
+                    <h3>📐 Flexible Layout</h3>
+                    <p>
+                        Menggunakan <strong>Flexbox</strong> atau <strong>CSS Grid</strong> agar susunan elemen dapat beradaptasi dan menyesuaikan ruang layar yang tersedia secara alami.
+                    </p>
+                    <div style="background: var(--code-bg); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; color: #a7f3d0;">
+                        display: flex;<br>
+                        flex-wrap: wrap;
+                    </div>
+                </div>
+
+                <!-- 2. Relative Units -->
+                <div class="technique-card">
+                    <h3>📏 Relative Units</h3>
+                    <p>
+                        Menggunakan satuan relatif seperti <span class="unit-badge">%</span>, <span class="unit-badge">rem</span>, atau <span class="unit-badge">vw</span> daripada ukuran tetap (fixed px) agar skala teks dan komponen menyesuaikan layar.
+                    </p>
+                    <div style="background: var(--code-bg); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; color: #fbbf24;">
+                        width: 100%;<br>
+                        font-size: 1.2rem;
+                    </div>
+                </div>
+
+                <!-- 3. Responsive Images -->
+                <div class="technique-card">
+                    <h3>🖼️ Responsive Images</h3>
+                    <p>
+                        Memastikan gambar tidak meluap (overflow) melewati lebar layar serta memuat ukuran gambar yang efisien sesuai dengan perangkat pengguna.
+                    </p>
+                    <div style="background: var(--code-bg); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; color: #38bdf8;">
+                        max-width: 100%;<br>
+                        height: auto;
+                    </div>
+                </div>
+
+                <!-- 4. Mobile-first Design -->
+                <div class="technique-card" style="grid-column: 1 / -1;">
+                    <h3>📱 Mobile-first Design</h3>
+                    <p>
+                        Pendekatan merancang tampilan dan tata letak untuk layar kecil (smartphone) terlebih dahulu, kemudian mengembangkannya secara bertahap (progressive enhancement) untuk layar yang lebih besar seperti tablet dan desktop.
+                    </p>
+
+                    <div class="mobile-first-steps">
+                        <div class="step-box">
+                            <div class="step-icon">📱</div>
+                            <h5>Mobile</h5>
+                            <span>Layout Single Column</span>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-icon">💻</div>
+                            <h5>Tablet</h5>
+                            <span>2 Column Layout</span>
+                        </div>
+                        <div class="step-box">
+                            <div class="step-icon">🖥️</div>
+                            <h5>Desktop</h5>
+                            <span>Multi Column & Sidebar</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const slider = document.getElementById('widthSlider');
+        const widthDisplay = document.getElementById('widthDisplay');
+        const productDemo = document.getElementById('productDemo');
+
+        slider.addEventListener('input', function() {
+            const val = this.value;
+            widthDisplay.textContent = `Simulasi Lebar: ${val}px`;
+
+            if (val <= 768) {
+                productDemo.style.flexDirection = 'column';
+                productDemo.style.border = '2px dashed #f472b6';
+            } else {
+                productDemo.style.flexDirection = 'row';
+                productDemo.style.border = '1px dashed var(--border-color)';
+            }
+        });
+    </script>
+</body>
+</html>

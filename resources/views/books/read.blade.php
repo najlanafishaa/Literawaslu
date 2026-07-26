@@ -35,9 +35,9 @@
     </div>
 </div>
 
-<div style="margin-top: 15px; padding: 12px 20px; background-color: rgba(66,133,244,0.05); border: 1px solid rgba(66,133,244,0.2); border-radius: var(--border-radius); display: flex; align-items: center; gap: 10px;">
-    <i class="fa-solid fa-eye" style="color: #4285F4; font-size: 1.1rem;"></i>
-    <span style="font-size: 0.82rem; color: var(--gray-700);">
+<div style="margin-top:15px; padding:12px 20px; background-color:var(--gray-100); border:1px solid var(--gray-200); border-radius:var(--border-radius); display:flex; align-items:center; gap:10px;">
+    <i class="fa-solid fa-eye" style="color:var(--primary); font-size:1.1rem;"></i>
+    <span style="font-size:0.82rem; color:var(--gray-700);">
         Mode <strong>baca online saja</strong>. Unduh file tidak diizinkan.
     </span>
 </div>

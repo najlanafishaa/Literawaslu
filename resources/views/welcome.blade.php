@@ -17,21 +17,23 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+    <body class="flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col" style="background-color: var(--gray-100); color: var(--dark);">
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
                     @auth
                         <a
                             href="{{ url('/dashboard') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                            class="inline-block px-5 py-1.5 rounded-sm text-sm leading-normal border"
+                            style="color: var(--dark); border-color: var(--gray-300);"
                         >
                             Dashboard
                         </a>
                     @else
                         <a
                             href="{{ route('login') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
+                            class="inline-block px-5 py-1.5 rounded-sm text-sm leading-normal"
+                            style="color: var(--dark);"
                         >
                             Log in
                         </a>
@@ -39,7 +41,8 @@
                         @if (Route::has('register'))
                             <a
                                 href="{{ route('register') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
+                                class="inline-block px-5 py-1.5 rounded-sm text-sm leading-normal border"
+                                style="color: var(--dark); border-color: var(--gray-300);">
                                 Register
                             </a>
                         @endif
@@ -49,20 +52,20 @@
         </header>
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
-                <div class="text-[13px] leading-[20px] flex-1 p-6 pb-6 lg:p-20 lg:pb-10 bg-white dark:bg-[#161615] dark:text-[#EDEDEC] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
-                    <h1 class="mb-1 font-medium">Let's get started</h1>
-                    <p class="mb-2 text-[#706f6c] dark:text-[#A1A09A]">With so many options available to you,<br /> we suggest you start with the following:</p>
+                <div class="text-[13px] leading-[20px] flex-1 p-6 pb-6 lg:p-20 lg:pb-10 rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none" style="background-color: var(--light); color: var(--dark); border: 1px solid var(--gray-200);">
+                    <h1 class="mb-1 font-medium">Selamat Datang di Literawaslu</h1>
+                    <p class="mb-2" style="color: var(--gray-600);">Sistem Manajemen Perpustakaan dan Literasi Bawaslu.</p>
                     <ul class="flex flex-col mb-4 lg:mb-6">
-                        <li class="flex items-center gap-4 py-2 relative before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A] before:top-1/2 before:bottom-0 before:left-[0.4rem] before:absolute">
-                            <span class="relative py-1 bg-white dark:bg-[#161615]">
-                                <span class="flex items-center justify-center rounded-full bg-[#FDFDFC] dark:bg-[#161615] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-[#3E3E3A] border-[#e3e3e0]">
-                                    <span class="rounded-full bg-[#dbdbd7] dark:bg-[#3E3E3A] w-1.5 h-1.5"></span>
+                        <li class="flex items-center gap-4 py-2 relative">
+                            <span class="relative py-1" style="background-color: var(--light);">
+                                <span class="flex items-center justify-center rounded-full w-3.5 h-3.5 border" style="border-color: var(--gray-300); background-color: var(--gray-50);">
+                                    <span class="rounded-full w-1.5 h-1.5" style="background-color: var(--primary);"></span>
                                 </span>
                             </span>
                             <span>
-                                Read the
-                                <a href="https://laravel.com/docs" target="_blank" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-[#f53003] dark:text-[#FF4433] ml-1">
-                                    <span>Documentation</span>
+                                Akses
+                                <a href="{{ route('login') }}" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 ml-1" style="color: var(--primary);">
+                                    <span>Portal Perpustakaan</span>
                                     <svg
                                         width="10"
                                         height="11"

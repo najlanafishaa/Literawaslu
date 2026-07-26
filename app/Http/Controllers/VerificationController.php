@@ -31,7 +31,7 @@ class VerificationController extends Controller
     public function approveMember(Member $member)
     {
         $member->update(['status' => 'active']);
-        return back()->with('success', "Member {$member->user->name} berhasil diverifikasi.");
+        return back()->with('success', "Registrasi berhasil. Akun Anda telah dibuat dan disetujui.");
     }
     
     /**
@@ -40,14 +40,13 @@ class VerificationController extends Controller
     public function rejectMember(Member $member)
     {
         $user = $member->user;
-        $name = $user ? $user->name : 'Member';
         
         $member->delete();
         if ($user) {
             $user->delete();
         }
         
-        return back()->with('success', "Pendaftaran member {$name} ditolak dan akunnya telah dihapus dari sistem.");
+        return back()->with('success', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
     }
 
     /**
@@ -57,7 +56,7 @@ class VerificationController extends Controller
     {
         // Pastikan stok masih ada
         if ($borrow->book->available_stock <= 0) {
-            return back()->with('error', "Stok buku '{$borrow->book->title}' sedang habis, peminjaman tidak bisa disetujui.");
+            return back()->with('error', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
         }
         
         $borrow->update(['status' => 'borrowed']);
@@ -69,17 +68,7 @@ class VerificationController extends Controller
         // Tambah total_loans member saat disetujui
         $borrow->member->increment('total_loans');
 
-        // Tambah 1 Poin Reward setelah disetujui Admin
-        $borrow->member->increment('points', 1);
-
-        \App\Models\PointHistory::create([
-            'member_id' => $borrow->member->id,
-            'type' => 'earn',
-            'points' => 1,
-            'description' => "Bonus 1 Poin Peminjaman Online buku '{$borrow->book->title}' (Disetujui Admin)",
-        ]);
-        
-        return back()->with('success', "Peminjaman buku '{$borrow->book->title}' oleh '{$borrow->member->user->name}' disetujui. (+1 Poin Reward diberikan ke member).");
+        return back()->with('success', "Peminjaman telah disetujui. Buku sudah dapat diakses sesuai jenis peminjaman.");
     }
     
     /**
@@ -88,7 +77,7 @@ class VerificationController extends Controller
     public function rejectBorrow(Borrow $borrow)
     {
         $borrow->update(['status' => 'rejected']);
-        return back()->with('success', "Permintaan peminjaman buku ditolak.");
+        return back()->with('success', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
     }
 
     /**
@@ -108,7 +97,7 @@ class VerificationController extends Controller
         // Log the link
         Log::info("Reset Password Link for Member ({$resetRequest->user->email}): {$resetUrl}");
 
-        return back()->with('success', "Permintaan reset password untuk {$resetRequest->user->name} disetujui. Link reset: {$resetUrl}")
+        return back()->with('success', "Permintaan reset password berhasil dikirim. Silakan menunggu persetujuan dari Admin.")
                      ->with('simulated_link', $resetUrl);
     }
 
@@ -117,9 +106,8 @@ class VerificationController extends Controller
      */
     public function rejectResetRequest(MemberResetRequest $resetRequest)
     {
-        $name = $resetRequest->user->name;
         $resetRequest->delete();
 
-        return back()->with('success', "Permintaan reset password untuk {$name} ditolak.");
+        return back()->with('success', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
     }
 }

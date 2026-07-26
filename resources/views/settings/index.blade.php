@@ -8,7 +8,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;">
         <div>
             <h1>Pengaturan & Integrasi Perpustakaan</h1>
-            <p>Atur identitas perpustakaan, parameter operasional, durasi pinjam, denda, dan kelola integrasi data Google Sheets & Google Sites.</p>
+            <p>Atur identitas perpustakaan, parameter operasional, durasi pinjam, denda, dan kelola integrasi data Google Sheets.</p>
         </div>
         <div>
             <i class="fa-solid fa-sliders" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
@@ -17,7 +17,7 @@
 </div>
 
 @if($errors->any())
-    <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+    <div class="alert alert-danger" style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
         <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
     </div>
 @endif

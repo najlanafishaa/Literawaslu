@@ -13,52 +13,42 @@
 
 <!-- Stats Dashboard Grid -->
 <div class="grid-stats" style="margin-bottom: 25px;">
-    <a href="{{ route('books.index') }}" class="stat-card" style="text-decoration: none; color: inherit; cursor: pointer;">
+    <a href="{{ route('books.index') }}" class="stat-card card-red" style="text-decoration: none; cursor: pointer;">
         <div class="stat-info">
-            <h3>Total Buku</h3>
+            <h3>TOTAL KOLEKSI BUKU</h3>
             <p>{{ $totalBooks }} Buku</p>
         </div>
-        <div class="stat-icon red">
+        <div class="stat-icon">
             <i class="fa-solid fa-book"></i>
         </div>
     </a>
     
-    <a href="{{ route('members.index') }}" class="stat-card" style="text-decoration: none; color: inherit; cursor: pointer;">
+    <a href="{{ route('borrows.history') }}" class="stat-card card-dark" style="text-decoration: none; cursor: pointer;">
         <div class="stat-info">
-            <h3>Total Member</h3>
-            <p>{{ $totalMembers }} Member</p>
-        </div>
-        <div class="stat-icon yellow">
-            <i class="fa-solid fa-users"></i>
-        </div>
-    </a>
-    
-    <a href="{{ route('borrows.history') }}" class="stat-card" style="text-decoration: none; color: inherit; cursor: pointer;">
-        <div class="stat-info">
-            <h3>Total Peminjaman</h3>
+            <h3>SEDANG DIPINJAM</h3>
             <p>{{ $totalTransactions }} Transaksi</p>
         </div>
-        <div class="stat-icon black">
+        <div class="stat-icon">
             <i class="fa-solid fa-hand-holding-hand"></i>
         </div>
     </a>
     
-    <a href="{{ route('borrows.history') }}" class="stat-card" style="text-decoration: none; color: inherit; cursor: pointer;">
+    <a href="{{ route('members.index') }}" class="stat-card card-yellow" style="text-decoration: none; cursor: pointer;">
         <div class="stat-info">
-            <h3>Total Pengembalian</h3>
-            <p style="color: #16a34a;">{{ $totalReturns ?? 0 }} Selesai</p>
+            <h3>ANGGOTA TERDAFTAR</h3>
+            <p>{{ $totalMembers }} Member</p>
         </div>
-        <div class="stat-icon green" style="background-color: rgba(34, 197, 94, 0.1);">
-            <i class="fa-solid fa-circle-check"></i>
+        <div class="stat-icon">
+            <i class="fa-solid fa-users"></i>
         </div>
     </a>
 
-    <a href="{{ route('borrows.history') }}" class="stat-card" style="text-decoration: none; color: inherit; cursor: pointer;">
+    <a href="{{ route('borrows.history') }}" class="stat-card card-red" style="text-decoration: none; cursor: pointer;">
         <div class="stat-info">
-            <h3>Jumlah Buku Terlambat</h3>
-            <p style="{{ $overdueCount > 0 ? 'color: var(--primary);' : '' }}">{{ $overdueCount }} Transaksi</p>
+            <h3>KETERLAMBATAN</h3>
+            <p style="{{ $overdueCount > 0 ? 'color:#d62027;' : '' }}">{{ $overdueCount }} Transaksi</p>
         </div>
-        <div class="stat-icon red" style="background-color: rgba(var(--primary-rgb), 0.05);">
+        <div class="stat-icon">
             <i class="fa-solid fa-circle-exclamation"></i>
         </div>
     </a>
@@ -97,9 +87,9 @@
 
 <!-- Online Borrow Approval Section -->
 <div class="card" style="margin-bottom: 25px;">
-    <div class="card-header" style="background-color: var(--secondary); color: white; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <h2 style="color: white; margin: 0;"><i class="fa-solid fa-list-check" style="margin-right: 8px;"></i> Daftar Pengajuan Peminjaman Online</h2>
-        <span class="badge badge-light" style="color: var(--dark); font-weight: bold;">{{ isset($pendingBorrowsList) ? $pendingBorrowsList->count() : 0 }} Pengajuan Menunggu</span>
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <h2 style="margin: 0;"><i class="fa-solid fa-list-check" style="color: var(--primary); margin-right: 8px;"></i> Daftar Pengajuan Peminjaman Online</h2>
+        <span class="badge badge-success">{{ isset($pendingBorrowsList) ? $pendingBorrowsList->count() : 0 }} Pengajuan Menunggu</span>
     </div>
     <div class="card-body">
         @if(!isset($pendingBorrowsList) || $pendingBorrowsList->isEmpty())
@@ -121,7 +111,7 @@
                             <tr>
                                 <td>
                                     <strong style="color: var(--dark);">{{ $borrow->member->user->name }}</strong>
-                                    <div style="font-size: 0.8rem; color: #b58b00; font-weight: 600;">{{ $borrow->member->member_code }}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-600); font-weight: 600;">{{ $borrow->member->member_code }}</div>
                                 </td>
                                 <td>
                                     <strong style="color: var(--primary);">{{ $borrow->book->title }}</strong>
@@ -129,19 +119,19 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d M Y, H:i') }}</td>
                                 <td>
-                                    <span class="badge badge-warning" style="background-color: #fef08a; color: #ca8a04;"><i class="fa-solid fa-clock"></i> Menunggu Persetujuan</span>
+                                    <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Menunggu Persetujuan</span>
                                 </td>
                                 <td>
                                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                                         <form action="{{ route('verifications.borrow.approve', $borrow->id) }}" method="POST" style="margin: 0;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: #22c55e; color: white; padding: 6px 12px; font-weight: 600;">
+                                            <button type="submit" class="btn btn-secondary btn-sm">
                                                 <i class="fa-solid fa-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.borrow.reject', $borrow->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak pengajuan ini?');" style="margin: 0;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: var(--primary); color: white; padding: 6px 12px; font-weight: 600;">
+                                            <button type="submit" class="btn btn-outline btn-sm">
                                                 <i class="fa-solid fa-xmark"></i> Tolak
                                             </button>
                                         </form>

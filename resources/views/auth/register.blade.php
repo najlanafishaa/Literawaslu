@@ -16,7 +16,7 @@
         </div>
 
         @if($errors->any())
-            <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert alert-danger">
                 <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
             </div>
         @endif
@@ -45,7 +45,7 @@
                         </button>
                     </div>
                     {{-- Indikator kekuatan password --}}
-                    <div id="password-strength-bar" style="height: 5px; border-radius: 3px; margin-top: 6px; transition: all 0.3s; width: 0%; background: #e74c3c;"></div>
+                    <div id="password-strength-bar" style="height: 5px; border-radius: 3px; margin-top: 6px; transition: all 0.3s; width: 0%; background: var(--primary);"></div>
                     <div id="password-strength-label" style="font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></div>
                 </div>
 
@@ -74,7 +74,7 @@
                 <input type="text" name="security_answer" id="security_answer" class="form-control" placeholder="Tulis jawaban Anda di sini..." value="{{ old('security_answer') }}" required>
             </div>
 
-            <div class="form-group" style="background-color: rgba(var(--secondary-rgb), 0.05); border: 1px dashed var(--secondary); padding: 12px; border-radius: var(--border-radius); font-size: 0.8rem; color: var(--gray-700); margin-bottom: 25px;">
+            <div class="alert alert-warning" style="display: block; font-size: 0.8rem;">
                 <i class="fa-solid fa-circle-info" style="color: var(--secondary); margin-right: 5px;"></i>
                 Setelah pendaftaran selesai, sistem secara otomatis akan menerbitkan kartu digital perpustakaan dan memberikan poin bonus pendaftaran sebesar <strong>10 Poin</strong>!
             </div>
@@ -129,16 +129,16 @@
             return;
         }
         if (score <= 2) {
-            bar.style.width = '33%'; bar.style.background = '#e74c3c';
-            label.style.color = '#e74c3c'; label.textContent = '🔴 Lemah — Password belum cukup kuat untuk mendaftar';
+            bar.style.width = '33%'; bar.style.background = 'var(--primary)';
+            label.style.color = 'var(--primary)'; label.textContent = '🔴 Lemah — Password belum cukup kuat untuk mendaftar';
             passwordIsStrong = false;
         } else if (score === 3 || score === 4) {
-            bar.style.width = '66%'; bar.style.background = '#f39c12';
-            label.style.color = '#f39c12'; label.textContent = '🟡 Sedang — Tambahkan simbol/angka agar lebih kuat';
+            bar.style.width = '66%'; bar.style.background = 'var(--secondary)';
+            label.style.color = 'var(--secondary)'; label.textContent = '🟡 Sedang — Tambahkan simbol/angka agar lebih kuat';
             passwordIsStrong = false;
         } else {
-            bar.style.width = '100%'; bar.style.background = '#27ae60';
-            label.style.color = '#27ae60'; label.textContent = 'Kuat - Kata sandi aman dan siap digunakan';
+            bar.style.width = '100%'; bar.style.background = 'var(--dark)';
+            label.style.color = 'var(--dark)'; label.textContent = 'Kuat - Kata sandi aman dan siap digunakan';
             passwordIsStrong = true;
         }
 

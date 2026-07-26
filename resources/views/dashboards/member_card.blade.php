@@ -36,7 +36,7 @@
                     <div class="digital-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; z-index: 5;">
                         <div class="card-logo" style="display: flex; align-items: center; gap: 10px;">
                             <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" style="height: 52px; width: auto; object-fit: contain;">
-                            <div style="font-size: 1.45rem; font-weight: 800; color: #1A1A1A; line-height: 1; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">
+                            <div style="font-size: 1.45rem; font-weight: 800; color: #1A1A1A; line-height: 1; letter-spacing: 0.5px;">
                                 Literawaslu
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                     
                     <div class="digital-card-body" style="margin-top: 10px; z-index: 5; display: flex; align-items: center; gap: 15px;">
                         <div>
-                            <div class="member-name" style="font-size: 1.6rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">
+                            <div class="member-name" style="font-size: 1.6rem; font-weight: 700; color: #1A1A1A; letter-spacing: 0.5px;">
                                 {{ auth()->user()->name }}
                             </div>
                             <div class="member-id" style="font-size: 1.35rem; color: #1A1A1A; margin-top: 5px; font-family: monospace; letter-spacing: 2px; font-weight: bold;">
@@ -56,7 +56,7 @@
                     <div class="digital-card-footer" style="margin-top: 5px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 5;">
                         <div class="card-info-item">
                             <label style="font-size: 0.68rem; text-transform: uppercase; color: rgba(0,0,0,0.55); display: block; letter-spacing: 1px; font-weight: 700; margin-bottom: 2px;">Berlaku Sampai</label>
-                            <span style="font-size: 1rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif;">{{ strtoupper($member->created_at->addYear(1)->locale('id')->translatedFormat('d F Y')) }}</span>
+                            <span style="font-size: 1rem; font-weight: 700; color: #1A1A1A;">{{ strtoupper($member->created_at->addYear(1)->locale('id')->translatedFormat('d F Y')) }}</span>
                         </div>
                     </div>
 
@@ -74,21 +74,21 @@
                     <div style="display: flex; align-items: center; gap: 10px; z-index: 5;">
                         <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" style="height: 56px; width: auto; object-fit: contain;">
                         <div style="text-align: left; line-height: 1.1;">
-                            <div style="font-size: 1.3rem; font-weight: 800; color: #1A1A1A; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">BAWASLU</div>
-                            <div style="font-size: 0.52rem; font-weight: 700; color: rgba(0,0,0,0.65); font-family: 'Montserrat', sans-serif; letter-spacing: 0.2px;">BADAN PENGAWAS PEMILIHAN UMUM</div>
-                            <div style="font-size: 0.48rem; font-weight: 700; color: #1A1A1A; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;">PROVINSI LAMPUNG</div>
+                            <div style="font-size: 1.3rem; font-weight: 800; color: #1A1A1A; letter-spacing: 0.5px;">BAWASLU</div>
+                            <div style="font-size: 0.52rem; font-weight: 700; color: rgba(0,0,0,0.65); letter-spacing: 0.2px;">BADAN PENGAWAS PEMILIHAN UMUM</div>
+                            <div style="font-size: 0.48rem; font-weight: 700; color: #1A1A1A; letter-spacing: 0.5px;">PROVINSI LAMPUNG</div>
                         </div>
                     </div>
 
                     <!-- Middle Bawaslu Quote -->
                     <div style="margin: auto 0; z-index: 5; max-width: 380px;">
-                        <p style="font-size: 0.85rem; font-weight: 800; color: #1A1A1A; line-height: 1.5; font-family: 'Montserrat', sans-serif; letter-spacing: 0.2px; margin: 0; font-style: italic;">
+                        <p style="font-size: 0.85rem; font-weight: 800; color: #1A1A1A; line-height: 1.5; letter-spacing: 0.2px; margin: 0; font-style: italic;">
                             "Bersama Rakyat Awasi Pemilu,<br>Bersama Bawaslu Tegakkan Keadilan Pemilu"
                         </p>
                     </div>
 
                     <!-- Bottom White Pill Badge (Social & Web Info) -->
-                    <div style="background-color: #FFFFFF; color: #1A1A1A; border-radius: 20px; padding: 5px 15px; display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 395px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); font-family: 'Montserrat', sans-serif; margin-top: 10px; z-index: 5;">
+                    <div style="background-color: #FFFFFF; color: #1A1A1A; border-radius: 20px; padding: 5px 15px; display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 395px; box-shadow: 0 4px 8px rgba(0,0,0,0.15); margin-top: 10px; z-index: 5;">
                         <!-- Web link with circular globe icon -->
                         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.58rem;">
                             <span style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border: 1.2px solid #1A1A1A; border-radius: 50%; font-size: 9px;">

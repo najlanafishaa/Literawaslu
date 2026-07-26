@@ -115,13 +115,14 @@
             <div class="form-group" id="driveLinkGroup">
                 <label for="drive_link"><i class="fa-brands fa-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive)</label>
                 <input type="url" name="drive_link" id="drive_link" class="form-control" placeholder="https://drive.google.com/file/d/FILE_ID/view" value="{{ old('drive_link', $book->drive_link) }}">
-                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Masukkan link Google Drive agar member bisa membaca buku secara online. Buku hanya bisa ditampilkan (preview), tidak bisa diunduh.</small>
-                @if($book->drive_link)
-                    <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-link" style="color: var(--success);"></i>
-                        <small style="color: var(--success); font-weight: 600;">Link baca online sudah tersedia</small>
-                    </div>
-                @endif
+                <div style="margin-top: 8px;">
+                    <span style="font-size: 0.8rem; color: var(--gray-700); font-weight: 600;">Jenis Buku Saat Ini: </span>
+                    @if($book->drive_link)
+                        <span class="badge badge-online">Online</span>
+                    @else
+                        <span class="badge badge-offline">Offline</span>
+                    @endif
+                </div>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">

@@ -17,10 +17,10 @@
             <p>Rekap statistik data anggota, sirkulasi peminjaman, buku populer, dan catatan keterlambatan.</p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="{{ route('reports.export', request()->all()) }}" class="btn btn-secondary btn-sm no-print" style="background-color: #16a34a; border-color: #16a34a; color: white; font-weight: 600;">
+            <a href="{{ route('reports.export', request()->all()) }}" class="btn btn-secondary btn-sm no-print">
                 <i class="fa-solid fa-file-excel"></i> Export ke Excel
             </a>
-            <a href="{{ route('reports.pdf', request()->all()) }}" target="_blank" class="btn btn-primary btn-sm no-print" style="background-color: var(--light); color: var(--primary); font-weight: 600;">
+            <a href="{{ route('reports.pdf', request()->all()) }}" target="_blank" class="btn btn-primary btn-sm no-print">
                 <i class="fa-solid fa-file-pdf"></i> Cetak Laporan / PDF
             </a>
         </div>
@@ -45,7 +45,7 @@
                 <input type="date" name="start_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('start_date') }}" required>
                 <span style="color: var(--gray-600); font-size: 0.8rem;">s/d</span>
                 <input type="date" name="end_date" class="form-control" style="width: auto; padding: 5px 10px; font-size: 0.8rem; height: 32px;" value="{{ request('end_date') }}" required>
-                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem; height: 32px; background-color: var(--dark); border-color: var(--dark); color: white;">Filter</button>
+                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.8rem; height: 32px;">Filter</button>
             </div>
         </form>
         @if(isset($filterLabel))
@@ -72,7 +72,7 @@
             <h3>Jumlah Keterlambatan</h3>
             <p style="{{ $lateCount > 0 ? 'color: var(--primary);' : '' }}">{{ $lateCount }} Kali</p>
         </div>
-        <div class="stat-icon red" style="background-color: rgba(var(--primary-rgb), 0.05);">
+        <div class="stat-icon red">
             <i class="fa-solid fa-clock"></i>
         </div>
     </div>
@@ -88,9 +88,9 @@
     <div class="stat-card">
         <div class="stat-info">
             <h3>Buku Fisik Sudah Dipenuhi</h3>
-            <p style="color: var(--success);">{{ $paidFineAmount }} Buku</p>
+            <p style="color: var(--dark);">{{ $paidFineAmount }} Buku</p>
         </div>
-        <div class="stat-icon green" style="background-color: rgba(40,167,69,0.05);">
+        <div class="stat-icon yellow">
             <i class="fa-solid fa-circle-check"></i>
         </div>
     </div>
@@ -99,7 +99,7 @@
             <h3>Buku Fisik Belum Dipenuhi</h3>
             <p style="color: var(--primary);">{{ $unpaidFineAmount }} Buku</p>
         </div>
-        <div class="stat-icon yellow">
+        <div class="stat-icon red">
             <i class="fa-solid fa-circle-exclamation"></i>
         </div>
     </div>
@@ -152,7 +152,7 @@
                 <tbody>
                     @foreach($membersList as $m)
                         <tr>
-                            <td style="font-family: monospace; font-weight: 700; color: #b58b00;">{{ $m->member_code }}</td>
+                            <td style="font-family: monospace; font-weight: 700; color: var(--dark);">{{ $m->member_code }}</td>
                             <td><strong>{{ $m->user->name }}</strong></td>
                             <td>{{ $m->user->email }}</td>
                             <td>{{ $m->total_loans }} kali</td>
@@ -212,12 +212,12 @@
                                     </td>
                                     <td>
                                         @if($lateDays <= 3)
-                                            <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Diproses Otomatis</span>
+                                            <span class="badge badge-success">Diprores Otomatis</span>
                                         @else
                                             @if($ob->fine_status === 'paid')
-                                                <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Sudah Dipenuhi</span>
+                                                <span class="badge badge-success">Sudah Dipenuhi</span>
                                             @else
-                                                <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;">Belum Dipenuhi</span>
+                                                <span class="badge badge-danger">Belum Dipenuhi</span>
                                             @endif
                                         @endif
                                     </td>
@@ -233,7 +233,7 @@
                                     <td><strong>{{ $rl->member->user->name }}</strong></td>
                                     <td>{{ $rl->book->title }}</td>
                                     <td>{{ $due->format('d M Y') }}</td>
-                                    <td><span style="color: #b45309; font-weight: 700;">{{ $lateDays }} Hari</span></td>
+                                    <td><span style="color: var(--primary); font-weight: 700;">{{ $lateDays }} Hari</span></td>
                                     <td>
                                         @if($lateDays == 1)
                                             Pengurangan 10 Poin
@@ -247,12 +247,12 @@
                                     </td>
                                     <td>
                                         @if($lateDays <= 3)
-                                            <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Sudah Dipenuhi</span>
+                                            <span class="badge badge-success">Sudah Dipenuhi</span>
                                         @else
                                             @if($rl->fine_status === 'paid')
-                                                <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;">Sudah Dipenuhi</span>
+                                                <span class="badge badge-success">Sudah Dipenuhi</span>
                                             @else
-                                                <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;">Belum Dipenuhi</span>
+                                                <span class="badge badge-danger">Belum Dipenuhi</span>
                                             @endif
                                         @endif
                                     </td>

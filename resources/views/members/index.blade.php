@@ -53,7 +53,7 @@
                     <tbody>
                         @foreach($members as $member)
                             <tr>
-                                <td style="font-family: monospace; font-weight: 700; color: #b58b00;">{{ $member->member_code }}</td>
+                                <td style="font-family: monospace; font-weight: 700; color: var(--dark);">{{ $member->member_code }}</td>
                                 <td><strong>{{ $member->user->name }}</strong></td>
                                 <td>{{ $member->user->email }}</td>
                                 @if(auth()->user()->role === 'super_admin')
@@ -66,16 +66,16 @@
                                 @endif
                                 <td>{{ $member->total_loans }} Kali</td>
                                 <td>
-                                    <span class="badge badge-warning" style="font-weight: 700;">{{ $member->points }} Pts</span>
+                                    <span class="badge badge-warning">{{ $member->points }} Pts</span>
                                 </td>
                                 <td>{{ $member->borrow_limit }} Buku</td>
                                 <td>
                                     @if($member->status === 'active')
-                                        <span class="badge badge-success" style="background-color: #dcfce7; color: #16a34a;"><i class="fa-solid fa-check"></i> Terverifikasi</span>
+                                        <span class="badge badge-success"><i class="fa-solid fa-check"></i> Terverifikasi</span>
                                     @elseif($member->status === 'pending')
-                                        <span class="badge badge-warning" style="background-color: #fef08a; color: #ca8a04;"><i class="fa-solid fa-clock"></i> Pending</span>
+                                        <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Pending</span>
                                     @elseif($member->status === 'rejected')
-                                        <span class="badge badge-danger" style="background-color: #fee2e2; color: #dc2626;"><i class="fa-solid fa-xmark"></i> Ditolak</span>
+                                        <span class="badge badge-danger"><i class="fa-solid fa-xmark"></i> Ditolak</span>
                                     @else
                                         <span class="badge badge-secondary">{{ $member->status }}</span>
                                     @endif
@@ -85,13 +85,13 @@
                                          @if($member->status === 'pending')
                                              <form action="{{ route('verifications.member.approve', $member->id) }}" method="POST" style="margin: 0;">
                                                  @csrf
-                                                 <button type="submit" class="btn btn-secondary btn-sm" title="Terima Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem; background-color: var(--secondary); border-color: var(--secondary); color: var(--light);">
+                                                 <button type="submit" class="btn btn-secondary btn-sm" title="Terima Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem;">
                                                      <i class="fa-solid fa-user-check"></i> Terima
                                                  </button>
                                              </form>
                                              <form action="{{ route('verifications.member.reject', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak dan menghapus pendaftaran member ini?');" style="margin: 0;">
                                                  @csrf
-                                                 <button type="submit" class="btn btn-outline btn-sm" title="Tolak Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem; color: var(--primary); border-color: rgba(227,30,36,0.3);">
+                                                 <button type="submit" class="btn btn-outline btn-sm" title="Tolak Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem;">
                                                      <i class="fa-solid fa-user-xmark"></i> Tolak
                                                  </button>
                                              </form>
@@ -104,7 +104,7 @@
                                             <form action="{{ route('members.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus member ini dari sistem? Semua data relasi terkait juga akan terhapus.');" style="margin: 0;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-outline btn-sm" title="Hapus Member" style="padding: 6px 10px; color: var(--primary); border-color: rgba(227,30,36,0.2);">
+                                                <button type="submit" class="btn btn-outline btn-sm" title="Hapus Member" style="padding: 6px 10px; color: var(--primary);">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </form>

@@ -19,7 +19,7 @@
         <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-bottom: 20px;">Silakan jawab pertanyaan keamanan di bawah ini untuk mengajukan reset password.</p>
 
         @if(session('error'))
-            <div style="background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert alert-danger">
                 <i class="fa-solid fa-circle-xmark"></i> {{ session('error') }}
             </div>
         @endif
@@ -42,7 +42,7 @@
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <i class="fa-solid fa-key"></i> Verifikasi Jawaban & Buat Password Baru
                 </button>
-                <button type="submit" name="request_admin" value="1" class="btn btn-outline" style="width: 100%; border-color: var(--gray-300); color: var(--dark);" onclick="return confirm('Ajukan bantuan reset password secara manual ke Admin/Petugas perpustakaan?');">
+                <button type="submit" name="request_admin" value="1" class="btn btn-outline" style="width: 100%;" onclick="return confirm('Ajukan bantuan reset password secara manual ke Admin/Petugas perpustakaan?');">
                     <i class="fa-solid fa-headset"></i> Lupa Jawaban? Ajukan Reset ke Admin
                 </button>
             </div>

@@ -5,8 +5,8 @@
 
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
-    <div class="card-header" style="background-color: var(--primary); color: white;">
-        <h2 style="color: white; margin: 0;">Verifikasi Pendaftaran Member Baru</h2>
+    <div class="card-header">
+        <h2 style="margin: 0;"><i class="fa-solid fa-user-check" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Pendaftaran Member Baru</h2>
     </div>
     
     <div class="card-body">
@@ -35,13 +35,13 @@
                                     <div style="display: flex; gap: 8px;">
                                         <form action="{{ route('verifications.member.approve', $member->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: #22c55e; color: white;">
-                                                <i class="fa-solid fa-check"></i> Approve
+                                            <button type="submit" class="btn btn-secondary btn-sm">
+                                                <i class="fa-solid fa-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.member.reject', $member->id) }}" method="POST" onsubmit="return confirm('Tolak pendaftaran member ini?');">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: var(--primary); color: white;">
+                                            <button type="submit" class="btn btn-outline btn-sm">
                                                 <i class="fa-solid fa-xmark"></i> Tolak
                                             </button>
                                         </form>
@@ -56,9 +56,9 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header" style="background-color: var(--secondary); color: white;">
-        <h2 style="color: white; margin: 0;">Verifikasi Peminjaman Online</h2>
+<div class="card" style="margin-bottom: 25px;">
+    <div class="card-header">
+        <h2 style="margin: 0;"><i class="fa-solid fa-laptop-code" style="color: var(--secondary); margin-right: 8px;"></i> Verifikasi Peminjaman Online</h2>
     </div>
     
     <div class="card-body">
@@ -71,6 +71,7 @@
                         <tr>
                             <th>Member</th>
                             <th>Buku</th>
+                            <th>Jenis Buku</th>
                             <th>Tgl Pinjam (Request)</th>
                             <th>Rencana Tgl Kembali</th>
                             <th>Aksi</th>
@@ -87,19 +88,26 @@
                                     <div style="font-weight: bold;">{{ $borrow->book->title }}</div>
                                     <small style="color: var(--gray-600);">Stok: {{ $borrow->book->available_stock }}</small>
                                 </td>
+                                <td>
+                                    @if($borrow->book->drive_link)
+                                        <span class="badge badge-online">Online</span>
+                                    @else
+                                        <span class="badge badge-offline">Offline</span>
+                                    @endif
+                                </td>
                                 <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d M Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($borrow->due_date)->format('d M Y') }}</td>
                                 <td>
                                     <div style="display: flex; gap: 8px;">
                                         <form action="{{ route('verifications.borrow.approve', $borrow->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: #22c55e; color: white;">
+                                            <button type="submit" class="btn btn-secondary btn-sm">
                                                 <i class="fa-solid fa-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.borrow.reject', $borrow->id) }}" method="POST" onsubmit="return confirm('Tolak permintaan pinjaman ini?');">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: var(--primary); color: white;">
+                                            <button type="submit" class="btn btn-outline btn-sm">
                                                 <i class="fa-solid fa-xmark"></i> Tolak
                                             </button>
                                         </form>
@@ -115,21 +123,19 @@
 </div>
 
 @if(session('simulated_link'))
-    <div class="card" style="margin-bottom: 25px; border: 1px solid #bbf7d0; background-color: #f0fdf4;">
-        <div class="card-body" style="color: #166534; font-weight: 500;">
-            <i class="fa-solid fa-circle-check" style="margin-right: 5px; color: #16a34a;"></i>
-            Link Reset Password berhasil dibuat! Salin link berikut dan kirimkan ke Member: 
-            <br><br>
-            <a href="{{ session('simulated_link') }}" target="_blank" style="word-break: break-all; color: var(--primary); font-weight: 700; text-decoration: underline;">
-                {{ session('simulated_link') }}
-            </a>
-        </div>
+    <div class="alert alert-success" style="margin-bottom: 25px;">
+        <i class="fa-solid fa-circle-check"></i>
+        Link Reset Password berhasil dibuat! Salin link berikut dan kirimkan ke Member: 
+        <br>
+        <a href="{{ session('simulated_link') }}" target="_blank" style="word-break: break-all; color: var(--primary); font-weight: 700; text-decoration: underline;">
+            {{ session('simulated_link') }}
+        </a>
     </div>
 @endif
 
-<div class="card" style="margin-top: 25px;">
-    <div class="card-header" style="background-color: var(--dark); color: white;">
-        <h2 style="color: white; margin: 0;">Verifikasi Reset Password Member</h2>
+<div class="card">
+    <div class="card-header">
+        <h2 style="margin: 0;"><i class="fa-solid fa-key" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Reset Password Member</h2>
     </div>
     
     <div class="card-body">
@@ -161,13 +167,13 @@
                                     <div style="display: flex; gap: 8px;">
                                         <form action="{{ route('verifications.reset.approve', $req->id) }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: #22c55e; color: white;">
+                                            <button type="submit" class="btn btn-secondary btn-sm">
                                                 <i class="fa-solid fa-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.reset.reject', $req->id) }}" method="POST" onsubmit="return confirm('Tolak permintaan reset password ini?');">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm" style="background-color: var(--primary); color: white;">
+                                            <button type="submit" class="btn btn-outline btn-sm">
                                                 <i class="fa-solid fa-xmark"></i> Tolak
                                             </button>
                                         </form>

@@ -7,23 +7,24 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #E31E24;
-            --primary-dark: #b51217;
-            --dark: #0F172A;
-            --light: #FFFFFF;
-            --gray-50: #F8FAFC;
-            --gray-100: #F1F5F9;
-            --gray-200: #E2E8F0;
+            --primary: #D62027;
+            --primary-rgb: 214, 32, 39;
+            --secondary: #F5B025;
+            --secondary-rgb: 245, 176, 37;
+            --dark: #1e293b;
+            --light: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
             --gray-600: #475569;
-            --border-radius: 16px;
-            --font-family: 'Plus Jakarta Sans', sans-serif;
-            --font-title: 'Outfit', sans-serif;
+            --border-radius: 8px;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         * {
@@ -33,7 +34,7 @@
         }
 
         body {
-            font-family: var(--font-family);
+            font-family: var(--font-sans);
             background-color: var(--gray-50);
             color: var(--dark);
             min-height: 100vh;
@@ -50,7 +51,7 @@
         }
 
         .brand-logo {
-            font-family: var(--font-title);
+            font-family: var(--font-sans);
             font-weight: 800;
             font-size: 2.2rem;
             margin-bottom: 30px;
@@ -83,13 +84,13 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(90deg, var(--primary), #b51217);
         }
 
         .icon-wrapper {
             width: 90px;
             height: 90px;
-            background-color: rgba(227, 30, 36, 0.1);
+            background-color: rgba(var(--primary-rgb), 0.1);
             color: var(--primary);
             border-radius: 50%;
             display: flex;
@@ -103,20 +104,20 @@
         @keyframes pulse {
             0% {
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(227, 30, 36, 0.2);
+                box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.2);
             }
             70% {
                 transform: scale(1.05);
-                box-shadow: 0 0 0 15px rgba(227, 30, 36, 0);
+                box-shadow: 0 0 0 15px rgba(var(--primary-rgb), 0);
             }
             100% {
                 transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(227, 30, 36, 0);
+                box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0);
             }
         }
 
         h1 {
-            font-family: var(--font-title);
+            font-family: var(--font-sans);
             font-size: 1.6rem;
             font-weight: 700;
             color: var(--dark);
@@ -133,7 +134,7 @@
         .user-details {
             background-color: var(--gray-100);
             padding: 15px;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             margin-bottom: 30px;
             text-align: left;
             border: 1px dashed var(--gray-200);
@@ -169,7 +170,7 @@
             padding: 14px 20px;
             font-size: 0.95rem;
             font-weight: 600;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             cursor: pointer;
             transition: all 0.2s ease-in-out;
             text-decoration: none;
@@ -204,10 +205,12 @@
                 <i class="fa-solid fa-user-shield"></i>
             </div>
             
-            <h1>Menunggu Verifikasi Akun</h1>
+            <h1>Registrasi Berhasil</h1>
             
-            <p>
-                Pendaftaran akun Anda berhasil dilakukan. Namun, untuk menjaga keamanan dan validitas data perpustakaan, akun Anda harus <strong>diverifikasi terlebih dahulu</strong> oleh petugas sebelum Anda dapat mengakses dashboard perpustakaan.
+            <p style="margin-top: 15px;">
+                Registrasi berhasil.<br><br>
+                Akun Anda telah dibuat dan sedang menunggu verifikasi Admin.<br><br>
+                Silakan login kembali setelah akun disetujui.
             </p>
             
             <div class="user-details">

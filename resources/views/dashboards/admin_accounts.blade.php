@@ -5,8 +5,8 @@
 
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
-    <div class="card-header" style="background-color: var(--primary); color: white;">
-        <h2 style="color: white; margin: 0;">Buat Akun Baru</h2>
+    <div class="card-header">
+        <h2 style="margin: 0;"><i class="fa-solid fa-user-plus" style="color: var(--primary); margin-right: 8px;"></i> Buat Akun Baru</h2>
     </div>
     <div class="card-body">
         <form action="{{ route('accounts.store') }}" method="POST">
@@ -63,9 +63,9 @@
                             <td>{{ $user->email }}</td>
                             <td>
                                 @if($user->role === 'super_admin')
-                                    <span class="badge badge-primary" style="background-color: var(--primary); color: white;">Super Admin</span>
+                                    <span class="badge badge-danger">Super Admin</span>
                                 @elseif($user->role === 'petugas')
-                                    <span class="badge badge-info" style="background-color: #0284c7; color: white;">Admin Biasa</span>
+                                    <span class="badge badge-warning">Admin Biasa</span>
                                 @else
                                     <span class="badge badge-secondary">Member</span>
                                 @endif
@@ -74,7 +74,7 @@
                                 @if($user->role === 'super_admin' && auth()->id() !== $user->id)
                                     <form action="{{ route('accounts.demote', $user->id) }}" method="POST" onsubmit="return confirm('Turunkan Super Admin ini menjadi Admin Biasa?');" style="display:inline;">
                                         @csrf
-                                        <button type="submit" class="btn btn-outline btn-sm" style="color: var(--primary); border-color: rgba(227,30,36,0.3);">
+                                        <button type="submit" class="btn btn-outline btn-sm">
                                             <i class="fa-solid fa-arrow-down"></i> Demote
                                         </button>
                                     </form>
@@ -83,7 +83,7 @@
                                     <form action="{{ route('accounts.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini secara permanen?');" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline btn-sm" style="color: #e31e24; border-color: rgba(227,30,36,0.3);">
+                                        <button type="submit" class="btn btn-outline btn-sm" style="color: var(--primary);">
                                             <i class="fa-solid fa-trash"></i> Hapus
                                         </button>
                                     </form>

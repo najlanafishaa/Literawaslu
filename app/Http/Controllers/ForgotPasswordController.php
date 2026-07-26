@@ -128,7 +128,7 @@ class ForgotPasswordController extends Controller
                 'status' => 'pending',
             ]);
 
-            return redirect()->route('login')->with('success', 'Pengajuan reset password telah dikirimkan ke Admin. Silakan tunggu verifikasi/persetujuan dari Admin atau Petugas.');
+            return redirect()->route('login')->with('success', 'Permintaan reset password berhasil dikirim. Silakan menunggu persetujuan dari Admin.');
         }
 
         if ($inputAnswer !== $actualAnswer) {

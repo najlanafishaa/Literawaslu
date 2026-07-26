@@ -19,7 +19,7 @@
         <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-bottom: 20px;">Silakan buat password baru Anda di bawah ini.</p>
 
         @if($errors->any())
-            <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert alert-danger">
                 <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
             </div>
         @endif

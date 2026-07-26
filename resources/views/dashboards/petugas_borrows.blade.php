@@ -22,6 +22,7 @@
                     <thead>
                         <tr>
                             <th>Buku</th>
+                            <th>Jenis Buku</th>
                             <th>Anggota</th>
                             <th>Tgl Pinjam</th>
                             <th>Jatuh Tempo</th>
@@ -42,8 +43,15 @@
                                     <div style="font-size: 0.8rem; color: var(--gray-600); font-family: monospace;">{{ $borrow->book->barcode }}</div>
                                 </td>
                                 <td>
+                                    @if($borrow->book->drive_link)
+                                        <span class="badge badge-online">Online</span>
+                                    @else
+                                        <span class="badge badge-offline">Offline</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <div style="font-weight: 500;">{{ $borrow->member->user->name }}</div>
-                                    <div style="font-size: 0.8rem; color: #b58b00; font-weight: 600;">{{ $borrow->member->member_code }}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-600); font-weight: 600;">{{ $borrow->member->member_code }}</div>
                                 </td>
                                 <td>{{ $borrow->borrow_date->format('d M Y') }}</td>
                                 <td>{{ $borrow->due_date->format('d M Y') }}</td>
@@ -60,7 +68,7 @@
                                     <form action="{{ route('borrows.checkin') }}" method="POST" style="display: inline;">
                                         @csrf
                                         <input type="hidden" name="barcode" value="{{ $borrow->book->barcode }}">
-                                        <button type="submit" class="btn btn-accent btn-sm" style="font-size: 0.75rem; padding: 6px 12px;">
+                                        <button type="submit" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 6px 12px;">
                                             <i class="fa-solid fa-circle-left"></i> Kembalikan
                                         </button>
                                     </form>
@@ -83,7 +91,7 @@
 @endphp
 
 <div class="card" style="margin-top: 25px; margin-bottom: 25px;">
-    <div class="card-header" style="background-color: rgba(var(--primary-rgb), 0.05);">
+    <div class="card-header">
         <h2><i class="fa-solid fa-book-medical" style="color: var(--primary); margin-right: 8px;"></i> Daftar Sanksi Wajib Donasi Buku Fisik (> 3 Hari Terlambat)</h2>
         <span class="badge badge-danger">{{ $unpaidFines->count() }} Transaksi</span>
     </div>
@@ -112,7 +120,7 @@
                                 </td>
                                 <td>
                                     <div style="font-weight: 500;">{{ $fineBorrow->member->user->name }}</div>
-                                    <div style="font-size: 0.8rem; color: #b58b00; font-weight: 600;">{{ $fineBorrow->member->member_code }}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-600); font-weight: 600;">{{ $fineBorrow->member->member_code }}</div>
                                 </td>
                                 <td>{{ $fineBorrow->due_date->format('d M Y') }}</td>
                                 <td>{{ $fineBorrow->return_date ? $fineBorrow->return_date->format('d M Y') : '-' }}</td>

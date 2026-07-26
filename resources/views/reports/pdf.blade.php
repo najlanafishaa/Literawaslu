@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Peminjaman Buku - Literawaslu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         @page {
             size: A4 landscape;
@@ -12,7 +12,7 @@
         }
         
         body {
-            font-family: 'Outfit', Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
             color: #1e293b;
             background: #ffffff;
             margin: 0;
@@ -23,7 +23,7 @@
 
         /* Kop Surat Header */
         .kop-surat {
-            border-bottom: 3px double #99131a;
+            border-bottom: 3px double #D62027;
             padding-bottom: 10px;
             margin-bottom: 20px;
             display: flex;
@@ -40,7 +40,7 @@
             margin: 0;
             font-size: 18px;
             font-weight: 800;
-            color: #99131a;
+            color: #D62027;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -49,14 +49,14 @@
             margin: 4px 0 0 0;
             font-size: 14px;
             font-weight: 700;
-            color: #0f172a;
+            color: #1e293b;
             text-transform: uppercase;
         }
 
         .kop-title p {
             margin: 3px 0 0 0;
             font-size: 11px;
-            color: #64748b;
+            color: #475569;
         }
 
         /* Metadata & Filter Bar */
@@ -84,7 +84,7 @@
 
         .meta-value {
             font-weight: 700;
-            color: #0f172a;
+            color: #1e293b;
         }
 
         /* Summary Stats Cards Grid */
@@ -92,7 +92,7 @@
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            color: #0f172a;
+            color: #1e293b;
             margin-bottom: 8px;
             letter-spacing: 0.5px;
         }
@@ -104,18 +104,18 @@
         }
 
         .summary-table th {
-            background-color: #99131a;
+            background-color: #D62027;
             color: #ffffff;
             font-weight: 600;
             font-size: 11px;
             padding: 8px 10px;
             text-align: center;
-            border: 1px solid #99131a;
+            border: 1px solid #D62027;
         }
 
         .summary-table td {
             background-color: #ffffff;
-            color: #0f172a;
+            color: #1e293b;
             font-weight: 700;
             font-size: 12px;
             padding: 8px 10px;
@@ -164,9 +164,9 @@
             border-radius: 4px;
             text-align: center;
         }
-        .badge-success { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-success { background-color: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
         .badge-warning { background-color: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
-        .badge-danger { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+        .badge-danger { background-color: #fee2e2; color: #D62027; border: 1px solid #fca5a5; }
         .badge-secondary { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
 
         /* Signature Block */
@@ -191,14 +191,14 @@
         .signature-role {
             font-size: 11px;
             font-weight: 700;
-            color: #0f172a;
+            color: #1e293b;
             margin-bottom: 60px;
         }
 
         .signature-name {
             font-size: 12px;
             font-weight: 700;
-            color: #0f172a;
+            color: #1e293b;
             text-decoration: underline;
         }
 
@@ -209,7 +209,7 @@
         }
 
         .no-print-bar {
-            background-color: #0f172a;
+            background-color: #1e293b;
             color: #ffffff;
             padding: 10px 20px;
             display: flex;
@@ -220,7 +220,7 @@
         }
 
         .btn-print {
-            background-color: #99131a;
+            background-color: #D62027;
             color: #ffffff;
             border: none;
             padding: 8px 16px;
@@ -252,9 +252,9 @@
     <!-- Kop Surat -->
     <div class="kop-surat">
         <div class="kop-title">
-            <h1>PERPUSTAKAAN DIGITAL LITERAWASLU</h1>
-            <h2>LAPORAN REKAPITULASI HASIL PEMINJAMAN & PENGEMBALIAN BUKU</h2>
-            <p>Sistem Informasi Pengelolaan Perpustakaan Digital &bull; Literawaslu Official Document</p>
+            <h1>BAWASLU PROVINSI LAMPUNG</h1>
+            <h2>PERPUSTAKAAN DIGITAL LITERAWASLU</h2>
+            <p>Ruang Literasi Pengawasan &bull; Dokumen Resmi Hasil Rekapitulasi</p>
         </div>
     </div>
 
@@ -291,8 +291,8 @@
                 <td>{{ $totalBorrowCount }} Transaksi</td>
                 <td>{{ $lateCount }} Kali</td>
                 <td>{{ $totalFineAmount }} Buku</td>
-                <td style="color: #15803d;">{{ $paidFineAmount }} Buku</td>
-                <td style="color: #b91c1c;">{{ $unpaidFineAmount }} Buku</td>
+                <td style="color: #1e293b;">{{ $paidFineAmount }} Buku</td>
+                <td style="color: #D62027;">{{ $unpaidFineAmount }} Buku</td>
             </tr>
         </tbody>
     </table>
@@ -364,7 +364,7 @@
                             <span class="badge badge-secondary">{{ ucfirst($borrow->status) }}</span>
                         @endif
                     </td>
-                    <td style="{{ $lateDays > 0 ? 'color: #b91c1c; font-weight: 600;' : 'color: #15803d;' }}">
+                    <td style="{{ $lateDays > 0 ? 'color: #D62027; font-weight: 600;' : 'color: #1e293b;' }}">
                         {{ $keterangan }}
                     </td>
                 </tr>
@@ -381,7 +381,7 @@
     <!-- Signature Block -->
     <div class="signature-wrapper">
         <div class="signature-box">
-            <div class="signature-date">Yogyakarta, {{ now()->format('d F Y') }}</div>
+            <div class="signature-date">Bandar Lampung, {{ now()->locale('id')->translatedFormat('d F Y') }}</div>
             <div class="signature-role">Mengetahui,<br>Petugas Perpustakaan Literawaslu</div>
             <div class="signature-name">{{ auth()->user()->name ?? 'Petugas Perpustakaan' }}</div>
             <div class="signature-nip">NIP/ID: {{ auth()->user()->id ? 'PLW-' . str_pad(auth()->user()->id, 4, '0', STR_PAD_LEFT) : '-' }}</div>

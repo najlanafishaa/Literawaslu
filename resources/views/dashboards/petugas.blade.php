@@ -13,40 +13,40 @@
 
 <!-- Stats Dashboard Grid -->
 <div class="grid-stats" style="margin-bottom:20px;">
-    <a href="{{ route('books.index') }}" class="stat-card" style="text-decoration:none; color:inherit; cursor:pointer;">
+    <a href="{{ route('books.index') }}" class="stat-card card-red" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Total Buku</h3>
             <p>{{ $totalBooks }} Buku</p>
         </div>
-        <div class="stat-icon red"><i class="fa-solid fa-book"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
     </a>
-    <a href="{{ route('members.index') }}" class="stat-card" style="text-decoration:none; color:inherit; cursor:pointer;">
+    <a href="{{ route('members.index') }}" class="stat-card card-dark" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Total Member</h3>
             <p>{{ $totalMembers }} Member</p>
         </div>
-        <div class="stat-icon yellow"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
     </a>
-    <a href="{{ route('borrows.index') }}" class="stat-card" style="text-decoration:none; color:inherit; cursor:pointer;">
+    <a href="{{ route('borrows.index') }}" class="stat-card card-yellow" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Total Peminjaman</h3>
             <p>{{ $totalTransactions }} Transaksi</p>
         </div>
-        <div class="stat-icon black"><i class="fa-solid fa-hand-holding-hand"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-hand-holding-hand"></i></div>
     </a>
-    <a href="{{ route('borrows.index') }}" class="stat-card" style="text-decoration:none; color:inherit; cursor:pointer;">
+    <a href="{{ route('borrows.index') }}" class="stat-card card-green" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Total Pengembalian</h3>
-            <p style="color:#16a34a;">{{ $totalReturns ?? 0 }} Selesai</p>
+            <p>{{ $totalReturns ?? 0 }} Selesai</p>
         </div>
-        <div class="stat-icon green" style="background-color:rgba(34,197,94,0.1); color:#16a34a;"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
     </a>
-    <a href="{{ route('borrows.index') }}" class="stat-card" style="text-decoration:none; color:inherit; cursor:pointer;">
+    <a href="{{ route('borrows.index') }}" class="stat-card card-red" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Buku Terlambat</h3>
-            <p style="{{ $overdueCount > 0 ? 'color:var(--primary);' : '' }}">{{ $overdueCount }} Transaksi</p>
+            <p style="{{ $overdueCount > 0 ? 'color: #d62027;' : '' }}">{{ $overdueCount }} Transaksi</p>
         </div>
-        <div class="stat-icon red" style="background-color:rgba(var(--primary-rgb),0.05);"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
     </a>
 </div>
 

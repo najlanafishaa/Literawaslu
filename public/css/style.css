@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 :root {
     --primary: #D62027;
@@ -16,7 +16,7 @@
     --gray-800: #1e293b;
     --gray-900: #0f172a;
     
-    --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --transition: all 0.2s ease-in-out;
     --border-radius: 8px;
     --sidebar-width: 250px;
@@ -28,6 +28,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* ===================================================
+   RESPONSIVE DESIGN CORE: Relative Units & Images
+   =================================================== */
+img, svg, video, iframe {
+    max-width: 100%;
+    height: auto;
 }
 
 body {
@@ -55,7 +63,194 @@ body {
     background: var(--gray-600);
 }
 
-/* Layout Utilities */
+/* ===================================================
+   CARD COLOR SYSTEM
+   =================================================== */
+
+/* --- Stat Cards (grid-stats row) --- */
+.stat-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 20px 24px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+    border-color: #cbd5e1 !important;
+}
+
+.stat-info h3 {
+    font-size: 0.78rem !important;
+    color: #64748b !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-weight: 700 !important;
+    margin-bottom: 6px !important;
+}
+
+.stat-info p {
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.2 !important;
+}
+
+.stat-info small {
+    color: #64748b !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    margin-top: 4px !important;
+    display: inline-block !important;
+}
+
+.stat-icon {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.25rem !important;
+    flex-shrink: 0 !important;
+}
+
+/* stat-card RED */
+.stat-card.card-red {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+}
+.stat-card.card-red .stat-info h3 { color: #64748b !important; }
+.stat-card.card-red .stat-info p  { color: #0f172a !important; }
+.stat-card.card-red .stat-info small { color: #64748b !important; }
+.stat-card.card-red .stat-icon { color: #d62027 !important; background-color: #fee2e2 !important; }
+/* badge inside red stat-card */
+.stat-card.card-red .badge-bronze { background-color: #cd7f32 !important; color: #fff !important; }
+.stat-card.card-red .badge-silver { background-color: #94a3b8 !important; color: #fff !important; }
+.stat-card.card-red .badge-gold   { background-color: #d97706 !important; color: #fff !important; }
+
+/* stat-card YELLOW */
+.stat-card.card-yellow {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+}
+.stat-card.card-yellow .stat-info h3 { color: #64748b !important; }
+.stat-card.card-yellow .stat-info p  { color: #0f172a !important; font-weight: 800 !important; }
+.stat-card.card-yellow .stat-info small { color: #64748b !important; }
+.stat-card.card-yellow .stat-icon { color: #d97706 !important; background-color: #fef9c3 !important; }
+.stat-card.card-yellow .badge-bronze { background-color: #cd7f32 !important; color: #fff !important; }
+.stat-card.card-yellow .badge-silver { background-color: #94a3b8 !important; color: #fff !important; }
+.stat-card.card-yellow .badge-gold   { background-color: #d97706 !important; color: #fff !important; }
+
+/* stat-card DARK/BLACK */
+.stat-card.card-dark {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+}
+.stat-card.card-dark .stat-info h3 { color: #64748b !important; }
+.stat-card.card-dark .stat-info p  { color: #0f172a !important; }
+.stat-card.card-dark .stat-info small { color: #64748b !important; }
+.stat-card.card-dark .stat-icon { color: #0f172a !important; background-color: #f1f5f9 !important; }
+
+/* --- Section Header Strips & Red Card Headers --- */
+.section-header-red,
+.card-header-red,
+.card-primary-red > .card-header,
+div.card-red:not(.stat-card) {
+    background: linear-gradient(135deg, #D62027 0%, #a8191e 100%) !important;
+    color: #ffffff !important;
+    padding: 14px 20px;
+}
+.section-header-red h2, .section-header-red h3, .section-header-red p, .section-header-red span, .section-header-red i, .section-header-red small,
+.card-primary-red > .card-header h2, .card-primary-red > .card-header h3, .card-primary-red > .card-header span, .card-primary-red > .card-header i,
+div.card-red:not(.stat-card) h2, div.card-red:not(.stat-card) h3, div.card-red:not(.stat-card) span, div.card-red:not(.stat-card) i {
+    color: #ffffff !important;
+}
+
+/* --- Full red card (catalog section container) --- */
+/* Only header is red; body stays light */
+.catalog-section-card {
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: var(--box-shadow);
+}
+.catalog-section-card .catalog-section-header {
+    background: linear-gradient(135deg, #D62027 0%, #a8191e 100%);
+    color: #ffffff;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.catalog-section-card .catalog-section-header h2,
+.catalog-section-card .catalog-section-header span,
+.catalog-section-card .catalog-section-header i {
+    color: #ffffff !important;
+}
+.catalog-section-card .catalog-section-body {
+    padding: 20px;
+    background-color: var(--gray-50);
+}
+
+/* --- Backward compat: keep card-primary-red for backward use only if needed --- */
+.card-primary-red-header {
+    background: linear-gradient(135deg, #D62027 0%, #a8191e 100%);
+    color: #ffffff;
+    border-bottom: none;
+    padding: 16px 20px;
+}
+.card-primary-red-header * { color: #ffffff !important; }
+
+/* Form controls stay white always */
+.section-header-red input,
+.section-header-red select {
+    background-color: #ffffff !important;
+    color: var(--dark) !important;
+    border: 1px solid rgba(255,255,255,0.4) !important;
+}
+
+/* Membership Badge Original Colors */
+.badge-bronze {
+    background-color: #cd7f32 !important;
+    color: #ffffff !important;
+}
+
+.badge-silver {
+    background-color: #94a3b8 !important;
+    color: #ffffff !important;
+}
+
+.badge-gold {
+    background-color: #d97706 !important;
+    color: #ffffff !important;
+}
+
+.badge-online {
+    background-color: #eab308 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+.badge-offline {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -230,6 +425,10 @@ body.sidebar-open .sidebar-overlay {
     cursor: pointer;
 }
 
+.mobile-header-brand {
+    display: none;
+}
+
 .header-left {
     display: flex;
     align-items: center;
@@ -366,26 +565,32 @@ body.sidebar-open .sidebar-overlay {
 .stat-icon {
     width: 48px;
     height: 48px;
-    border-radius: 50%;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
+    flex-shrink: 0;
 }
 
 .stat-icon.red {
-    background-color: rgba(var(--primary-rgb), 0.1);
-    color: var(--primary);
+    background-color: #fee2e2;
+    color: #d62027;
 }
 
 .stat-icon.yellow {
-    background-color: rgba(var(--secondary-rgb), 0.1);
-    color: var(--secondary);
+    background-color: #fef9c3;
+    color: #d97706;
 }
 
-.stat-icon.black {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: var(--dark);
+.stat-icon.black, .stat-icon.blue, .stat-icon.dark {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+.stat-icon.green {
+    background-color: #dcfce7;
+    color: #16a34a;
 }
 
 /* Core Dashboard Panels */
@@ -425,12 +630,16 @@ body.sidebar-open .sidebar-overlay {
     .mobile-menu-toggle {
         display: inline-flex;
     }
+    .mobile-header-brand {
+        display: flex;
+        align-items: center;
+    }
     .header-nav {
         padding: 0 16px;
         height: 58px;
     }
     .content-body {
-        padding: 16px;
+        padding: 20px 24px;
     }
     .dashboard-grid {
         grid-template-columns: 1fr;
@@ -452,8 +661,13 @@ body.sidebar-open .sidebar-overlay {
     }
 }
 
-/* ---- Tablet Portrait ---- */
 @media (max-width: 768px) {
+    .form-row,
+    .filter-bar,
+    .action-group-responsive {
+        flex-direction: column;
+    }
+
     .grid-stats {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
@@ -543,11 +757,11 @@ body.sidebar-open .sidebar-overlay {
         font-size: 0.95rem;
     }
     .content-body {
-        padding: 12px 10px 20px;
+        padding: 16px 14px 24px;
     }
     .card-header,
     .card-body {
-        padding: 12px 14px;
+        padding: 16px 18px;
     }
     .card {
         border-radius: 6px;
@@ -1260,12 +1474,22 @@ select option {
     animation: slideIn 0.3s forwards cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.toast i {
+    color: var(--primary);
+}
+
 .toast.toast-success {
     border-left-color: #22c55e;
+}
+.toast.toast-success i {
+    color: #22c55e;
 }
 
 .toast.toast-warning {
     border-left-color: var(--secondary);
+}
+.toast.toast-warning i {
+    color: var(--secondary);
 }
 
 @keyframes slideIn {
@@ -1274,3 +1498,196 @@ select option {
         opacity: 1;
     }
 }
+
+/* ===================================================
+   RESPONSIVE OVERRIDES FOR REWARD & POIN PAGE
+   =================================================== */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+}
+
+/* 1. Hero Card */
+.reward-hero-body {
+    padding: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .reward-hero-body {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 20px !important;
+        gap: 16px !important;
+    }
+
+    .reward-hero-icon-wrap {
+        display: none !important;
+    }
+
+    .reward-hero-points-text {
+        font-size: 2.2rem !important;
+    }
+
+    /* Padding HP agar tidak terlalu sempit */
+    .card-body {
+        padding: 16px 14px !important;
+    }
+}
+
+/* 2. Card Level 1, 2, 3 */
+.reward-tier-row {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--border-radius);
+    padding: 15px 20px;
+    background: var(--gray-50);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    transition: var(--transition);
+}
+
+@media (max-width: 768px) {
+    .reward-tier-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        padding: 12px 14px !important;
+    }
+}
+
+/* 3. Bagian Kiri Card Level */
+.reward-tier-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    .reward-tier-content {
+        width: 100% !important;
+    }
+}
+
+/* 4. Tombol Kanan */
+.reward-tier-btn-wrap {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .reward-tier-btn-wrap {
+        width: 100% !important;
+    }
+
+    .reward-tier-btn-wrap form {
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .reward-tier-btn-wrap .btn,
+    .reward-tier-btn-wrap .badge {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* 5. Kolom Kanan (Ketentuan) */
+.reward-info-item {
+    display: flex;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .reward-info-item {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+}
+
+/* ===================================================
+   Alert Components (Design System)
+   =================================================== */
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.alert-danger {
+    background-color: rgba(var(--primary-rgb), 0.1);
+    border-color: rgba(var(--primary-rgb), 0.2);
+    color: var(--primary);
+}
+.alert-warning {
+    background-color: rgba(var(--secondary-rgb), 0.1);
+    border-color: rgba(var(--secondary-rgb), 0.2);
+    color: var(--secondary);
+}
+.alert-success {
+    background-color: rgba(var(--secondary-rgb), 0.15);
+    border-color: rgba(var(--secondary-rgb), 0.3);
+    color: var(--dark);
+}
+
+/* ===================================================
+   AUTH PAGE LAYOUT
+   Sembunyikan sidebar, header-nav, dan footer
+   saat halaman guest (login, register, dll.)
+   =================================================== */
+body.auth-page .sidebar,
+body.auth-page .header-nav,
+body.auth-page .app-footer,
+body.auth-page .sidebar-overlay,
+body.auth-page .mobile-menu-toggle {
+    display: none !important;
+}
+
+body.auth-page .app-container {
+    display: block;
+}
+
+body.auth-page .main-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gray-100);
+}
+
+body.auth-page .content-body {
+    width: 100%;
+    padding: 0;
+    max-width: 100%;
+}
+
+/* ===================================================
+   MOBILE: Sembunyikan page-title di layar kecil
+   =================================================== */
+@media (max-width: 768px) {
+    .page-title {
+        display: none;
+    }
+}
+

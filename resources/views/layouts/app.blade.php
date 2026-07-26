@@ -10,12 +10,12 @@
     <!-- CSS Dependencies -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     @yield('styles')
 </head>
-<body>
+<body class="@guest auth-page @endguest">
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="app-container">
         <!-- Sidebar Navigation -->
@@ -173,7 +173,7 @@
                         </div>
                     </a>
                 @else
-                    <p style="font-size: 0.8rem; text-align: center; color: rgba(255,255,255,0.4)">Sistem Perpustakaan</p>
+                    <p style="font-size: 0.8rem; text-align: center; color: var(--gray-600)">Sistem Perpustakaan</p>
                 @endauth
             </div>
             <div class="sidebar-resizer" id="sidebarResizer"></div>
@@ -186,8 +186,16 @@
                     <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Buka menu navigasi">
                         <i class="fa-solid fa-bars"></i>
                     </button>
+                    <div class="mobile-header-brand">
+                        <a href="{{ route('dashboard') }}" style="display: flex; align-items: center; gap: 6px; text-decoration: none;">
+                            <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" style="height: 26px; width: auto; object-fit: contain;">
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--dark); line-height: 1;">
+                                Litera<span style="color: var(--primary);">waslu</span>
+                            </div>
+                        </a>
+                    </div>
                     <div class="page-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        @yield('header_title', 'Dashboard')
+                        @yield('header_title')
                     </div>
                 </div>
                 
@@ -222,7 +230,7 @@
 
             <footer class="app-footer" style="padding: 16px 24px; text-align: center; background-color: var(--light); border-top: 1px solid var(--gray-200); margin-top: auto; font-size: 0.82rem; color: var(--gray-600);">
                 <div style="font-weight: 600; color: var(--dark);">&copy; 2026 Bawaslu Provinsi Lampung</div>
-                <div style="font-size: 0.77rem; color: var(--gray-600); margin-top: 2px;">Developed by Najla Princess&#x1F478;&#x1F3FB; &amp; Annisa Manis&#x1F36C;</div>
+                <div style="font-size: 0.77rem; color: var(--gray-600); margin-top: 2px;">Developed by Najla Princess&#x1F478;&#x1F3FB;</div>
             </footer>
         </div>
     </div>
@@ -231,19 +239,19 @@
     <div class="toast-container" id="toastContainer">
         @if(session('success'))
             <div class="toast toast-success">
-                <i class="fa-solid fa-circle-check" style="color: #22c55e;"></i>
+                <i class="fa-solid fa-circle-check"></i>
                 <span>{{ session('success') }}</span>
             </div>
         @endif
         @if(session('error'))
             <div class="toast">
-                <i class="fa-solid fa-circle-xmark" style="color: var(--primary);"></i>
+                <i class="fa-solid fa-circle-xmark"></i>
                 <span>{{ session('error') }}</span>
             </div>
         @endif
         @if(session('warning'))
             <div class="toast toast-warning">
-                <i class="fa-solid fa-circle-exclamation" style="color: var(--secondary);"></i>
+                <i class="fa-solid fa-circle-exclamation"></i>
                 <span>{{ session('warning') }}</span>
             </div>
         @endif
@@ -270,11 +278,11 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type === 'success' ? 'toast-success' : (type === 'warning' ? 'toast-warning' : '')}`;
             
-            let icon = '<i class="fa-solid fa-circle-xmark" style="color: var(--primary);"></i>';
+            let icon = '<i class="fa-solid fa-circle-xmark"></i>';
             if (type === 'success') {
-                icon = '<i class="fa-solid fa-circle-check" style="color: #22c55e;"></i>';
+                icon = '<i class="fa-solid fa-circle-check"></i>';
             } else if (type === 'warning') {
-                icon = '<i class="fa-solid fa-circle-exclamation" style="color: var(--secondary);"></i>';
+                icon = '<i class="fa-solid fa-circle-exclamation"></i>';
             }
 
             toast.innerHTML = `

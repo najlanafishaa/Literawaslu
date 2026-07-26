@@ -16,28 +16,28 @@
         </div>
 
         @if(session('warning'))
-            <div style="background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 16px; border-radius: var(--border-radius); font-size: 0.9rem; margin-bottom: 20px; font-weight: 600; line-height: 1.5; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <i class="fa-solid fa-clock-rotate-left" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: #ca8a04;"></i>
+            <div class="alert alert-warning" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px;">
+                <i class="fa-solid fa-clock-rotate-left" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: var(--secondary);"></i>
                 {{ session('warning') }}
             </div>
         @endif
 
         @if(session('error'))
-            <div style="background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 16px; border-radius: var(--border-radius); font-size: 0.9rem; margin-bottom: 20px; font-weight: 600; line-height: 1.5; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: #dc2626;"></i>
+            <div class="alert alert-danger" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px;">
+                <i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
                 {{ session('error') }}
             </div>
         @endif
 
         @if(session('success'))
-            <div style="background-color: #dcfce7; border: 1px solid #bbf7d0; color: #15803d; padding: 16px; border-radius: var(--border-radius); font-size: 0.9rem; margin-bottom: 20px; font-weight: 600; line-height: 1.5; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <i class="fa-solid fa-circle-check" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: #16a34a;"></i>
+            <div class="alert alert-success" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px;">
+                <i class="fa-solid fa-circle-check" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: #15803d;"></i>
                 {{ session('success') }}
             </div>
         @endif
 
         @if($errors->any())
-            <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert alert-danger">
                 <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
             </div>
         @endif

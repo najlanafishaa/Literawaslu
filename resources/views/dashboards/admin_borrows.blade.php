@@ -52,6 +52,7 @@
                     <thead>
                         <tr>
                             <th>Buku</th>
+                            <th>Jenis Buku</th>
                             <th>Member</th>
                             <th>Tanggal Pinjam</th>
                             <th>Jatuh Tempo</th>
@@ -70,11 +71,11 @@
                             <tr>
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="width: 30px; height: 42px; border-radius: 4px; overflow: hidden; background-color: #f0f0f0; border: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <div style="width: 30px; height: 42px; border-radius: 4px; overflow: hidden; background-color: var(--gray-100); border: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                             @if($borrow->book->cover_image)
                                                 <img src="{{ asset($borrow->book->cover_image) }}" alt="Cover" style="width: 100%; height: 100%; object-fit: cover;">
                                             @else
-                                                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; color: var(--light);">
+                                                <div style="width: 100%; height: 100%; background-color: var(--gray-100); display: flex; align-items: center; justify-content: center; color: var(--primary);">
                                                     <i class="fa-solid fa-book" style="font-size: 0.7rem;"></i>
                                                 </div>
                                             @endif
@@ -86,8 +87,15 @@
                                     </div>
                                 </td>
                                 <td>
+                                    @if($borrow->book->drive_link)
+                                        <span class="badge badge-online">Online</span>
+                                    @else
+                                        <span class="badge badge-offline">Offline</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <div style="font-weight: 600; color: var(--dark);">{{ $borrow->member->user->name }}</div>
-                                    <div style="font-size: 0.8rem; color: #b58b00; font-weight: 600;">{{ $borrow->member->member_code }}</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-600); font-weight: 600;">{{ $borrow->member->member_code }}</div>
                                 </td>
                                 <td>{{ $borrow->borrow_date->format('d M Y') }}</td>
                                 <td>{{ $borrow->due_date->format('d M Y') }}</td>
@@ -102,12 +110,12 @@
                                     @if($borrow->fine_amount > 0)
                                         <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku Fisik</div>
                                         @if($borrow->fine_status === 'unpaid')
-                                            <span class="badge badge-danger" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-exclamation"></i> Belum Dipenuhi</span>
+                                            <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Belum Dipenuhi</span>
                                         @elseif($borrow->fine_status === 'paid')
-                                            <span class="badge badge-success" style="font-size: 0.75rem; padding: 3px 6px; display: inline-block; margin-top: 4px;"><i class="fa-solid fa-circle-check"></i> Sudah Dipenuhi</span>
+                                            <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Sudah Dipenuhi</span>
                                         @endif
                                     @else
-                                        <span style="color: #16a34a; font-size: 0.85rem; font-weight: 500;">Tepat Waktu</span>
+                                        <span style="color: var(--dark); font-size: 0.85rem; font-weight: 500;">Tepat Waktu</span>
                                     @endif
                                 </td>
                                 <td>

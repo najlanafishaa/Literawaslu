@@ -141,8 +141,9 @@ class BorrowController extends Controller
 
         $member->total_loans += 1;
         
-        // Poin pengembalian buku = 5 poin (sesuai aturan)
-        $basePoints = 5;
+        // Poin pengembalian buku: Offline = 5 poin, Online = 1 poin
+        $isOnline = !empty($book->drive_link);
+        $basePoints = $isOnline ? 1 : 5;
         
         if ($pointDeduction > 0) {
             // Deduct late penalty points
@@ -153,6 +154,15 @@ class BorrowController extends Controller
                 'points' => $pointDeduction,
                 'description' => "Pengurangan poin keterlambatan pengembalian buku '{$book->title}' ({$daysLate} hari)",
             ]);
+        } else {
+            // Tambahkan poin reward jika dikembalikan tepat waktu
+            $member->points += $basePoints;
+            \App\Models\PointHistory::create([
+                'member_id' => $member->id,
+                'type' => 'earn',
+                'points' => $basePoints,
+                'description' => "Poin peminjaman buku '{$book->title}' (" . ($isOnline ? 'Online' : 'Offline') . ")",
+            ]);
         }
 
         $member->save();
@@ -161,14 +171,14 @@ class BorrowController extends Controller
         $book->increment('available_stock');
         $book->update(['is_available' => $book->available_stock > 0]);
 
-        $message = "Buku '{$book->title}' berhasil dikembalikan oleh '{$member->user->name}'.";
+        $message = "Pengembalian berhasil diproses. Terima kasih telah mengembalikan buku tepat waktu.";
 
         if ($daysLate > 3) {
-            return back()->with('warning', $message . " Terlambat {$daysLate} hari (>3 hari). ⚠️ SANKSI: Member wajib mengganti 1 buku fisik ke perpustakaan. Poin berkurang -{$pointDeduction}, reward pengembalian +{$basePoints}. Saldo poin: {$member->points}.");
+            return back()->with('warning', $message);
         } elseif ($daysLate > 0) {
-            return back()->with('warning', $message . " Terlambat {$daysLate} hari. Poin: +{$basePoints} reward - {$pointDeduction} penalti. Saldo poin: {$member->points}.");
+            return back()->with('warning', $message);
         } else {
-            return back()->with('success', $message . " Pengembalian tepat waktu! +{$basePoints} poin reward. Saldo poin: {$member->points}.");
+            return back()->with('success', $message);
         }
     }
 

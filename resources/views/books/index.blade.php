@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
-    <div class="card-body" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; padding: 20px;">
+    <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; padding:20px;">
         <form action="{{ route('books.index') }}" method="GET" style="display: flex; gap: 10px; flex: 1; max-width: 500px;">
             <input type="text" name="search" class="form-control" placeholder="Cari judul, penulis, atau barcode..." value="{{ request('search') }}">
             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
@@ -37,6 +37,7 @@
                             <th>Barcode</th>
                             <th>Buku</th>
                             <th>Penulis</th>
+                            <th>Jenis Buku</th>
                             <th>Stok</th>
                             <th>Kategori</th>
                             <th>Status</th>
@@ -49,7 +50,7 @@
                                 <td style="font-family: monospace; font-weight: 600;">{{ $book->barcode }}</td>
                                 <td>
                                     <div style="display: flex; align-items: center; gap: 12px;">
-                                        <div style="width: 35px; height: 50px; border-radius: 4px; overflow: hidden; background-color: #f0f0f0; border: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <div style="width:35px; height:50px; border-radius:4px; overflow:hidden; background-color:var(--gray-100); border:1px solid var(--gray-200); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                                             @if($book->cover_image)
                                                 <img src="{{ asset($book->cover_image) }}" alt="Sampul" style="width: 100%; height: 100%; object-fit: cover;">
                                             @else
@@ -65,6 +66,13 @@
                                     </div>
                                 </td>
                                 <td>{{ $book->author }}</td>
+                                <td>
+                                    @if($book->drive_link)
+                                        <span class="badge badge-online">Online</span>
+                                    @else
+                                        <span class="badge badge-offline">Offline</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <span style="font-weight: 600; color: var(--dark);">{{ $book->available_stock }}</span>
                                     <span style="color: var(--gray-500);">/ {{ $book->stock }}</span>
@@ -85,7 +93,7 @@
                                         <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus buku ini dari sistem?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-outline btn-sm" title="Hapus Buku" style="padding: 6px 10px; color: var(--primary); border-color: rgba(227,30,36,0.2);">
+                                            <button type="submit" class="btn btn-outline btn-sm" title="Hapus Buku" style="padding:6px 10px; color:var(--primary); border-color:rgba(var(--primary-rgb),0.2);">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>

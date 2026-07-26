@@ -18,19 +18,19 @@
         <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px; font-weight: 600; color: var(--dark);">Lupa Password</h3>
 
         @if(session('error'))
-            <div style="background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert alert-danger">
                 <i class="fa-solid fa-circle-xmark"></i> {{ session('error') }}
             </div>
         @endif
 
         @if(session('success'))
-            <div style="background-color: #dcfce7; border: 1px solid #bbf7d0; color: #15803d; padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert alert-success">
                 <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
             </div>
         @endif
 
         @if(session('simulated_link'))
-            <div style="background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert alert-warning" style="display: block;">
                 <p><strong>[DEMO SIMULASI]</strong> Link Reset Password:</p>
                 <a href="{{ session('simulated_link') }}" style="word-break: break-all; color: var(--primary); font-weight: bold;">{{ session('simulated_link') }}</a>
             </div>
