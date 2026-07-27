@@ -62,4 +62,12 @@ class Book extends Model
     {
         return $this->reviews()->count();
     }
+
+    /**
+     * Check if book is online (digital link available).
+     */
+    public function getIsOnlineAttribute(): bool
+    {
+        return !empty(trim($this->drive_link ?? ''));
+    }
 }

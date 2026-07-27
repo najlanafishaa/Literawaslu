@@ -53,9 +53,9 @@
                                 </td>
                                 <td>
                                     @if($borrow->book->drive_link)
-                                        <span class="badge badge-online">Online</span>
+                                        <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
                                     @else
-                                        <span class="badge badge-offline">Offline</span>
+                                        <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
                                     @endif
                                 </td>
                                 <td>{{ $borrowDate->format('d M Y') }}</td>

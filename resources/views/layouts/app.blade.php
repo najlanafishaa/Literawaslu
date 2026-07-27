@@ -132,7 +132,7 @@
                         </li>
                         <li>
                             <a href="{{ route('member.rewards') }}" class="sidebar-link {{ request()->routeIs('member.rewards') ? 'active' : '' }}">
-                                <i class="fa-solid fa-award"></i> Reward & Poin
+                                <i class="fa-solid fa-award"></i> Hadiah & Poin
                             </a>
                         </li>
                     @endif

@@ -49,12 +49,12 @@
     
     <a href="{{ route('member.rewards') }}" class="stat-card card-yellow" style="text-decoration: none; cursor: pointer;">
         <div class="stat-info">
-            <h3>POIN REWARD</h3>
+            <h3>POIN HADIAH</h3>
             <p>{{ $member->points }} Poin</p>
             @php
                 $pts = $member->points;
                 $badgeClass = $pts >= 300 ? 'badge-gold' : ($pts >= 200 ? 'badge-silver' : 'badge-bronze');
-                $statusName = $pts >= 300 ? 'Gold Pengguna' : ($pts >= 200 ? 'Silver Pengguna' : 'Bronze Pengguna');
+                $statusName = $pts >= 300 ? 'Emas' : ($pts >= 200 ? 'Perak' : 'Perunggu');
             @endphp
             <div style="margin-top: 4px;">
                 <span class="badge {{ $badgeClass }}" style="font-size: 0.7rem; padding: 2px 8px;">
@@ -69,7 +69,7 @@
 </div>
 
 <div class="card" style="margin-bottom: 25px; overflow: hidden;">
-    <div style="background: linear-gradient(135deg, #D62027 0%, #a8191e 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px 20px;">
+    <div style="background: var(--primary); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px 20px;">
         <h2 style="margin: 0; color: #ffffff !important; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;"><i class="fa-solid fa-book-open" style="color: #ffffff !important;"></i> Pengajuan & Status Peminjaman</h2>
         <a href="{{ route('catalog') }}" class="btn btn-sm" style="background: rgba(255,255,255,0.2); color: #ffffff !important; border: 1px solid rgba(255,255,255,0.4); font-weight: 600;">
             <i class="fa-solid fa-plus-circle"></i> Ajukan Peminjaman via Katalog
@@ -116,9 +116,9 @@
                                 </td>
                                 <td>
                                     @if($req->book->drive_link)
-                                        <span class="badge badge-online">Online</span>
+                                        <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
                                     @else
-                                        <span class="badge badge-offline">Offline</span>
+                                        <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($req->borrow_date)->format('d M Y') }}</td>
@@ -148,7 +148,7 @@
 <div class="dashboard-grid">
     <!-- Left Column: Active Borrowings -->
     <div class="card" style="overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #D62027 0%, #a8191e 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
+        <div style="background: var(--primary); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
             <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-hand-holding-hand" style="color: #ffffff !important;"></i> Buku yang Sedang Dipinjam</h2>
             <span class="badge" style="background: rgba(255,255,255,0.25); color: #ffffff !important; font-size: 0.75rem;">{{ $activeBorrows->count() }} Sedang Dipinjam</span>
         </div>
@@ -185,9 +185,9 @@
                                     </td>
                                     <td>
                                         @if($borrow->book->drive_link)
-                                            <span class="badge badge-online">Online</span>
+                                            <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
                                         @else
-                                            <span class="badge badge-offline">Offline</span>
+                                            <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
                                         @endif
                                     </td>
                                     <td>{{ $borrow->borrow_date->format('d M Y') }}</td>
@@ -214,7 +214,7 @@
 
     <!-- Right Column: Digital Card Quick View -->
     <div class="card" style="overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #D62027 0%, #a8191e 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
+        <div style="background: var(--primary); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
             <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-id-card" style="color: #ffffff !important;"></i> Kartu Anggota Digital</h2>
         </div>
         <div class="card-body" style="padding: 20px;">

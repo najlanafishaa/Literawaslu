@@ -32,11 +32,10 @@
             </div>
             
             <div class="filter-select">
-                <select name="borrow_type" class="form-control" onchange="this.form.submit()">
-                    <option value="">Semua Tipe Akses</option>
-                    <option value="online_only" {{ request('borrow_type') === 'online_only' ? 'selected' : '' }}>Hanya E-Book (Digital)</option>
-                    <option value="offline_only" {{ request('borrow_type') === 'offline_only' ? 'selected' : '' }}>Hanya Buku Fisik</option>
-                    <option value="both" {{ request('borrow_type') === 'both' ? 'selected' : '' }}>Fisik & E-Book</option>
+                <select name="borrow_type" id="borrowTypeSelect" class="form-control" onchange="filterCatalogCards(this.value)">
+                    <option value="" {{ request('borrow_type') == '' ? 'selected' : '' }}>Semua Buku</option>
+                    <option value="online" {{ request('borrow_type') === 'online_only' || request('borrow_type') === 'online' ? 'selected' : '' }}>Buku Online</option>
+                    <option value="offline" {{ request('borrow_type') === 'offline_only' || request('borrow_type') === 'offline' ? 'selected' : '' }}>Buku Offline</option>
                 </select>
             </div>
             
@@ -54,14 +53,23 @@
     </div>
 </div>
 
-<div class="catalog-grid">
+<div class="catalog-grid" id="catalogGrid">
     @forelse($books as $book)
-        <div class="book-card" style="position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 450px; padding: 0; border: 1px solid var(--gray-200); border-radius: var(--border-radius); background: var(--light);">
+        <div class="book-card" data-book-type="{{ $book->is_online ? 'online' : 'offline' }}" style="position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 460px; padding: 0; border: 1px solid var(--gray-200); border-radius: var(--border-radius); background: var(--light);">
             <!-- Blur Cover Background -->
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 160px; overflow: hidden; z-index: 1;">
                 <div style="width: 100%; height: 100%; background-image: url('{{ $book->cover_image ? asset($book->cover_image) : asset('images/logo-bawaslu.png') }}'); background-size: cover; background-position: center; filter: blur(12px) brightness(0.55); transform: scale(1.15);"></div>
             </div>
             
+            <!-- Floating Book Type Badge -->
+            <div style="position: absolute; top: 12px; right: 12px; z-index: 5;">
+                @if($book->is_online)
+                    <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                @else
+                    <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                @endif
+            </div>
+
             <!-- Foreground Elements -->
             <div style="position: relative; z-index: 2; padding: 25px 20px 0; display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 15px;">
                 <!-- Foreground Cover Image -->
@@ -81,7 +89,15 @@
             <!-- Card Body Content -->
             <div style="flex-grow: 1; padding: 15px 20px 20px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; background-color: var(--light);">
                 <div style="text-align: center;">
-                    <span class="book-category" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--primary); margin-bottom: 5px; display: block;">{{ $book->category }}</span>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
+                        <span class="book-category" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">{{ $book->category }}</span>
+                        <span style="font-size: 0.72rem; color: var(--gray-400);">&bull;</span>
+                        @if($book->is_online)
+                            <span class="badge badge-online" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-globe"></i> Online</span>
+                        @else
+                            <span class="badge badge-offline" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-book"></i> Offline</span>
+                        @endif
+                    </div>
                     <h3 class="book-title" style="font-size: 0.95rem; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px;">{{ $book->title }}</h3>
                     <p class="book-author" style="font-size: 0.8rem; color: var(--gray-600); margin-bottom: 5px;">Oleh: {{ $book->author }}</p>
                     
@@ -195,7 +211,11 @@
                 </div>
             </div>
             <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
-                <span id="modalCategory" style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--primary);"></span>
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <span id="modalCategory" style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--primary);"></span>
+                    <span style="font-size:0.72rem; color:var(--gray-400);">&bull;</span>
+                    <span id="modalTypeBadgeWrap"></span>
+                </div>
                 <p id="modalAuthor" style="font-size:0.88rem; color:var(--gray-700); margin:0;"></p>
                 <p id="modalPublisher" style="font-size:0.82rem; color:var(--gray-600); margin:0;"></p>
                 <p id="modalYear" style="font-size:0.82rem; color:var(--gray-600); margin:0;"></p>
@@ -302,6 +322,7 @@
             'cover'          => $b->cover_image ? asset($b->cover_image) : null,
             'stock'          => $b->available_stock,
             'totalStock'     => $b->stock,
+            'isOnline'       => $b->is_online,
             'canBorrow'      => ($b->available_stock > 0 || !empty($b->drive_link)) && $memberStatus === 'active',
             'averageRating'  => $b->average_rating,
             'reviewsCount'   => $b->reviews->count(),
@@ -316,6 +337,18 @@
 <script>
 const bookData = @json($bookDataArray);
 
+function filterCatalogCards(type) {
+    const cards = document.querySelectorAll('#catalogGrid .book-card');
+    cards.forEach(card => {
+        const cardType = card.getAttribute('data-book-type');
+        if (type === '' || type === cardType) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
 function showBookDetail(id) {
     const b = bookData[id];
     if (!b) return;
@@ -326,6 +359,14 @@ function showBookDetail(id) {
     document.getElementById('modalPublisher').textContent   = 'Penerbit: ' + b.publisher;
     document.getElementById('modalYear').textContent        = 'Tahun Terbit: ' + b.year;
     document.getElementById('modalBarcode').textContent     = 'Barcode: ' + b.barcode;
+
+    const typeWrap = document.getElementById('modalTypeBadgeWrap');
+    if (b.isOnline) {
+        typeWrap.innerHTML = '<span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>';
+    } else {
+        typeWrap.innerHTML = '<span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>';
+    }
+
 
     const stockEl = document.getElementById('modalStock');
     if (b.stock > 0) {

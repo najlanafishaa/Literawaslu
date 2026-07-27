@@ -80,20 +80,22 @@
                 <textarea name="description" id="description" class="form-control" rows="4" placeholder="Tulis ringkasan atau deskripsi singkat buku ini...">{{ old('description') }}</textarea>
             </div>
 
-            <div class="form-group">
-                <label for="book_type">Tipe Akses Buku</label>
-                <select name="book_type" id="book_type" class="form-control" required onchange="toggleBookTypeFields()">
-                    <option value="offline" {{ old('book_type') == 'offline' ? 'selected' : '' }}>Hanya Buku Fisik</option>
-                    <option value="online" {{ old('book_type') == 'online' ? 'selected' : '' }}>Hanya E-Book (Digital)</option>
-                    <option value="both" {{ old('book_type') == 'both' ? 'selected' : '' }}>Fisik & E-Book</option>
-                </select>
-                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Tentukan apakah buku ini berupa fisik, E-book, atau keduanya.</small>
+            <div class="form-group" style="background-color: var(--gray-50); padding: 14px 16px; border-radius: var(--border-radius); border: 1px solid var(--gray-200);">
+                <label style="margin-bottom: 6px; font-weight: 700; color: var(--dark); display: block;">Jenis Buku (Otomatis Sesuai Link Digital)</label>
+                <div id="bookTypeBadgeContainer" style="display: flex; align-items: center; gap: 8px;">
+                    <span id="badgeOfflineStatus" class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                    <span id="badgeOnlineStatus" class="badge badge-online" style="display: none;"><i class="fa-solid fa-globe"></i> Online</span>
+                    <span id="bookTypeStatusText" style="font-size: 0.82rem; color: var(--gray-700); font-weight: 500;">(Buku Fisik)</span>
+                </div>
+                <small style="color: var(--gray-600); margin-top: 6px; display: block;">
+                    Admin tidak perlu memilih jenis buku. Sistem menentukan jenis buku <strong>secara otomatis</strong>: kosong = <strong>Offline</strong>, diisi = <strong>Online</strong>.
+                </small>
             </div>
 
             <div class="form-row">
                 <div class="form-group" id="stockGroup">
                     <label for="stock">Jumlah Stok / Salinan Buku</label>
-                    <input type="number" name="stock" id="stock" class="form-control" placeholder="1" value="{{ old('stock', 1) }}" min="0">
+                    <input type="number" name="stock" id="stock" class="form-control" placeholder="1" value="{{ old('stock', 1) }}" min="0" required>
                 </div>
                 
                 <div class="form-group">
@@ -105,11 +107,9 @@
 
             <div class="form-group" id="driveLinkGroup">
                 <label for="drive_link"><i class="fa-brands fa-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive)</label>
-                <input type="url" name="drive_link" id="drive_link" class="form-control" placeholder="https://drive.google.com/file/d/FILE_ID/view" value="{{ old('drive_link') }}">
+                <input type="url" name="drive_link" id="drive_link" class="form-control" placeholder="https://drive.google.com/file/d/FILE_ID/view" value="{{ old('drive_link') }}" oninput="updateBookTypeAuto()">
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">
-                    <strong>Ketentuan Jenis Buku:</strong><br>
-                    &bull; Jika link diisi &rarr; Ditandai sebagai <span class="badge badge-online" style="font-size: 0.7rem;">Online</span> (Dapat dibaca via Google Drive)<br>
-                    &bull; Jika link dikosongkan &rarr; Ditandai sebagai <span class="badge badge-offline" style="font-size: 0.7rem;">Offline</span> (Hanya dapat dipinjam fisik)
+                    Isikan link Google Drive untuk menjadikan buku ini <strong>Online</strong>. Biarkan kosong jika buku ini <strong>Offline</strong>.
                 </small>
             </div>
 
@@ -146,32 +146,27 @@
             input.removeAttribute('required');
         }
     }
-    function toggleBookTypeFields() {
-        const type = document.getElementById('book_type').value;
-        const stockGroup = document.getElementById('stockGroup');
-        const stockInput = document.getElementById('stock');
-        const driveLinkGroup = document.getElementById('driveLinkGroup');
-        const driveLinkInput = document.getElementById('drive_link');
 
-        if (type === 'offline') {
-            stockGroup.style.display = 'block';
-            stockInput.setAttribute('required', 'required');
-            driveLinkGroup.style.display = 'none';
-            driveLinkInput.removeAttribute('required');
-        } else if (type === 'online') {
-            stockGroup.style.display = 'none';
-            stockInput.removeAttribute('required');
-            stockInput.value = 0;
-            driveLinkGroup.style.display = 'block';
-            driveLinkInput.setAttribute('required', 'required');
+    function updateBookTypeAuto() {
+        const driveLinkInput = document.getElementById('drive_link');
+        const badgeOffline = document.getElementById('badgeOfflineStatus');
+        const badgeOnline = document.getElementById('badgeOnlineStatus');
+        const statusText = document.getElementById('bookTypeStatusText');
+
+        if (driveLinkInput && driveLinkInput.value.trim() !== '') {
+            badgeOffline.style.display = 'none';
+            badgeOnline.style.display = 'inline-flex';
+            statusText.textContent = '(Buku Digital - Dapat Dibaca Online)';
         } else {
-            stockGroup.style.display = 'block';
-            stockInput.setAttribute('required', 'required');
-            driveLinkGroup.style.display = 'block';
-            driveLinkInput.setAttribute('required', 'required');
+            badgeOnline.style.display = 'none';
+            badgeOffline.style.display = 'inline-flex';
+            statusText.textContent = '(Buku Fisik - Harus Dipinjam di Perpustakaan)';
         }
     }
     
-    document.addEventListener('DOMContentLoaded', toggleBookTypeFields);
+    document.addEventListener('DOMContentLoaded', () => {
+        updateBookTypeAuto();
+    });
 </script>
 @endsection
+

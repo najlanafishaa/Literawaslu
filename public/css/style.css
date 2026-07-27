@@ -87,17 +87,17 @@ body {
 }
 
 .stat-info h3 {
-    font-size: 0.78rem !important;
+    font-size: 0.73rem !important;
     color: #64748b !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    font-weight: 700 !important;
-    margin-bottom: 6px !important;
+    letter-spacing: 0.4px !important;
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
 }
 
 .stat-info p {
-    font-size: 1.75rem !important;
-    font-weight: 800 !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
     color: #0f172a !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -168,7 +168,7 @@ body {
 .card-header-red,
 .card-primary-red > .card-header,
 div.card-red:not(.stat-card) {
-    background: linear-gradient(135deg, #D62027 0%, #a8191e 100%) !important;
+    background: var(--primary) !important;
     color: #ffffff !important;
     padding: 14px 20px;
 }
@@ -188,7 +188,7 @@ div.card-red:not(.stat-card) h2, div.card-red:not(.stat-card) h3, div.card-red:n
     box-shadow: var(--box-shadow);
 }
 .catalog-section-card .catalog-section-header {
-    background: linear-gradient(135deg, #D62027 0%, #a8191e 100%);
+    background: var(--primary);
     color: #ffffff;
     padding: 16px 20px;
     display: flex;
@@ -209,7 +209,7 @@ div.card-red:not(.stat-card) h2, div.card-red:not(.stat-card) h3, div.card-red:n
 
 /* --- Backward compat: keep card-primary-red for backward use only if needed --- */
 .card-primary-red-header {
-    background: linear-gradient(135deg, #D62027 0%, #a8191e 100%);
+    background: var(--primary);
     color: #ffffff;
     border-bottom: none;
     padding: 16px 20px;
@@ -334,10 +334,14 @@ div.card-red:not(.stat-card) h2, div.card-red:not(.stat-card) h3, div.card-red:n
     transition: var(--transition);
 }
 
-.sidebar-link:hover, .sidebar-link.active {
+.sidebar-link:hover {
+    color: var(--gray-700);
+    background-color: var(--gray-100);
+}
+
+.sidebar-link.active {
     color: var(--light);
     background-color: var(--primary);
-    box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
 }
 
 .sidebar-footer {
@@ -471,9 +475,7 @@ body.sidebar-open .sidebar-overlay {
     transition: var(--transition);
 }
 .role-badge:hover {
-    filter: brightness(1.15);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    filter: brightness(0.93);
 }
 
 .role-super {
@@ -502,15 +504,13 @@ body.sidebar-open .sidebar-overlay {
 
 /* Welcome Banner widget */
 .welcome-banner {
-    background: linear-gradient(135deg, var(--primary) 0%, #a8191e 100%);
+    background: var(--primary);
     color: var(--light);
     border-radius: var(--border-radius);
-    padding: 24px 30px;
-    margin-bottom: 25px;
-    box-shadow: var(--box-shadow-md);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--box-shadow);
     border: none;
-    position: relative;
-    overflow: hidden;
 }
 
 .welcome-banner h1, .welcome-banner h2 {
@@ -908,31 +908,65 @@ body.sidebar-open .sidebar-overlay {
     border-bottom: none;
 }
 
-.table-custom tr:hover {
-    background-color: var(--gray-50);
+.table-custom tbody tr:nth-child(even) {
+    background-color: #fafafa;
 }
 
-/* Badges */
+.table-custom tbody tr:hover td {
+    background-color: var(--gray-100);
+}
+
+/* ===================================================
+   BADGE SYSTEM — Enterprise Soft-Tint Style
+   Gaya badge profesional seperti GitHub / Filament / Laravel Nova
+   =================================================== */
 .badge {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    min-height: 22px;
+    border-radius: 6px;
+    font-size: 0.72rem;
     font-weight: 600;
+    border: 1px solid transparent;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-family: var(--font-sans);
 }
 
+.badge i {
+    font-size: 0.68rem;
+    flex-shrink: 0;
+}
+
+/* Hijau — Sukses / Aktif / Tersedia */
 .badge-success {
-    background-color: rgba(34, 197, 94, 0.1);
+    background-color: rgba(22, 163, 74, 0.08);
+    border-color: rgba(22, 163, 74, 0.2);
     color: #15803d;
 }
 
+/* Merah — Bahaya / Ditolak / Habis */
 .badge-danger {
-    background-color: rgba(var(--primary-rgb), 0.1);
-    color: var(--primary);
+    background-color: rgba(var(--primary-rgb), 0.07);
+    border-color: rgba(var(--primary-rgb), 0.18);
+    color: #b91c1c;
 }
 
+/* Kuning/Amber — Peringatan / Menunggu */
 .badge-warning {
     background-color: rgba(var(--secondary-rgb), 0.1);
-    color: var(--secondary);
+    border-color: rgba(var(--secondary-rgb), 0.25);
+    color: #92400e;
+}
+
+/* Abu — Netral / Default */
+.badge-secondary {
+    background-color: rgba(71, 85, 105, 0.07);
+    border-color: rgba(71, 85, 105, 0.2);
+    color: #475569;
 }
 
 /* Digital Member Card Styling */
@@ -1113,7 +1147,6 @@ body.sidebar-open .sidebar-overlay {
 
 .btn-primary:hover {
     background-color: #b5151b;
-    box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
 }
 
 .btn-secondary {
@@ -1123,7 +1156,6 @@ body.sidebar-open .sidebar-overlay {
 
 .btn-secondary:hover {
     background-color: #d99a16;
-    box-shadow: 0 5px 15px rgba(var(--secondary-rgb), 0.3);
 }
 
 .btn-accent {
@@ -1133,7 +1165,6 @@ body.sidebar-open .sidebar-overlay {
 
 .btn-accent:hover {
     background-color: #d99a16;
-    box-shadow: 0 5px 15px rgba(var(--secondary-rgb), 0.3);
 }
 
 .btn-outline {
@@ -1170,29 +1201,7 @@ body.sidebar-open .sidebar-overlay {
     overflow-y: auto;
 }
 
-.auth-wrapper::before {
-    content: '';
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(227, 30, 36, 0.05) 0%, transparent 70%);
-    top: -200px;
-    left: -200px;
-    z-index: 1;
-}
-
-.auth-wrapper::after {
-    content: '';
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(241, 196, 15, 0.05) 0%, transparent 70%);
-    bottom: -200px;
-    right: -200px;
-    z-index: 1;
-}
+/* Decorative pseudo-elements removed for clean enterprise look */
 
 .auth-box {
     background-color: var(--light);
@@ -1406,9 +1415,9 @@ select option {
 }
 
 .book-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-    border-color: rgba(227, 30, 36, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border-color: var(--gray-300);
 }
 
 .book-category {
@@ -1688,6 +1697,367 @@ body.auth-page .content-body {
 @media (max-width: 768px) {
     .page-title {
         display: none;
+    }
+}
+
+/* ===================================================
+   BOOK TYPE BADGES (ONLINE & OFFLINE)
+   =================================================== */
+.badge-online {
+    background-color: var(--secondary) !important;
+    color: var(--dark) !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+}
+
+.badge-offline {
+    background-color: var(--primary) !important;
+    color: var(--light) !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.3px !important;
+}
+
+/* ===================================================
+   ENTERPRISE POLISH LAYER
+   Penyempurnaan visual untuk tampilan aplikasi
+   internal pemerintahan / enterprise
+   =================================================== */
+
+/* --- Typography Normalization --- */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.4;
+}
+
+.card-header h2 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    letter-spacing: 0;
+}
+
+/* --- Card Refinements --- */
+.card {
+    border-radius: 10px;
+}
+
+.card-header {
+    padding: 14px 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* --- Form Normalization --- */
+.form-control {
+    height: 42px;
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    border-color: var(--gray-300);
+    border-radius: 7px;
+}
+
+textarea.form-control {
+    height: auto;
+}
+
+.form-control::placeholder {
+    color: var(--gray-300);
+    font-size: 0.875rem;
+}
+
+.form-group label {
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 6px;
+}
+
+/* --- Button Normalization --- */
+.btn {
+    padding: 10px 20px;
+    font-size: 0.875rem;
+    border-radius: 7px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+}
+
+.btn-outline {
+    border: 1px solid var(--gray-300);
+    color: var(--gray-700);
+    background-color: transparent;
+}
+
+.btn-outline:hover {
+    background-color: var(--gray-50);
+    border-color: var(--gray-400);
+    color: var(--gray-800);
+}
+
+/* --- Sidebar Polish --- */
+.sidebar-link {
+    padding: 9px 14px;
+    font-size: 0.875rem;
+    border-radius: 7px;
+    font-weight: 500;
+    gap: 10px;
+}
+
+.sidebar-link i {
+    font-size: 0.9rem;
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-menu {
+    padding: 16px 12px;
+    gap: 4px;
+}
+
+/* --- Header Nav Polish --- */
+.header-nav {
+    height: 60px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--gray-200);
+    background-color: var(--light);
+}
+
+.page-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+/* --- Content Body Spacing --- */
+.content-body {
+    padding: 24px 28px;
+}
+
+/* --- Stat Card Polish --- */
+.stat-card {
+    border-radius: 10px;
+    padding: 18px 20px;
+}
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+}
+
+/* --- Badge Consistency --- */
+.badge {
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.badge-success {
+    background-color: rgba(22, 163, 74, 0.1);
+    color: #15803d;
+}
+
+.badge-danger {
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+}
+
+.badge-warning {
+    background-color: rgba(var(--secondary-rgb), 0.12);
+    color: #92400e;
+}
+
+/* --- Table Polish --- */
+.table-custom th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    padding: 12px 16px;
+    color: var(--gray-600);
+    background-color: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.table-custom td {
+    padding: 13px 16px;
+    font-size: 0.875rem;
+    color: var(--gray-800);
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+}
+
+.table-custom tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- Empty State --- */
+.empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--gray-600);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: var(--gray-300);
+    margin-bottom: 12px;
+    display: block;
+}
+
+.empty-state p {
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.empty-state small {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+}
+
+/* --- Auth Box Polish --- */
+.auth-box {
+    border-radius: 10px;
+    padding: 32px 36px;
+}
+
+.auth-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+/* --- Sidebar Footer Polish --- */
+.sidebar-footer {
+    padding: 16px;
+    background-color: var(--light);
+    border-top: 1px solid var(--gray-100);
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+    border: 2px solid var(--gray-200);
+}
+
+.user-info h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.user-info p {
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+/* --- Welcome Banner Polish --- */
+.welcome-banner h1,
+.welcome-banner h2 {
+    font-size: 1.2rem !important;
+    font-weight: 700;
+    color: var(--light) !important;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.welcome-banner p {
+    font-size: 0.875rem !important;
+    color: rgba(255, 255, 255, 0.88) !important;
+    line-height: 1.6;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* --- Grid Stats Spacing --- */
+.grid-stats {
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* --- Dashboard Grid --- */
+.dashboard-grid {
+    gap: 20px;
+}
+
+/* --- Responsive Refinements --- */
+@media (max-width: 768px) {
+    .content-body {
+        padding: 16px 14px 24px;
+    }
+
+    .card-header {
+        padding: 12px 14px;
+    }
+
+    .card-body {
+        padding: 16px 14px;
+    }
+
+    .welcome-banner {
+        padding: 16px;
+    }
+
+    .welcome-banner h1,
+    .welcome-banner h2 {
+        font-size: 1.05rem !important;
+    }
+
+    .stat-card {
+        padding: 14px 16px;
+        border-radius: 8px;
+    }
+
+    .btn {
+        padding: 9px 16px;
+        font-size: 0.85rem;
+    }
+
+    .table-custom th,
+    .table-custom td {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .header-nav {
+        height: 54px;
+        padding: 0 14px;
+    }
+
+    .auth-box {
+        padding: 24px 20px;
+        border-radius: 8px;
     }
 }
 

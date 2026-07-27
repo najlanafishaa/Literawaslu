@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Reward & Poin')
-@section('header_title', 'Reward & Poin')
+@section('title', 'Hadiah & Poin')
+@section('header_title', 'Hadiah & Poin')
 
 @section('content')
 <!-- Saldo Poin Card -->
@@ -18,7 +18,7 @@
                 @php
                     $pts = $member->points;
                     $badgeClass = $pts >= 300 ? 'badge-gold' : ($pts >= 200 ? 'badge-silver' : 'badge-bronze');
-                    $statusName = $pts >= 300 ? 'Gold Pengguna' : ($pts >= 200 ? 'Silver Pengguna' : 'Bronze Pengguna');
+                    $statusName = $pts >= 300 ? 'Tingkat Emas' : ($pts >= 200 ? 'Tingkat Perak' : 'Tingkat Perunggu');
                 @endphp
                 <span class="badge {{ $badgeClass }}" style="padding: 4px 10px; font-size: 0.78rem;">
                     {{ $statusName }}
@@ -34,7 +34,7 @@
 <!-- Penukaran Reward Card -->
 <div class="card">
     <div class="card-header">
-        <h2>Penukaran Reward (Batas Peminjaman)</h2>
+        <h2>Penukaran Hadiah (Batas Peminjaman)</h2>
     </div>
     <div class="card-body" style="padding: 25px; display: flex; flex-direction: column; gap: 15px;">
 
@@ -121,7 +121,7 @@
 <!-- Point History Table Card -->
 <div class="card">
     <div class="card-header">
-        <h2><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary); margin-right: 8px;"></i> Riwayat Poin Reward</h2>
+        <h2><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary); margin-right: 8px;"></i> Riwayat Poin Hadiah</h2>
     </div>
     <div class="card-body">
         @if(!isset($pointHistories) || $pointHistories->isEmpty())
@@ -167,7 +167,7 @@
 
 <!-- Rewards Information Card -->
 <div class="card" style="overflow: hidden; margin-top: 25px;">
-    <div style="background: linear-gradient(135deg, #D62027 0%, #a8191e 100%); color: #ffffff; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="background: var(--primary); color: #ffffff; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
         <h2 style="color: #ffffff; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
             <i class="fa-solid fa-circle-question" style="color: #ffffff;"></i> Ketentuan & Cara Kerja Poin
         </h2>
