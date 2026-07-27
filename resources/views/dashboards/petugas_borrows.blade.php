@@ -23,7 +23,7 @@
                         <tr>
                             <th>Buku</th>
                             <th>Jenis Buku</th>
-                            <th>Anggota</th>
+                            <th>Pengguna</th>
                             <th>Tgl Pinjam</th>
                             <th>Jatuh Tempo</th>
                             <th>Status Sisa</th>
@@ -104,7 +104,7 @@
                     <thead>
                         <tr>
                             <th>Buku Dipinjam</th>
-                            <th>Nama Member</th>
+                            <th>Nama Pengguna</th>
                             <th>Tanggal Jatuh Tempo</th>
                             <th>Tanggal Kembali</th>
                             <th>Sanksi Wajib</th>

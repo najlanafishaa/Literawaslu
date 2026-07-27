@@ -7,7 +7,7 @@
 <div class="welcome-banner" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
     <div style="position: relative; z-index: 5; flex: 1; min-width: 220px;">
         <h1>Selamat Datang di Portal Super Admin</h1>
-        <p>Akses penuh sistem perpustakaan Literawaslu. Kelola buku, data anggota, petugas, dan pantau laporan transaksi.</p>
+        <p>Akses penuh sistem perpustakaan Literawaslu. Kelola buku, data pengguna, admin, dan pantau laporan transaksi.</p>
     </div>
 </div>
 
@@ -35,8 +35,8 @@
     
     <a href="{{ route('members.index') }}" class="stat-card card-yellow" style="text-decoration: none; cursor: pointer;">
         <div class="stat-info">
-            <h3>ANGGOTA TERDAFTAR</h3>
-            <p>{{ $totalMembers }} Member</p>
+            <h3>PENGGUNA TERDAFTAR</h3>
+            <p>{{ $totalMembers }} Pengguna</p>
         </div>
         <div class="stat-icon">
             <i class="fa-solid fa-users"></i>
@@ -74,10 +74,10 @@
             <i class="fa-solid fa-book"></i> Kelola Data Buku
         </a>
         <a href="{{ route('members.index') }}" class="btn btn-secondary" style="flex: 1; min-width: 140px;">
-            <i class="fa-solid fa-users"></i> Kelola Data Member
+            <i class="fa-solid fa-users"></i> Kelola Data Pengguna
         </a>
         <a href="{{ route('officers.index') }}" class="btn btn-secondary" style="flex: 1; min-width: 140px;">
-            <i class="fa-solid fa-user-shield"></i> Kelola Data Petugas
+            <i class="fa-solid fa-user-shield"></i> Kelola Data Admin
         </a>
         <a href="{{ route('reports.index') }}" class="btn btn-primary" style="flex: 1; min-width: 140px;">
             <i class="fa-solid fa-file-invoice-dollar"></i> Cetak &amp; Lihat Laporan
@@ -99,7 +99,7 @@
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th>Nama Member</th>
+                            <th>Nama Pengguna</th>
                             <th>Judul Buku</th>
                             <th>Tanggal Pengajuan</th>
                             <th>Status Pengajuan</th>

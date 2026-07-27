@@ -18,7 +18,7 @@
                 @php
                     $pts = $member->points;
                     $badgeClass = $pts >= 300 ? 'badge-gold' : ($pts >= 200 ? 'badge-silver' : 'badge-bronze');
-                    $statusName = $pts >= 300 ? 'Gold Member' : ($pts >= 200 ? 'Silver Member' : 'Bronze Member');
+                    $statusName = $pts >= 300 ? 'Gold Pengguna' : ($pts >= 200 ? 'Silver Pengguna' : 'Bronze Pengguna');
                 @endphp
                 <span class="badge {{ $badgeClass }}" style="padding: 4px 10px; font-size: 0.78rem;">
                     {{ $statusName }}
@@ -45,7 +45,7 @@
                     <i class="fa-solid fa-book"></i>
                 </div>
                 <div>
-                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Level 1: Batas 1 Buku</h4>
+                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tingkat 1: Batas 1 Buku</h4>
                     <p style="font-size: 0.8rem; color: var(--gray-600); margin-top: 2px;">Syarat: Memiliki minimal 100 Poin.</p>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                     <i class="fa-solid fa-book-bookmark"></i>
                 </div>
                 <div>
-                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Level 2: Batas 2 Buku</h4>
+                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tingkat 2: Batas 2 Buku</h4>
                     <p style="font-size: 0.8rem; color: var(--gray-600); margin-top: 2px;">Syarat: Memiliki minimal 200 Poin.</p>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     <i class="fa-solid fa-books"></i>
                 </div>
                 <div>
-                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Level 3: Batas 3 Buku</h4>
+                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tingkat 3: Batas 3 Buku</h4>
                     <p style="font-size: 0.8rem; color: var(--gray-600); margin-top: 2px;">Syarat: Memiliki minimal 300 Poin.</p>
                 </div>
             </div>
@@ -202,8 +202,8 @@
                         Tidak ada denda uang.<br>
                         Sanksi:<br>
                         &bull; Terlambat 1 hari &rarr; <strong style="color: #d62027;">-10 poin</strong><br>
-                        &bull; Terlambat 2 hari &rarr; <strong style="color: #d62027;">-20 poin</strong><br>
-                        &bull; Terlambat 3 hari &rarr; <strong style="color: #d62027;">-30 poin</strong><br>
+                        &bull; Terlambat 2 hari &rarr; <strong style="color: #d62027;">-10 poin</strong><br>
+                        &bull; Terlambat 3 hari &rarr; <strong style="color: #d62027;">-10 poin</strong><br>
                         &bull; Lebih dari 3 hari &rarr; <strong style="color: #d62027;">wajib mendonasikan 1 buku fisik</strong>.
                     </p>
                 </div>

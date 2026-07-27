@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Member')
-@section('header_title', 'Ubah Informasi Member')
+@section('title', 'Edit Pengguna')
+@section('header_title', 'Ubah Informasi Pengguna')
 
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-user-pen" style="color: var(--primary); margin-right: 8px;"></i> Ubah Status Member</h2>
+        <h2><i class="fa-solid fa-user-pen" style="color: var(--primary); margin-right: 8px;"></i> Ubah Status Pengguna</h2>
         <a href="{{ route('members.index') }}" class="btn btn-outline btn-sm">
             <i class="fa-solid fa-arrow-left"></i> Kembali
         </a>
@@ -24,7 +24,7 @@
             @method('PUT')
 
             <div class="form-group">
-                <label>Kode Member</label>
+                <label>Kode Pengguna</label>
                 <input type="text" class="form-control" value="{{ $member->member_code }}" disabled style="background-color: var(--gray-100); font-family: monospace; font-weight: 700; cursor: not-allowed;">
             </div>
 
@@ -59,7 +59,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
-                <i class="fa-solid fa-save"></i> Perbarui Status Anggota
+                <i class="fa-solid fa-save"></i> Perbarui Status Pengguna
             </button>
         </form>
     </div>

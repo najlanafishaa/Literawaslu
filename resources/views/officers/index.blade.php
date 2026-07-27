@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Admin & Petugas')
-@section('header_title', 'Kelola Admin & Petugas')
+@section('title', 'Kelola Super Admin & Admin')
+@section('header_title', 'Kelola Super Admin & Admin')
 
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-body" style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
-        <p style="font-size: 0.9rem; color: var(--gray-600); margin: 0;">Gunakan halaman ini untuk mendaftarkan dan mengelola akun administrator (Super Admin) serta petugas sirkulasi.</p>
+        <p style="font-size: 0.9rem; color: var(--gray-600); margin: 0;">Gunakan halaman ini untuk mendaftarkan dan mengelola akun administrator (Super Admin) serta Admin.</p>
         <a href="{{ route('officers.create') }}" class="btn btn-secondary" style="text-decoration: none;">
             <i class="fa-solid fa-user-plus"></i> Tambah Akun Baru
         </a>
@@ -15,7 +15,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h2>Daftar Akun Admin & Petugas</h2>
+        <h2>Daftar Akun Admin</h2>
         <span class="badge badge-success">{{ $officers->count() }} Pengguna</span>
     </div>
     
@@ -45,7 +45,7 @@
                                     @if($officer->role === 'super_admin')
                                         <span class="badge badge-success" style="background-color: rgba(var(--primary-rgb), 0.1); color: var(--primary); border: 1px solid rgba(var(--primary-rgb), 0.2);">Super Admin</span>
                                     @else
-                                        <span class="badge badge-secondary" style="background-color: var(--dark); color: var(--light);">Petugas</span>
+                                        <span class="badge badge-secondary" style="background-color: var(--dark); color: var(--light);">Admin</span>
                                     @endif
                                 </td>
                                 <td>{{ $officer->created_at->format('d M Y') }}</td>

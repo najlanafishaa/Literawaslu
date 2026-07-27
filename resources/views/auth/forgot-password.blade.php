@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lupa Password')
+@section('title', 'Lupa Kata Sandi')
 
 @section('content')
 <div class="auth-wrapper">
@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px; font-weight: 600; color: var(--dark);">Lupa Password</h3>
+        <h3 style="text-align: center; margin-top: 15px; margin-bottom: 15px; font-weight: 600; color: var(--dark);">Lupa Kata Sandi</h3>
 
         @if(session('error'))
             <div class="alert alert-danger">
@@ -31,7 +31,7 @@
 
         @if(session('simulated_link'))
             <div class="alert alert-warning" style="display: block;">
-                <p><strong>[DEMO SIMULASI]</strong> Link Reset Password:</p>
+                <p><strong>[DEMO SIMULASI]</strong> Link Atur Ulang Kata Sandi:</p>
                 <a href="{{ session('simulated_link') }}" style="word-break: break-all; color: var(--primary); font-weight: bold;">{{ session('simulated_link') }}</a>
             </div>
         @endif
@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label for="email">Alamat Email Terdaftar</label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="nama@email.com" value="{{ old('email') }}" required autofocus>
-                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Untuk member, Anda perlu menjawab pertanyaan keamanan setelah ini.</small>
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Untuk pengguna, Anda perlu menjawab pertanyaan keamanan setelah ini.</small>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">

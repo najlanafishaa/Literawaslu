@@ -126,8 +126,8 @@ class BorrowController extends Controller
         $borrow->return_date = $returnDate;
         $borrow->status = 'returned';
 
-        // Hitung deduction poin berdasarkan keterlambatan: 10 poin per hari
-        $pointDeduction = $daysLate * 10;
+        // Hitung deduction poin berdasarkan keterlambatan: tetap 10 poin jika terlambat
+        $pointDeduction = $daysLate > 0 ? 10 : 0;
 
         // Sanksi ganti buku jika terlambat > 3 hari (mulai hari ke-4)
         if ($daysLate > 3) {

@@ -1,23 +1,23 @@
 @extends('layouts.app')
 
 @section('title', 'Verifikasi')
-@section('header_title', 'Verifikasi Member & Peminjaman')
+@section('header_title', 'Verifikasi Pengguna & Peminjaman')
 
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-header">
-        <h2 style="margin: 0;"><i class="fa-solid fa-user-check" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Pendaftaran Member Baru</h2>
+        <h2 style="margin: 0;"><i class="fa-solid fa-user-check" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Pendaftaran Pengguna Baru</h2>
     </div>
     
     <div class="card-body">
         @if($pendingMembers->isEmpty())
-            <p style="text-align: center; color: var(--gray-600); padding: 20px;">Tidak ada pendaftaran member baru yang perlu diverifikasi.</p>
+            <p style="text-align: center; color: var(--gray-600); padding: 20px;">Tidak ada pendaftaran pengguna baru yang perlu diverifikasi.</p>
         @else
             <div class="table-responsive">
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th>Kode Member</th>
+                            <th>Kode Pengguna</th>
                             <th>Nama</th>
                             <th>Email</th>
                             <th>Tgl Mendaftar</th>
@@ -69,7 +69,7 @@
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th>Member</th>
+                            <th>Pengguna</th>
                             <th>Buku</th>
                             <th>Jenis Buku</th>
                             <th>Tgl Pinjam (Request)</th>
@@ -125,7 +125,7 @@
 @if(session('simulated_link'))
     <div class="alert alert-success" style="margin-bottom: 25px;">
         <i class="fa-solid fa-circle-check"></i>
-        Link Reset Password berhasil dibuat! Salin link berikut dan kirimkan ke Member: 
+        Link Atur Ulang Kata Sandi berhasil dibuat! Salin link berikut dan kirimkan ke Pengguna: 
         <br>
         <a href="{{ session('simulated_link') }}" target="_blank" style="word-break: break-all; color: var(--primary); font-weight: 700; text-decoration: underline;">
             {{ session('simulated_link') }}
@@ -135,18 +135,18 @@
 
 <div class="card">
     <div class="card-header">
-        <h2 style="margin: 0;"><i class="fa-solid fa-key" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Reset Password Member</h2>
+        <h2 style="margin: 0;"><i class="fa-solid fa-key" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Atur Ulang Kata Sandi Pengguna</h2>
     </div>
     
     <div class="card-body">
         @if($pendingResets->isEmpty())
-            <p style="text-align: center; color: var(--gray-600); padding: 20px;">Tidak ada permintaan reset password yang perlu diverifikasi.</p>
+            <p style="text-align: center; color: var(--gray-600); padding: 20px;">Tidak ada permintaan atur ulang kata sandi yang perlu diverifikasi.</p>
         @else
             <div class="table-responsive">
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th>Nama Member</th>
+                            <th>Nama Pengguna</th>
                             <th>Email</th>
                             <th>No. Telepon</th>
                             <th>Tgl Request</th>
@@ -171,7 +171,7 @@
                                                 <i class="fa-solid fa-check"></i> Setujui
                                             </button>
                                         </form>
-                                        <form action="{{ route('verifications.reset.reject', $req->id) }}" method="POST" onsubmit="return confirm('Tolak permintaan reset password ini?');">
+                                        <form action="{{ route('verifications.reset.reject', $req->id) }}" method="POST" onsubmit="return confirm('Tolak permintaan atur ulang kata sandi ini?');">
                                             @csrf
                                             <button type="submit" class="btn btn-outline btn-sm">
                                                 <i class="fa-solid fa-xmark"></i> Tolak

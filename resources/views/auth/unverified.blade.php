@@ -226,7 +226,7 @@
         </div>
         
         <p class="footer-text">
-            Silakan hubungi petugas perpustakaan di area pelayanan untuk mengaktifkan kartu anggota Anda.
+            Silakan hubungi admin perpustakaan di area pelayanan untuk mengaktifkan kartu pengguna Anda.
         </p>
     </div>
 </body>

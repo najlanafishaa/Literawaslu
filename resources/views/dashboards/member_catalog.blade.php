@@ -11,7 +11,7 @@
 @endif
 @if(auth()->user()->member->status === 'rejected')
     <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
-        <strong>Pendaftaran Ditolak!</strong> Akun Anda tidak disetujui oleh Admin. Silakan hubungi petugas perpustakaan untuk informasi lebih lanjut.
+        <strong>Pendaftaran Ditolak!</strong> Akun Anda tidak disetujui oleh Admin. Silakan hubungi admin perpustakaan untuk informasi lebih lanjut.
     </div>
 @endif
 
@@ -46,7 +46,7 @@
                 </button>
                 @if(request()->anyFilled(['search', 'category', 'borrow_type']))
                     <a href="{{ route('catalog') }}" class="btn btn-outline">
-                        <i class="fa-solid fa-rotate-left"></i> Reset
+                        <i class="fa-solid fa-rotate-left"></i> Atur Ulang
                     </a>
                 @endif
             </div>
@@ -72,7 +72,7 @@
                         <!-- Elegant Book Icon Placeholder with gradient -->
                         <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--light); padding: 10px;">
                             <i class="fa-solid fa-book" style="font-size: 2.2rem; margin-bottom: 5px;"></i>
-                            <span style="font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">No Cover</span>
+                            <span style="font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Tanpa Sampul</span>
                         </div>
                     @endif
                 </div>
@@ -149,7 +149,7 @@
                                     <i class="fa-brands fa-google-drive"></i> Baca Online
                                 </a>
                             @else
-                                <button type="button" class="btn btn-sm" disabled style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: var(--gray-200); color: var(--gray-600); border: none; cursor: not-allowed; white-space: normal; text-align: center;" title="Ajukan peminjaman & tunggu persetujuan petugas untuk membuka akses ini">
+                                <button type="button" class="btn btn-sm" disabled style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: var(--gray-200); color: var(--gray-600); border: none; cursor: not-allowed; white-space: normal; text-align: center;" title="Ajukan peminjaman & tunggu persetujuan admin untuk membuka akses ini">
                                     <i class="fa-solid fa-lock"></i> Menunggu Akses
                                 </button>
                             @endif
@@ -215,7 +215,7 @@
         {{-- Review Section --}}
         <div style="padding:0 25px 25px;">
             <div style="border-top:1px solid var(--gray-100); padding-top:15px;">
-                <p style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--gray-500); margin-bottom:12px;">Ulasan Anggota</p>
+                <p style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--gray-500); margin-bottom:12px;">Ulasan Pengguna</p>
                 
                 {{-- Review List --}}
                 <div id="modalReviewList" style="display:flex; flex-direction:column; gap:12px; max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;"></div>

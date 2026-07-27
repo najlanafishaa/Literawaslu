@@ -53,7 +53,7 @@
 
                         <li>
                             <a href="{{ route('members.index') }}" class="sidebar-link {{ request()->routeIs('members.index') ? 'active' : '' }}">
-                                <i class="fa-solid fa-users"></i> Kelola Member
+                                <i class="fa-solid fa-users"></i> Kelola Pengguna
                             </a>
                         </li>
                         <li>
@@ -92,7 +92,7 @@
                         </li>
                         <li>
                             <a href="{{ route('members.index') }}" class="sidebar-link {{ request()->routeIs('members.index') ? 'active' : '' }}">
-                                <i class="fa-solid fa-users"></i> Daftar Member
+                                <i class="fa-solid fa-users"></i> Daftar Pengguna
                             </a>
                         </li>
                         <li>
@@ -144,7 +144,7 @@
                     </li>
                     <li>
                         <a href="{{ route('register') }}" class="sidebar-link {{ request()->routeIs('register') ? 'active' : '' }}">
-                            <i class="fa-solid fa-user-plus"></i> Daftar Member
+                            <i class="fa-solid fa-user-plus"></i> Daftar Pengguna
                         </a>
                     </li>
                 @endauth
@@ -162,10 +162,10 @@
                             <p>
                                 @if(auth()->user()->role === 'super_admin')
                                     Super Admin
-                                @elseif(auth()->user()->role === 'petugas')
-                                    Petugas
+                                @elseif(in_array(auth()->user()->role, ['admin', 'petugas']))
+                                    Admin
                                 @else
-                                    Member
+                                    Pengguna
                                 @endif
                             </p>
                         </div>

@@ -270,7 +270,7 @@
         </div>
         <div class="meta-item">
             <span class="meta-label">Dicetak Oleh:</span>
-            <span class="meta-value">{{ auth()->user()->name ?? 'Petugas Perpustakaan' }} ({{ ucfirst(auth()->user()->role ?? 'Petugas') }})</span>
+            <span class="meta-value">{{ auth()->user()->name ?? 'Admin Perpustakaan' }} ({{ auth()->user()->role === 'super_admin' ? 'Super Admin' : 'Admin' }})</span>
         </div>
     </div>
 
@@ -303,8 +303,8 @@
         <thead>
             <tr>
                 <th class="text-center" style="width: 25px;">No</th>
-                <th style="width: 85px;">Kode Member</th>
-                <th>Nama Anggota</th>
+                <th style="width: 85px;">Kode Pengguna</th>
+                <th>Nama Pengguna</th>
                 <th>Judul Buku</th>
                 <th style="width: 80px;">Barcode</th>
                 <th class="text-center" style="width: 75px;">Tgl Pinjam</th>
@@ -332,9 +332,9 @@
                         if ($lateDays == 1) {
                             $keterangan = "Terlambat 1 hari (-10 Poin)";
                         } elseif ($lateDays == 2) {
-                            $keterangan = "Terlambat 2 hari (-20 Poin)";
+                            $keterangan = "Terlambat 2 hari (-10 Poin)";
                         } elseif ($lateDays == 3) {
-                            $keterangan = "Terlambat 3 hari (-30 Poin)";
+                            $keterangan = "Terlambat 3 hari (-10 Poin)";
                         } else {
                             $keterangan = "Terlambat {$lateDays} hari (Wajib Donasi 1 Buku Fisik)";
                         }
@@ -382,8 +382,8 @@
     <div class="signature-wrapper">
         <div class="signature-box">
             <div class="signature-date">Bandar Lampung, {{ now()->locale('id')->translatedFormat('d F Y') }}</div>
-            <div class="signature-role">Mengetahui,<br>Petugas Perpustakaan Literawaslu</div>
-            <div class="signature-name">{{ auth()->user()->name ?? 'Petugas Perpustakaan' }}</div>
+            <div class="signature-role">Mengetahui,<br>Admin Perpustakaan Literawaslu</div>
+            <div class="signature-name">{{ auth()->user()->name ?? 'Admin Perpustakaan' }}</div>
             <div class="signature-nip">NIP/ID: {{ auth()->user()->id ? 'PLW-' . str_pad(auth()->user()->id, 4, '0', STR_PAD_LEFT) : '-' }}</div>
         </div>
     </div>

@@ -16,7 +16,7 @@
         </div>
 
         <h3 style="text-align: center; margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: var(--dark);">Verifikasi Keamanan</h3>
-        <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-bottom: 20px;">Silakan jawab pertanyaan keamanan di bawah ini untuk mengajukan reset password.</p>
+        <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-bottom: 20px;">Silakan jawab pertanyaan keamanan di bawah ini untuk mengajukan atur ulang kata sandi.</p>
 
         @if(session('error'))
             <div class="alert alert-danger">
@@ -40,10 +40,10 @@
 
             <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fa-solid fa-key"></i> Verifikasi Jawaban & Buat Password Baru
+                    <i class="fa-solid fa-key"></i> Verifikasi Jawaban & Buat Kata Sandi Baru
                 </button>
-                <button type="submit" name="request_admin" value="1" class="btn btn-outline" style="width: 100%;" onclick="return confirm('Ajukan bantuan reset password secara manual ke Admin/Petugas perpustakaan?');">
-                    <i class="fa-solid fa-headset"></i> Lupa Jawaban? Ajukan Reset ke Admin
+                <button type="submit" name="request_admin" value="1" class="btn btn-outline" style="width: 100%;" onclick="return confirm('Ajukan bantuan atur ulang kata sandi secara manual ke Admin perpustakaan?');">
+                    <i class="fa-solid fa-headset"></i> Lupa Jawaban? Ajukan Atur Ulang ke Admin
                 </button>
             </div>
         </form>

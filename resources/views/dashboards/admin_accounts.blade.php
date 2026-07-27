@@ -25,10 +25,10 @@
                     <input type="password" name="password" class="form-control" required minlength="6">
                 </div>
                 <div style="flex: 1; min-width: 200px;">
-                    <label style="font-weight: bold; margin-bottom: 5px; display: block;">Role</label>
+                    <label style="font-weight: bold; margin-bottom: 5px; display: block;">Peran / Hak Akses</label>
                     <select name="role" class="form-control" required>
-                        <option value="petugas">Admin Biasa (Petugas)</option>
-                        <option value="member">Member Perpustakaan</option>
+                        <option value="petugas">Admin</option>
+                        <option value="member">Pengguna Perpustakaan</option>
                         <option value="super_admin">Super Admin</option>
                     </select>
                 </div>
@@ -52,7 +52,7 @@
                     <tr>
                         <th>Nama Lengkap</th>
                         <th>Email</th>
-                        <th>Role</th>
+                        <th>Peran</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -65,17 +65,17 @@
                                 @if($user->role === 'super_admin')
                                     <span class="badge badge-danger">Super Admin</span>
                                 @elseif($user->role === 'petugas')
-                                    <span class="badge badge-warning">Admin Biasa</span>
+                                    <span class="badge badge-warning">Admin</span>
                                 @else
-                                    <span class="badge badge-secondary">Member</span>
+                                    <span class="badge badge-secondary">Pengguna</span>
                                 @endif
                             </td>
                             <td>
                                 @if($user->role === 'super_admin' && auth()->id() !== $user->id)
-                                    <form action="{{ route('accounts.demote', $user->id) }}" method="POST" onsubmit="return confirm('Turunkan Super Admin ini menjadi Admin Biasa?');" style="display:inline;">
+                                    <form action="{{ route('accounts.demote', $user->id) }}" method="POST" onsubmit="return confirm('Turunkan Super Admin ini menjadi Admin?');" style="display:inline;">
                                         @csrf
                                         <button type="submit" class="btn btn-outline btn-sm">
-                                            <i class="fa-solid fa-arrow-down"></i> Demote
+                                            <i class="fa-solid fa-arrow-down"></i> Turunkan Akses
                                         </button>
                                     </form>
                                 @endif

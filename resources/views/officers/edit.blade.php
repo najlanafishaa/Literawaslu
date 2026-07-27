@@ -34,8 +34,8 @@
             </div>
 
             <div class="form-group">
-                <label for="password">Ganti Password (Opsional)</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah password...">
+                <label for="password">Ganti Kata Sandi (Opsional)</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah kata sandi...">
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">Hanya isi kolom ini jika ingin menyetel ulang kata sandi akun.</small>
             </div>
 
@@ -44,7 +44,7 @@
                 @if($officer->id === auth()->id())
                     <select class="form-control" disabled style="background-color: var(--gray-100); cursor: not-allowed;">
                         <option value="{{ $officer->role }}" selected>
-                            {{ $officer->role === 'super_admin' ? 'Super Admin' : 'Petugas' }} (Akun Anda)
+                            {{ $officer->role === 'super_admin' ? 'Super Admin' : 'Admin' }} (Akun Anda)
                         </option>
                     </select>
                     <input type="hidden" name="role" value="{{ $officer->role }}">
@@ -52,10 +52,10 @@
                 @else
                     <select name="role" id="role" class="form-control" required>
                         <option value="super_admin" {{ old('role', $officer->role) === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
-                        <option value="petugas" {{ old('role', $officer->role) === 'petugas' ? 'selected' : '' }}>Petugas (Admin Biasa)</option>
-                        <option value="member" {{ old('role', $officer->role) === 'member' ? 'selected' : '' }}>Member / Anggota</option>
+                        <option value="petugas" {{ old('role', $officer->role) === 'petugas' ? 'selected' : '' }}>Admin</option>
+                        <option value="member" {{ old('role', $officer->role) === 'member' ? 'selected' : '' }}>Pengguna</option>
                     </select>
-                    <small style="color: var(--gray-600); margin-top: 5px; display: block;">Mengubah peran ke 'Member' akan membuat profil anggota baru untuk akun ini.</small>
+                    <small style="color: var(--gray-600); margin-top: 5px; display: block;">Mengubah peran ke 'Pengguna' akan membuat profil pengguna baru untuk akun ini.</small>
                 @endif
             </div>
 

@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Member')
-@section('header_title', 'Kelola Anggota Perpustakaan')
+@section('title', 'Kelola Pengguna')
+@section('header_title', 'Kelola Pengguna Perpustakaan')
 
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-body" style="padding: 20px;">
         <form action="{{ route('members.index') }}" method="GET" style="display: flex; gap: 10px; max-width: 500px;">
-            <input type="text" name="search" class="form-control" placeholder="Cari nama, email, atau kode member..." value="{{ request('search') }}">
+            <input type="text" name="search" class="form-control" placeholder="Cari nama, email, atau kode pengguna..." value="{{ request('search') }}">
             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
             @if(request('search'))
-                <a href="{{ route('members.index') }}" class="btn btn-outline"><i class="fa-solid fa-rotate-left"></i> Reset</a>
+                <a href="{{ route('members.index') }}" class="btn btn-outline"><i class="fa-solid fa-rotate-left"></i> Atur Ulang</a>
             @endif
         </form>
     </div>
@@ -19,12 +19,12 @@
 <div class="card">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; align-items: center; gap: 10px;">
-            <h2>Daftar Anggota Terdaftar</h2>
-            <span class="badge badge-success">{{ $members->count() }} Anggota</span>
+            <h2>Daftar Pengguna Terdaftar</h2>
+            <span class="badge badge-success">{{ $members->count() }} Pengguna</span>
         </div>
         @if(auth()->user()->role === 'super_admin')
             <a href="{{ route('members.create') }}" class="btn btn-primary btn-sm" style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; font-size: 0.85rem; border-radius: var(--border-radius); text-decoration: none;">
-                <i class="fa-solid fa-user-plus"></i> Tambah Member
+                <i class="fa-solid fa-user-plus"></i> Tambah Pengguna
             </a>
         @endif
     </div>
@@ -37,7 +37,7 @@
                 <table class="table-custom">
                     <thead>
                         <tr>
-                            <th>Kode Member</th>
+                            <th>Kode Pengguna</th>
                             <th>Nama</th>
                             <th>Email</th>
                             @if(auth()->user()->role === 'super_admin')
@@ -73,7 +73,7 @@
                                     @if($member->status === 'active')
                                         <span class="badge badge-success"><i class="fa-solid fa-check"></i> Terverifikasi</span>
                                     @elseif($member->status === 'pending')
-                                        <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Pending</span>
+                                        <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Menunggu Verifikasi</span>
                                     @elseif($member->status === 'rejected')
                                         <span class="badge badge-danger"><i class="fa-solid fa-xmark"></i> Ditolak</span>
                                     @else
@@ -98,13 +98,13 @@
                                          @endif
 
                                         @if(auth()->user()->role === 'super_admin')
-                                            <a href="{{ route('members.edit', $member->id) }}" class="btn btn-outline btn-sm" title="Edit Member" style="padding: 6px 10px;">
+                                            <a href="{{ route('members.edit', $member->id) }}" class="btn btn-outline btn-sm" title="Edit Pengguna" style="padding: 6px 10px;">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <form action="{{ route('members.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus member ini dari sistem? Semua data relasi terkait juga akan terhapus.');" style="margin: 0;">
+                                            <form action="{{ route('members.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini dari sistem? Semua data relasi terkait juga akan terhapus.');" style="margin: 0;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-outline btn-sm" title="Hapus Member" style="padding: 6px 10px; color: var(--primary);">
+                                                <button type="submit" class="btn btn-outline btn-sm" title="Hapus Pengguna" style="padding: 6px 10px; color: var(--primary);">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </form>

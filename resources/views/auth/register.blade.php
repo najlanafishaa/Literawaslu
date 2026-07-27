@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Anggota')
+@section('title', 'Daftar Pengguna')
 
 @section('content')
 <div class="auth-wrapper">
@@ -85,7 +85,7 @@
         </form>
 
         <div style="text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--gray-600);">
-            Sudah terdaftar sebagai anggota? <a href="{{ route('login') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Masuk ke Akun</a>
+            Sudah terdaftar sebagai pengguna? <a href="{{ route('login') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Masuk ke Akun</a>
         </div>
     </div>
 </div>

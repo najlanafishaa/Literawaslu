@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Member')
-@section('header_title', 'Daftarkan Member Baru')
+@section('title', 'Tambah Pengguna')
+@section('header_title', 'Daftarkan Pengguna Baru')
 
 @section('content')
 <div class="welcome-banner" style="margin-bottom: 25px;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;">
         <div>
-            <h1>Registrasi Member Manual</h1>
-            <p>Daftarkan akun anggota perpustakaan secara manual dari panel administrator.</p>
+            <h1>Registrasi Pengguna Manual</h1>
+            <p>Daftarkan akun pengguna perpustakaan secara manual dari panel administrator.</p>
         </div>
         <div>
             <i class="fa-solid fa-user-plus" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
@@ -25,7 +25,7 @@
 <div class="dashboard-grid" style="grid-template-columns: 1fr; gap: 25px; margin-bottom: 25px; max-width: 800px; margin: 0 auto;">
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-address-card" style="color: var(--primary); margin-right: 8px;"></i> Data Member Baru</h2>
+            <h2><i class="fa-solid fa-address-card" style="color: var(--primary); margin-right: 8px;"></i> Data Pengguna Baru</h2>
         </div>
         <div class="card-body" style="padding: 25px;">
             <form action="{{ route('members.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
@@ -75,7 +75,7 @@
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                     <a href="{{ route('members.index') }}" class="btn btn-outline" style="padding: 12px 30px; text-decoration: none;">Batal</a>
                     <button type="submit" class="btn btn-primary" style="padding: 12px 30px;">
-                        <i class="fa-solid fa-user-plus"></i> Daftarkan Member
+                        <i class="fa-solid fa-user-plus"></i> Daftarkan Pengguna
                     </button>
                 </div>
             </form>

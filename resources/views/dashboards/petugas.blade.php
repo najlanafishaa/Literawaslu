@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Petugas')
-@section('header_title', 'Dashboard Petugas')
+@section('title', 'Dashboard Admin')
+@section('header_title', 'Dashboard Admin')
 
 @section('content')
 <div class="welcome-banner" style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
@@ -22,8 +22,8 @@
     </a>
     <a href="{{ route('members.index') }}" class="stat-card card-dark" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
-            <h3>Total Member</h3>
-            <p>{{ $totalMembers }} Member</p>
+            <h3>Total Pengguna</h3>
+            <p>{{ $totalMembers }} Pengguna</p>
         </div>
         <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
     </a>
@@ -70,7 +70,7 @@
             <i class="fa-solid fa-hand-holding-hand"></i> Peminjaman &amp; Pengembalian
         </a>
         <a href="{{ route('members.index') }}" class="btn btn-secondary" style="flex:1; min-width:140px;">
-            <i class="fa-solid fa-users"></i> Lihat Data Member
+            <i class="fa-solid fa-users"></i> Lihat Data Pengguna
         </a>
         <a href="{{ route('reports.index') }}" class="btn btn-secondary" style="flex:1; min-width:140px;">
             <i class="fa-solid fa-calendar-days"></i> Laporan Bulanan

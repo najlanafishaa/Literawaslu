@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Buat Password Baru')
+@section('title', 'Buat Kata Sandi Baru')
 
 @section('content')
 <div class="auth-wrapper">
@@ -15,8 +15,8 @@
             </div>
         </div>
 
-        <h3 style="text-align: center; margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: var(--dark);">Buat Password Baru</h3>
-        <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-bottom: 20px;">Silakan buat password baru Anda di bawah ini.</p>
+        <h3 style="text-align: center; margin-top: 15px; margin-bottom: 10px; font-weight: 600; color: var(--dark);">Buat Kata Sandi Baru</h3>
+        <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-bottom: 20px;">Silakan buat kata sandi baru Anda di bawah ini.</p>
 
         @if($errors->any())
             <div class="alert alert-danger">
@@ -30,7 +30,7 @@
             <input type="hidden" name="email" value="{{ $email }}">
             
             <div class="form-group">
-                <label for="password">Password Baru</label>
+                <label for="password">Kata Sandi Baru</label>
                 <div style="position: relative;">
                     <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required autofocus style="padding-right: 40px;">
                     <button type="button" onclick="togglePassword('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
@@ -40,7 +40,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password_confirmation">Konfirmasi Password Baru</label>
+                <label for="password_confirmation">Konfirmasi Kata Sandi Baru</label>
                 <div style="position: relative;">
                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="••••••••" required style="padding-right: 40px;">
                     <button type="button" onclick="togglePassword('password_confirmation', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
@@ -50,7 +50,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
-                <i class="fa-solid fa-key"></i> Perbarui Password
+                <i class="fa-solid fa-key"></i> Perbarui Kata Sandi
             </button>
         </form>
     </div>

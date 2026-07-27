@@ -95,9 +95,9 @@
                                             @if($lateDays == 1)
                                                 Sanksi: Pengurangan 10 Poin
                                             @elseif($lateDays == 2)
-                                                Sanksi: Pengurangan 20 Poin
+                                                Sanksi: Pengurangan 10 Poin
                                             @elseif($lateDays == 3)
-                                                Sanksi: Pengurangan 30 Poin
+                                                Sanksi: Pengurangan 10 Poin
                                             @else
                                                 Sanksi: Wajib Donasi 1 Buku Fisik
                                                 @if($borrow->fine_status === 'paid')

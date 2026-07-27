@@ -10,7 +10,7 @@
             <input type="text" name="search" class="form-control" placeholder="Cari judul, penulis, atau barcode..." value="{{ request('search') }}">
             <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
             @if(request('search'))
-                <a href="{{ route('books.index') }}" class="btn btn-outline"><i class="fa-solid fa-rotate-left"></i> Reset</a>
+                <a href="{{ route('books.index') }}" class="btn btn-outline"><i class="fa-solid fa-rotate-left"></i> Atur Ulang</a>
             @endif
         </form>
         

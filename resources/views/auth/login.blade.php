@@ -74,7 +74,7 @@
         </form>
 
         <div style="text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--gray-600);">
-            Belum punya akun? <a href="{{ route('register') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Daftar Anggota</a>
+            Belum punya akun? <a href="{{ route('register') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Daftar Pengguna</a>
         </div>
         
         <!-- Role Quick Switcher for Demo -->
@@ -82,8 +82,8 @@
             <p style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--gray-600); margin-bottom: 10px; letter-spacing: 0.5px;">Akun Demo (Password: 123):</p>
             <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
                 <button type="button" class="btn btn-outline btn-sm" onclick="quickFill('admin@literawaslu.com')" style="padding: 4px 8px; font-size: 0.7rem;">Super Admin</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="quickFill('petugas@literawaslu.com')" style="padding: 4px 8px; font-size: 0.7rem;">Petugas</button>
-                <button type="button" class="btn btn-outline btn-sm" onclick="quickFill('ahmad@literawaslu.com')" style="padding: 4px 8px; font-size: 0.7rem;">Member (Ahmad)</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickFill('petugas@literawaslu.com')" style="padding: 4px 8px; font-size: 0.7rem;">Admin</button>
+                <button type="button" class="btn btn-outline btn-sm" onclick="quickFill('ahmad@literawaslu.com')" style="padding: 4px 8px; font-size: 0.7rem;">Pengguna (Ahmad)</button>
             </div>
         </div>
     </div>

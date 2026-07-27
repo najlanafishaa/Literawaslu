@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Kartu Anggota Digital')
-@section('header_title', 'Kartu Anggota')
+@section('title', 'Kartu Pengguna Digital')
+@section('header_title', 'Kartu Pengguna')
 
 @section('content')
 <div class="card" style="max-width: 550px; margin: 0 auto;">
     <div class="card-header" style="flex-wrap: wrap; gap: 10px;">
-        <h2><i class="fa-solid fa-id-card" style="color: var(--primary); margin-right: 8px;"></i> Kartu Anggota Perpustakaan</h2>
+        <h2><i class="fa-solid fa-id-card" style="color: var(--primary); margin-right: 8px;"></i> Kartu Pengguna Perpustakaan</h2>
         <div style="display: flex; gap: 8px;">
             <button onclick="downloadCard()" class="btn btn-primary btn-sm" style="background-color: var(--secondary); border-color: var(--secondary); color: var(--dark);">
                 <i class="fa-solid fa-download"></i> Unduh Kartu (PNG)
@@ -133,8 +133,8 @@
                 <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Panduan Penggunaan Kartu Digital:
             </h4>
             <ul style="padding-left: 20px; font-size: 0.85rem; color: var(--gray-700); display: flex; flex-direction: column; gap: 8px;">
-                <li>Tunjukkan kartu digital ini kepada Petugas Perpustakaan saat ingin melakukan transaksi peminjaman maupun pengembalian.</li>
-                <li>Petugas akan mencari data keanggotaan Anda menggunakan Kode Anggota yang tertera pada sisi depan kartu.</li>
+                <li>Tunjukkan kartu digital ini kepada Admin Perpustakaan saat ingin melakukan transaksi peminjaman maupun pengembalian.</li>
+                <li>Admin akan mencari data pengguna Anda menggunakan Kode Pengguna yang tertera pada sisi depan kartu.</li>
                 <li>Kartu ini bersifat permanen dan tidak dapat dipindahtangankan.</li>
             </ul>
         </div>
@@ -191,10 +191,10 @@
                 logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'Kartu-Member-{{ $member->member_code }}.png';
+                link.download = 'Kartu-Pengguna-{{ $member->member_code }}.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                showToast('Kartu anggota berhasil diunduh!', 'success');
+                showToast('Kartu pengguna berhasil diunduh!', 'success');
             }).catch(err => {
                 showToast('Gagal mengunduh kartu: ' + err.message, 'danger');
             });

@@ -6,7 +6,7 @@
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-user-plus" style="color: var(--primary); margin-right: 8px;"></i> Buat Akun Admin / Petugas</h2>
+        <h2><i class="fa-solid fa-user-plus" style="color: var(--primary); margin-right: 8px;"></i> Buat Akun Super Admin / Admin</h2>
         <a href="{{ route('officers.index') }}" class="btn btn-outline btn-sm">
             <i class="fa-solid fa-arrow-left"></i> Kembali
         </a>
@@ -33,15 +33,15 @@
             </div>
 
             <div class="form-group">
-                <label for="password">Password Default</label>
+                <label for="password">Kata Sandi Awal</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Minimal 6 karakter..." required>
-                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Berikan password sementara. Pengguna dapat menggantinya nanti.</small>
+                <small style="color: var(--gray-600); margin-top: 5px; display: block;">Berikan kata sandi sementara. Pengguna dapat menggantinya nanti.</small>
             </div>
 
             <div class="form-group">
                 <label for="role">Peran / Hak Akses</label>
                 <select name="role" id="role" class="form-control" required>
-                    <option value="petugas" {{ old('role') === 'petugas' ? 'selected' : '' }}>Petugas (Admin Biasa)</option>
+                    <option value="petugas" {{ old('role') === 'petugas' ? 'selected' : '' }}>Admin</option>
                     <option value="super_admin" {{ old('role') === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
                 </select>
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">Peran menentukan tingkat kewenangan akses fitur sistem.</small>

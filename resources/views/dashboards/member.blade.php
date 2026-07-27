@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Member')
+@section('title', 'Dashboard Pengguna')
 @section('header_title', 'Dashboard')
 
 @section('content')
@@ -27,13 +27,22 @@
         </div>
     </a>
     
-    <div class="stat-card card-dark" style="cursor: pointer;" onclick="openQuotaModal()">
-        <div class="stat-info">
-            <h3>SISA KUOTA PINJAM</h3>
-            <p style="color: #d62027; font-size: 1.35rem;">Online: {{ max(0, 3 - $activeBorrows->where('book.drive_link', '!=', null)->count()) }}/3 | Offline: {{ max(0, 1 - $activeBorrows->where('book.drive_link', null)->count()) }}/1</p>
-            <small><i class="fa-solid fa-circle-info"></i> Klik untuk rincian kuota &amp; aturan</small>
+    <div class="stat-card card-dark" style="cursor: pointer; position: relative; overflow: hidden; display: flex; align-items: center;" onclick="openQuotaModal()">
+        <div class="stat-info" style="width: 100%; z-index: 2;">
+            <h3 style="font-size: 0.8rem; margin-bottom: 12px; opacity: 0.9;">SISA KUOTA PINJAM</h3>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <div style="background: var(--gray-50); padding: 8px 12px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid var(--gray-200);">
+                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-globe" style="color: var(--secondary);"></i> ONLINE</div>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 3 - $activeBorrows->where('book.drive_link', '!=', null)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/3</span></div>
+                </div>
+                <div style="background: var(--gray-50); padding: 8px 12px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid var(--gray-200);">
+                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-book" style="color: var(--primary);"></i> OFFLINE</div>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 1 - $activeBorrows->where('book.drive_link', null)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/1</span></div>
+                </div>
+            </div>
+            <small style="opacity: 0.8; font-size: 0.75rem; display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-hand-pointer"></i> Klik rincian &amp; aturan</small>
         </div>
-        <div class="stat-icon">
+        <div class="stat-icon" style="position: absolute; right: -15px; bottom: -20px; font-size: 6rem; opacity: 0.05; z-index: 1;">
             <i class="fa-solid fa-layer-group"></i>
         </div>
     </div>
@@ -45,7 +54,7 @@
             @php
                 $pts = $member->points;
                 $badgeClass = $pts >= 300 ? 'badge-gold' : ($pts >= 200 ? 'badge-silver' : 'badge-bronze');
-                $statusName = $pts >= 300 ? 'Gold Member' : ($pts >= 200 ? 'Silver Member' : 'Bronze Member');
+                $statusName = $pts >= 300 ? 'Gold Pengguna' : ($pts >= 200 ? 'Silver Pengguna' : 'Bronze Pengguna');
             @endphp
             <div style="margin-top: 4px;">
                 <span class="badge {{ $badgeClass }}" style="font-size: 0.7rem; padding: 2px 8px;">
@@ -67,9 +76,16 @@
         </a>
     </div>
     <div class="card-body">
-        <div style="background-color: rgba(214,32,39,0.07); border: 1px solid rgba(214,32,39,0.18); padding: 12px 15px; border-radius: var(--border-radius); margin-bottom: 20px; font-size: 0.85rem; color: var(--gray-700); display: flex; align-items: flex-start; gap: 8px;">
-            <i class="fa-solid fa-circle-info" style="color: var(--primary); margin-top: 2px; flex-shrink: 0;"></i>
-            <span><strong>Ketentuan Peminjaman:</strong> Buku <strong>Online maks. 3 buku</strong> (dikembalikan otomatis saat jatuh tempo), Buku <strong>Offline maks. 1 buku</strong> (dikembalikan fisik di perpustakaan). Durasi maksimal keduanya adalah <strong>7 hari</strong>. Pengajuan wajib disetujui Admin.</span>
+        <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px 20px; border-radius: 4px; margin-bottom: 22px; color: #78350f; display: flex; gap: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <i class="fa-solid fa-lightbulb" style="font-size: 1.5rem; color: #f59e0b; margin-top: 2px;"></i>
+            <div>
+                <strong style="display: block; margin-bottom: 6px; font-size: 0.95rem;">Catatan Ketentuan Peminjaman:</strong>
+                <ul style="margin: 0; padding-left: 20px; font-size: 0.85rem; line-height: 1.6;">
+                    <li><strong>Buku Online:</strong> Maks. 3 buku (otomatis kembali saat jatuh tempo).</li>
+                    <li><strong>Buku Offline:</strong> Maks. 1 buku (wajib dikembalikan fisik ke perpus).</li>
+                    <li><strong>Durasi & Persetujuan:</strong> Durasi maks. 7 hari dan pengajuan wajib disetujui Admin.</li>
+                </ul>
+            </div>
         </div>
 
         <h4 style="font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px;">Daftar Pengajuan & Status Peminjaman Anda:</h4>
@@ -141,7 +157,7 @@
                 <div style="text-align: center; padding: 40px 20px; color: var(--gray-600);">
                     <i class="fa-solid fa-circle-check" style="font-size: 2.5rem; color: #22c55e; margin-bottom: 15px;"></i>
                     <p style="font-weight: 500;">Anda tidak memiliki peminjaman aktif saat ini.</p>
-                    <p style="font-size: 0.85rem; margin-top: 5px;">Silakan datangi petugas perpustakaan untuk meminjam buku.</p>
+                    <p style="font-size: 0.85rem; margin-top: 5px;">Silakan datangi admin perpustakaan untuk meminjam buku.</p>
                 </div>
             @else
                 <div class="table-responsive">
