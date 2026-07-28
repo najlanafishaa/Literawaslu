@@ -89,7 +89,7 @@
                                     <small style="color: var(--gray-600);">Stok: {{ $borrow->book->available_stock }}</small>
                                 </td>
                                 <td>
-                                    @if($borrow->book->drive_link)
+                                    @if($borrow->book->is_online)
                                         <span class="badge badge-online">Online</span>
                                     @else
                                         <span class="badge badge-offline">Offline</span>
@@ -124,7 +124,7 @@
 
 @if(session('simulated_link'))
     <div class="alert alert-success" style="margin-bottom: 25px;">
-        <i class="fa-solid fa-circle-check"></i>
+        <i class="fa-solid fa-bookmark"></i>
         Link Atur Ulang Kata Sandi berhasil dibuat! Salin link berikut dan kirimkan ke Pengguna: 
         <br>
         <a href="{{ session('simulated_link') }}" target="_blank" style="word-break: break-all; color: var(--primary); font-weight: 700; text-decoration: underline;">

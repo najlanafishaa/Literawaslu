@@ -31,7 +31,7 @@
     
     <div class="card-body">
         @if($members->isEmpty())
-            <p style="text-align: center; color: var(--gray-600); padding: 20px;">Tidak ada data member yang ditemukan.</p>
+        <p style="text-align: center; color: var(--gray-600); padding: 20px;">Tidak ada data pengguna aktif yang ditemukan.</p>
         @else
             <div class="table-responsive">
                 <table class="table-custom">
@@ -46,7 +46,6 @@
                             <th>Total Peminjaman</th>
                             <th>Reward Poin</th>
                             <th>Batas Pinjam</th>
-                            <th>Status Verifikasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -66,7 +65,7 @@
                                 @endif
                                 <td>{{ $member->total_loans }} Kali</td>
                                 <td>
-                                    <span class="badge badge-warning">{{ $member->points }} Pts</span>
+                                    <span class="badge badge-warning">{{ $member->points }}</span>
                                 </td>
                                 <td>{{ $member->borrow_limit }} Buku</td>
                                 <td>
@@ -82,21 +81,6 @@
                                 </td>
                                 <td>
                                     <div style="display: flex; gap: 8px; align-items: center;">
-                                         @if($member->status === 'pending')
-                                             <form action="{{ route('verifications.member.approve', $member->id) }}" method="POST" style="margin: 0;">
-                                                 @csrf
-                                                 <button type="submit" class="btn btn-secondary btn-sm" title="Terima Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem;">
-                                                     <i class="fa-solid fa-user-check"></i> Terima
-                                                 </button>
-                                             </form>
-                                             <form action="{{ route('verifications.member.reject', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak dan menghapus pendaftaran member ini?');" style="margin: 0;">
-                                                 @csrf
-                                                 <button type="submit" class="btn btn-outline btn-sm" title="Tolak Pendaftaran" style="padding: 6px 10px; font-size: 0.8rem;">
-                                                     <i class="fa-solid fa-user-xmark"></i> Tolak
-                                                 </button>
-                                             </form>
-                                         @endif
-
                                         @if(auth()->user()->role === 'super_admin')
                                             <a href="{{ route('members.edit', $member->id) }}" class="btn btn-outline btn-sm" title="Edit Pengguna" style="padding: 6px 10px;">
                                                 <i class="fa-solid fa-pen-to-square"></i>
@@ -108,6 +92,8 @@
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </form>
+                                        @else
+                                            <span style="font-size: 0.78rem; color: var(--gray-600);">—</span>
                                         @endif
                                     </div>
                                 </td>

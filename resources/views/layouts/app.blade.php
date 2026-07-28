@@ -39,7 +39,7 @@
                     <!-- Common for all authenticated users -->
                     <li>
                         <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                            <i class="fa-solid fa-chart-pie"></i> Dashboard
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
                         </a>
                     </li>
                     
@@ -47,7 +47,7 @@
                     @if(auth()->user()->role === 'super_admin')
                         <li>
                             <a href="{{ route('books.index') }}" class="sidebar-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
-                                <i class="fa-solid fa-book"></i> Kelola Buku
+                                <i class="fa-solid fa-book-open"></i> Kelola Buku
                             </a>
                         </li>
 
@@ -97,7 +97,7 @@
                         </li>
                         <li>
                             <a href="{{ route('books.index') }}" class="sidebar-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
-                                <i class="fa-solid fa-book"></i> Kelola Buku
+                                <i class="fa-solid fa-book-open"></i> Kelola Buku
                             </a>
                         </li>
 
@@ -117,7 +117,7 @@
                     @if(in_array(auth()->user()->role, ['user', 'member']))
                         <li>
                             <a href="{{ route('catalog') }}" class="sidebar-link {{ request()->routeIs('catalog') ? 'active' : '' }}">
-                                <i class="fa-solid fa-magnifying-glass"></i> Katalog Buku
+                                <i class="fa-solid fa-book-open-reader"></i> Katalog Buku
                             </a>
                         </li>
                         <li>
@@ -127,12 +127,12 @@
                         </li>
                         <li>
                             <a href="{{ route('member.history') }}" class="sidebar-link {{ request()->routeIs('member.history') ? 'active' : '' }}">
-                                <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pinjam
+                                <i class="fa-solid fa-scroll"></i> Riwayat Pinjam
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('member.rewards') }}" class="sidebar-link {{ request()->routeIs('member.rewards') ? 'active' : '' }}">
-                                <i class="fa-solid fa-award"></i> Hadiah & Poin
+                                <i class="fa-solid fa-trophy"></i> Hadiah & Poin
                             </a>
                         </li>
                     @endif
@@ -239,7 +239,7 @@
     <div class="toast-container" id="toastContainer">
         @if(session('success'))
             <div class="toast toast-success">
-                <i class="fa-solid fa-circle-check"></i>
+                <i class="fa-solid fa-bookmark"></i>
                 <span>{{ session('success') }}</span>
             </div>
         @endif
@@ -278,11 +278,11 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type === 'success' ? 'toast-success' : (type === 'warning' ? 'toast-warning' : '')}`;
             
-            let icon = '<i class="fa-solid fa-circle-xmark"></i>';
+            let icon = '<i class="fa-solid fa-triangle-exclamation"></i>';
             if (type === 'success') {
-                icon = '<i class="fa-solid fa-circle-check"></i>';
+                icon = '<i class="fa-solid fa-bookmark"></i>';
             } else if (type === 'warning') {
-                icon = '<i class="fa-solid fa-circle-exclamation"></i>';
+                icon = '<i class="fa-solid fa-hourglass-half"></i>';
             }
 
             toast.innerHTML = `

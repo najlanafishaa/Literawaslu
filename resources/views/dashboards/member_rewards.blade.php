@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="reward-hero-icon-wrap" style="font-size: 4.5rem; color: rgba(255,255,255,0.25);">
-            <i class="fa-solid fa-award"></i>
+            <i class="fa-solid fa-trophy"></i>
         </div>
     </div>
 </div>
@@ -147,7 +147,7 @@
                                     @elseif($history->type === 'deduct')
                                         <span class="badge badge-danger"><i class="fa-solid fa-minus-circle"></i> Pengurangan (Penalti)</span>
                                     @else
-                                        <span class="badge badge-warning"><i class="fa-solid fa-award"></i> Penukaran Limit</span>
+                                        <span class="badge badge-warning"><i class="fa-solid fa-hourglass-half"></i> Penukaran Limit</span>
                                     @endif
                                 </td>
                                 <td>

@@ -137,9 +137,8 @@ Route::middleware('auth')->group(function () {
         // Transaction logs
         Route::get('/admin/borrows/history', [BorrowController::class, 'history'])->name('borrows.history');
 
-        // Settings & Google Sheets Sync
+        // Settings
         Route::get('/admin/settings', [SettingController::class, 'index'])->name('settings.index');
         Route::post('/admin/settings', [SettingController::class, 'update'])->name('settings.update');
-        Route::post('/admin/settings/sync-sheets', [SettingController::class, 'syncSheets'])->name('settings.sync_sheets');
     });
 });

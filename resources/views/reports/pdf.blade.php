@@ -33,7 +33,14 @@
 
         .kop-title {
             text-align: center;
-            width: 100%;
+            flex: 1;
+        }
+
+        .kop-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            flex-shrink: 0;
         }
 
         .kop-title h1 {
@@ -251,11 +258,13 @@
 
     <!-- Kop Surat -->
     <div class="kop-surat">
+        <img src="{{ public_path('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" class="kop-logo">
         <div class="kop-title">
             <h1>BAWASLU PROVINSI LAMPUNG</h1>
             <h2>PERPUSTAKAAN DIGITAL LITERAWASLU</h2>
             <p>Ruang Literasi Pengawasan &bull; Dokumen Resmi Hasil Rekapitulasi</p>
         </div>
+        <img src="{{ public_path('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" class="kop-logo" style="visibility: hidden;">
     </div>
 
     <!-- Meta Bar -->
@@ -384,7 +393,6 @@
             <div class="signature-date">Bandar Lampung, {{ now()->locale('id')->translatedFormat('d F Y') }}</div>
             <div class="signature-role">Mengetahui,<br>Admin Perpustakaan Literawaslu</div>
             <div class="signature-name">{{ auth()->user()->name ?? 'Admin Perpustakaan' }}</div>
-            <div class="signature-nip">NIP/ID: {{ auth()->user()->id ? 'PLW-' . str_pad(auth()->user()->id, 4, '0', STR_PAD_LEFT) : '-' }}</div>
         </div>
     </div>
 

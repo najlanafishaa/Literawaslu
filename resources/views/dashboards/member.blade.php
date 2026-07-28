@@ -32,12 +32,12 @@
             <h3 style="font-size: 0.8rem; margin-bottom: 12px; opacity: 0.9;">SISA KUOTA PINJAM</h3>
             <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                 <div style="background: var(--gray-50); padding: 8px 12px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid var(--gray-200);">
-                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-globe" style="color: var(--secondary);"></i> ONLINE</div>
-                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 3 - $activeBorrows->where('book.drive_link', '!=', null)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/3</span></div>
+                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-tablet-screen-button" style="color: var(--secondary);"></i> ONLINE</div>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 3 - $activeBorrows->where('book.is_online', true)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/3</span></div>
                 </div>
                 <div style="background: var(--gray-50); padding: 8px 12px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid var(--gray-200);">
-                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-book" style="color: var(--primary);"></i> OFFLINE</div>
-                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 1 - $activeBorrows->where('book.drive_link', null)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/1</span></div>
+                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-book-bookmark" style="color: var(--primary);"></i> OFFLINE</div>
+                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 1 - $activeBorrows->where('book.is_online', false)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/1</span></div>
                 </div>
             </div>
             <small style="opacity: 0.8; font-size: 0.75rem; display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-hand-pointer"></i> Klik rincian &amp; aturan</small>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="stat-icon">
-            <i class="fa-solid fa-award"></i>
+            <i class="fa-solid fa-trophy"></i>
         </div>
     </a>
 </div>
@@ -72,7 +72,7 @@
     <div style="background: var(--primary); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px 20px;">
         <h2 style="margin: 0; color: #ffffff !important; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;"><i class="fa-solid fa-book-open" style="color: #ffffff !important;"></i> Pengajuan & Status Peminjaman</h2>
         <a href="{{ route('catalog') }}" class="btn btn-sm" style="background: rgba(255,255,255,0.2); color: #ffffff !important; border: 1px solid rgba(255,255,255,0.4); font-weight: 600;">
-            <i class="fa-solid fa-plus-circle"></i> Ajukan Peminjaman via Katalog
+            <i class="fa-solid fa-book-circle-arrow-right"></i> Ajukan Peminjaman via Katalog
         </a>
     </div>
     <div class="card-body">
@@ -115,23 +115,23 @@
                                     <div style="font-size: 0.8rem; color: var(--gray-600);">Oleh: {{ $req->book->author }}</div>
                                 </td>
                                 <td>
-                                    @if($req->book->drive_link)
-                                        <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                                    @if($req->book->is_online)
+                                        <span class="badge badge-online">Online</span>
                                     @else
-                                        <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                                        <span class="badge badge-offline">Offline</span>
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($req->borrow_date)->format('d M Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($req->due_date)->format('d M Y') }}</td>
                                 <td>
                                     @if($req->status === 'pending')
-                                        <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Menunggu Verifikasi</span>
+                                        <span class="badge badge-pending"><i class="fa-solid fa-hourglass-half"></i> Menunggu Verifikasi</span>
                                     @elseif($req->status === 'borrowed')
-                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Disetujui (Sedang Dipinjam)</span>
+                                        <span class="badge badge-success"><i class="fa-solid fa-bookmark"></i> Disetujui (Sedang Dipinjam)</span>
                                     @elseif($req->status === 'returned')
                                         <span class="badge badge-secondary"><i class="fa-solid fa-box-archive"></i> Selesai (Dikembalikan)</span>
                                     @elseif($req->status === 'rejected')
-                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>
+                                        <span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Ditolak</span>
                                     @else
                                         <span class="badge badge-danger">{{ ucfirst($req->status) }}</span>
                                     @endif
@@ -155,7 +155,7 @@
         <div class="card-body">
             @if($activeBorrows->isEmpty())
                 <div style="text-align: center; padding: 40px 20px; color: var(--gray-600);">
-                    <i class="fa-solid fa-circle-check" style="font-size: 2.5rem; color: #22c55e; margin-bottom: 15px;"></i>
+                    <i class="fa-solid fa-book-open-reader" style="font-size: 2.5rem; color: #22c55e; margin-bottom: 15px;"></i>
                     <p style="font-weight: 500;">Anda tidak memiliki peminjaman aktif saat ini.</p>
                     <p style="font-size: 0.85rem; margin-top: 5px;">Silakan datangi admin perpustakaan untuk meminjam buku.</p>
                 </div>
@@ -184,10 +184,10 @@
                                         <div style="font-size: 0.8rem; color: var(--gray-600);">{{ $borrow->book->author }}</div>
                                     </td>
                                     <td>
-                                        @if($borrow->book->drive_link)
-                                            <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                                        @if($borrow->book->is_online)
+                                            <span class="badge badge-online">Online</span>
                                         @else
-                                            <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                                            <span class="badge badge-offline">Offline</span>
                                         @endif
                                     </td>
                                     <td>{{ $borrow->borrow_date->format('d M Y') }}</td>
@@ -281,12 +281,12 @@
                     <div style="display: flex; justify-content: space-around; margin-top: 10px; align-items: center;">
                         <div>
                             <span style="font-size: 0.72rem; opacity: 0.85; display: block;">Terpakai</span>
-                            <span style="font-size: 1.4rem; font-weight: 800;">{{ $activeBorrows->where('book.drive_link', '!=', null)->count() }} / 3</span>
+                            <span style="font-size: 1.4rem; font-weight: 800;">{{ $activeBorrows->where('book.is_online', true)->count() }} / 3</span>
                         </div>
                         <div style="border-left: 1px solid rgba(255,255,255,0.3); height: 30px;"></div>
                         <div>
                             <span style="font-size: 0.72rem; opacity: 0.85; display: block;">Sisa</span>
-                            <span style="font-size: 1.4rem; font-weight: 800;">{{ max(0, 3 - $activeBorrows->where('book.drive_link', '!=', null)->count()) }}</span>
+                            <span style="font-size: 1.4rem; font-weight: 800;">{{ max(0, 3 - $activeBorrows->where('book.is_online', true)->count()) }}</span>
                         </div>
                     </div>
                 </div>
@@ -297,12 +297,12 @@
                     <div style="display: flex; justify-content: space-around; margin-top: 10px; align-items: center;">
                         <div>
                             <span style="font-size: 0.72rem; opacity: 0.85; display: block;">Terpakai</span>
-                            <span style="font-size: 1.4rem; font-weight: 800;">{{ $activeBorrows->where('book.drive_link', null)->count() }} / 1</span>
+                            <span style="font-size: 1.4rem; font-weight: 800;">{{ $activeBorrows->where('book.is_online', false)->count() }} / 1</span>
                         </div>
                         <div style="border-left: 1px solid rgba(255,255,255,0.3); height: 30px;"></div>
                         <div>
                             <span style="font-size: 0.72rem; opacity: 0.85; display: block;">Sisa</span>
-                            <span style="font-size: 1.4rem; font-weight: 800;">{{ max(0, 1 - $activeBorrows->where('book.drive_link', null)->count()) }}</span>
+                            <span style="font-size: 1.4rem; font-weight: 800;">{{ max(0, 1 - $activeBorrows->where('book.is_online', false)->count()) }}</span>
                         </div>
                     </div>
                 </div>
@@ -312,7 +312,7 @@
             <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
                 <span class="badge badge-online">Online</span> Sedang Dipinjam (Online)
             </h4>
-            @php $onlineBorrows = $activeBorrows->filter(fn($b) => !empty($b->book->drive_link)); @endphp
+            @php $onlineBorrows = $activeBorrows->filter(fn($b) => $b->book->is_online); @endphp
             @if($onlineBorrows->isEmpty())
                 <p style="font-size: 0.82rem; color: var(--gray-600); margin-bottom: 20px;">Tidak ada buku online yang sedang dipinjam.</p>
             @else
@@ -333,7 +333,7 @@
             <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
                 <span class="badge badge-offline">Offline</span> Sedang Dipinjam (Offline)
             </h4>
-            @php $offlineBorrows = $activeBorrows->filter(fn($b) => empty($b->book->drive_link)); @endphp
+            @php $offlineBorrows = $activeBorrows->filter(fn($b) => !$b->book->is_online); @endphp
             @if($offlineBorrows->isEmpty())
                 <p style="font-size: 0.82rem; color: var(--gray-600); margin-bottom: 10px;">Tidak ada buku offline yang sedang dipinjam.</p>
             @else

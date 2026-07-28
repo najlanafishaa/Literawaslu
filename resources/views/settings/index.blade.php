@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Pengaturan')
-@section('header_title', 'Pengaturan Sistem')
+@section('title', 'Pengaturan Perpustakaan')
+@section('header_title', 'Pengaturan Perpustakaan')
 
 @section('content')
 <div class="welcome-banner" style="margin-bottom: 25px;">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;">
         <div>
-            <h1>Pengaturan & Integrasi Perpustakaan</h1>
-            <p>Atur identitas perpustakaan, parameter operasional, durasi pinjam, denda, dan kelola integrasi data Google Sheets.</p>
+            <h1>Pengaturan Perpustakaan</h1>
+            <p>Atur identitas perpustakaan serta parameter operasional seperti durasi pinjam, denda, dan poin reward.</p>
         </div>
         <div>
             <i class="fa-solid fa-sliders" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
@@ -68,7 +68,7 @@
         <div class="card-body" style="padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
             <div>
                 <h3 style="font-size: 0.95rem; font-weight: 600; color: var(--dark);">Simpan Seluruh Pengaturan</h3>
-                <p style="font-size: 0.8rem; color: var(--gray-600);">Tekan simpan untuk memperbarui aturan perpustakaan dan data integrasi eksternal.</p>
+                <p style="font-size: 0.8rem; color: var(--gray-600);">Tekan simpan untuk memperbarui aturan operasional perpustakaan.</p>
             </div>
             <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">
                 <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Pengaturan

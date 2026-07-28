@@ -87,7 +87,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @if($borrow->book->drive_link)
+                                    @if($borrow->book->is_online)
                                         <span class="badge badge-online">Online</span>
                                     @else
                                         <span class="badge badge-offline">Offline</span>
@@ -110,9 +110,9 @@
                                     @if($borrow->fine_amount > 0)
                                         <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku Fisik</div>
                                         @if($borrow->fine_status === 'unpaid')
-                                            <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Belum Dipenuhi</span>
+                                            <span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Belum Dipenuhi</span>
                                         @elseif($borrow->fine_status === 'paid')
-                                            <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Sudah Dipenuhi</span>
+                                            <span class="badge badge-success"><i class="fa-solid fa-bookmark"></i> Sudah Dipenuhi</span>
                                         @endif
                                     @else
                                         <span style="color: var(--dark); font-size: 0.85rem; font-weight: 500;">Tepat Waktu</span>
@@ -121,20 +121,20 @@
                                 <td>
                                     @if($borrow->status === 'returned')
                                         @if($borrow->return_date->greaterThan($borrow->due_date))
-                                            <span class="badge badge-warning" title="Dikembalikan terlambat"><i class="fa-solid fa-circle-exclamation"></i> Kembali (Terlambat)</span>
+                                            <span class="badge badge-warning" title="Dikembalikan terlambat"><i class="fa-solid fa-triangle-exclamation"></i> Kembali (Terlambat)</span>
                                         @else
-                                            <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Selesai</span>
+                                            <span class="badge badge-success"><i class="fa-solid fa-bookmark"></i> Selesai</span>
                                         @endif
                                     @elseif($borrow->status === 'borrowed')
                                         @if($diff < 0)
-                                            <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Terlambat {{ abs($diff) }} Hari</span>
+                                            <span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Terlambat {{ abs($diff) }} Hari</span>
                                         @else
-                                            <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Dipinjam</span>
+                                            <span class="badge badge-warning"><i class="fa-solid fa-hourglass-half"></i> Dipinjam</span>
                                         @endif
                                     @elseif($borrow->status === 'terlambat')
-                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Terlambat {{ abs($diff) }} Hari</span>
+                                        <span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Terlambat {{ abs($diff) }} Hari</span>
                                     @else
-                                        <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> {{ ucfirst($borrow->status) }}</span>
+                                        <span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> {{ ucfirst($borrow->status) }}</span>
                                     @endif
                                 </td>
                             </tr>

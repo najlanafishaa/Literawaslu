@@ -67,10 +67,10 @@
                                 </td>
                                 <td>{{ $book->author }}</td>
                                 <td>
-                                    @if($book->drive_link)
-                                        <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                                    @if($book->is_online)
+                                        <span class="badge badge-online">Online</span>
                                     @else
-                                        <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                                        <span class="badge badge-offline">Offline</span>
                                     @endif
                                 </td>
                                 <td>

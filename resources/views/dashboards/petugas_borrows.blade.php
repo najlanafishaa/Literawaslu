@@ -43,7 +43,7 @@
                                     <div style="font-size: 0.8rem; color: var(--gray-600); font-family: monospace;">{{ $borrow->book->barcode }}</div>
                                 </td>
                                 <td>
-                                    @if($borrow->book->drive_link)
+                                    @if($borrow->book->is_online)
                                         <span class="badge badge-online">Online</span>
                                     @else
                                         <span class="badge badge-offline">Offline</span>

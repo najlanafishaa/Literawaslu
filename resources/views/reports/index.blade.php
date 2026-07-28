@@ -120,7 +120,7 @@
     <!-- Inventory Availability (Donut) -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-chart-pie" style="color: var(--secondary); margin-right: 8px;"></i> Ketersediaan Koleksi Buku</h2>
+            <h2><i class="fa-solid fa-layer-group" style="color: var(--secondary); margin-right: 8px;"></i> Ketersediaan Koleksi Buku</h2>
         </div>
         <div class="card-body" style="position: relative; height: 300px; display: flex; justify-content: center; align-items: center;">
             <div style="width: 220px; height: 220px;">
@@ -156,7 +156,7 @@
                             <td><strong>{{ $m->user->name }}</strong></td>
                             <td>{{ $m->user->email }}</td>
                             <td>{{ $m->total_loans }} kali</td>
-                            <td><span class="badge badge-warning">{{ $m->points }} Pts</span></td>
+                            <td><span class="badge badge-warning">{{ $m->points }}</span></td>
                             <td>{{ $m->created_at->format('d M Y') }}</td>
                         </tr>
                     @endforeach

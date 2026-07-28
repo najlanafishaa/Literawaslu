@@ -13,7 +13,7 @@ class MemberAdminController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Member::with('user');
+        $query = Member::with('user')->where('status', 'active');
 
         if ($request->filled('search')) {
             $search = $request->search;

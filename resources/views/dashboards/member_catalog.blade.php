@@ -63,10 +63,10 @@
             
             <!-- Floating Book Type Badge -->
             <div style="position: absolute; top: 12px; right: 12px; z-index: 5;">
-                @if($book->is_online)
-                    <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                            @if($book->is_online)
+                    <span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
                 @else
-                    <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                    <span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
                 @endif
             </div>
 
@@ -93,9 +93,9 @@
                         <span class="book-category" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">{{ $book->category }}</span>
                         <span style="font-size: 0.72rem; color: var(--gray-400);">&bull;</span>
                         @if($book->is_online)
-                            <span class="badge badge-online" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-globe"></i> Online</span>
+                            <span class="badge badge-online" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
                         @else
-                            <span class="badge badge-offline" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-book"></i> Offline</span>
+                            <span class="badge badge-offline" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
                         @endif
                     </div>
                     <h3 class="book-title" style="font-size: 0.95rem; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px;">{{ $book->title }}</h3>
@@ -117,7 +117,7 @@
                     </div>
 
                     <div style="font-size: 0.75rem; color: var(--gray-600); display: flex; justify-content: center; gap: 10px; margin-top: 6px;">
-                        <span><i class="fa-solid fa-print"></i> {{ $book->publisher }}</span>
+                        <span><i class="fa-solid fa-building-columns"></i> {{ $book->publisher }}</span>
                         <span>•</span>
                         <span>{{ $book->year }}</span>
                     </div>
@@ -126,7 +126,7 @@
                 <div style="border-top: 1px solid var(--gray-100); padding-top: 12px; margin-top: 12px;">
                     <!-- Stock Ratio Info -->
                     <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 8px; align-items: center; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: var(--gray-600);"><i class="fa-solid fa-layer-group"></i> Stok Tersedia:</span>
+                        <span style="color: var(--gray-600);"><i class="fa-solid fa-layer-group"></i> Stok:</span>
                         <span style="font-weight: 700; color: {{ $book->available_stock > 0 ? 'var(--success)' : 'var(--primary)' }}">
                             {{ $book->available_stock }} / {{ $book->stock }} Buku
                         </span>
@@ -135,9 +135,9 @@
                     <div class="book-footer" style="border: none; padding: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
                         <span class="book-status">
                             @if($book->available_stock > 0)
-                                <span class="badge badge-success" style="background-color: rgba(40,167,69,0.1); color: var(--success);"><i class="fa-solid fa-circle-check"></i> Tersedia</span>
+                                <span class="badge badge-success" style="background-color: rgba(40,167,69,0.1); color: var(--success); font-weight: 700; letter-spacing: 0.3px;">✦ Tersedia</span>
                             @else
-                                <span class="badge badge-danger" style="background-color: rgba(214,32,39,0.1); color: var(--primary);"><i class="fa-solid fa-circle-xmark"></i> Kosong</span>
+                                <span class="badge badge-danger" style="background-color: rgba(214,32,39,0.1); color: var(--primary);"><i class="fa-solid fa-ban"></i> Kosong</span>
                             @endif
                         </span>
                         <span style="font-size: 0.75rem; color: var(--gray-600); font-family: monospace;">{{ $book->barcode }}</span>
@@ -149,7 +149,7 @@
                                 @csrf
                                 <input type="hidden" name="book_id" value="{{ $book->id }}">
                                 <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                    <i class="fa-solid fa-book-open"></i> {{ $book->available_stock > 0 ? 'Pinjam Buku' : 'Minta Akses Baca' }}
+                                    <i class="fa-solid fa-book-arrow-right"></i> {{ $book->available_stock > 0 ? 'Pinjam Buku' : 'Minta Akses Baca' }}
                                 </button>
                             </form>
                         @endif
@@ -171,7 +171,7 @@
                             @endif
                         @endif
                         <button onclick="showBookDetail({{ $book->id }})" class="btn btn-outline btn-sm" style="width: 100%; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--dark); border-color: var(--gray-300); white-space: normal; text-align: center;">
-                            <i class="fa-solid fa-circle-info"></i> Detail Buku
+                            <i class="fa-solid fa-magnifying-glass-plus"></i> Detail Buku
                         </button>
                     </div>
                 </div>
@@ -362,17 +362,17 @@ function showBookDetail(id) {
 
     const typeWrap = document.getElementById('modalTypeBadgeWrap');
     if (b.isOnline) {
-        typeWrap.innerHTML = '<span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>';
+        typeWrap.innerHTML = '<span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>';
     } else {
-        typeWrap.innerHTML = '<span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>';
+        typeWrap.innerHTML = '<span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>';
     }
 
 
     const stockEl = document.getElementById('modalStock');
     if (b.stock > 0) {
-        stockEl.innerHTML = `<span style="color:var(--success)"><i class="fa-solid fa-circle-check"></i> Tersedia: ${b.stock} / ${b.totalStock} Buku</span>`;
+        stockEl.innerHTML = `<span style="color:var(--success)"><i class="fa-solid fa-layer-group"></i> Tersedia: ${b.stock} / ${b.totalStock} Buku</span>`;
     } else {
-        stockEl.innerHTML = `<span style="color:var(--primary)"><i class="fa-solid fa-circle-xmark"></i> Stok Habis</span>`;
+        stockEl.innerHTML = `<span style="color:var(--primary)"><i class="fa-solid fa-ban"></i> Stok Habis</span>`;
     }
 
     // Average rating display
@@ -417,9 +417,9 @@ function showBookDetail(id) {
         document.getElementById('modalBookId').value = b.id;
         borrowWrap.style.display = 'block';
         if (b.stock > 0) {
-            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-open"></i> Pinjam Buku Ini';
+            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-arrow-right"></i> Pinjam Buku Ini';
         } else {
-            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-open"></i> Minta Akses Baca';
+            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-arrow-right"></i> Minta Akses Baca';
         }
         if (b.driveLink) {
             readOnlineBtn.href = b.readUrl;

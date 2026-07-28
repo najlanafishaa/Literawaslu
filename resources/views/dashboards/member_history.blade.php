@@ -52,10 +52,10 @@
                                     <div style="font-size: 0.8rem; color: var(--gray-600); font-family: monospace;">Barcode: {{ $borrow->book->barcode }}</div>
                                 </td>
                                 <td>
-                                    @if($borrow->book->drive_link)
-                                        <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                                    @if($borrow->book->is_online)
+                                        <span class="badge badge-online">Online</span>
                                     @else
-                                        <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                                        <span class="badge badge-offline">Offline</span>
                                     @endif
                                 </td>
                                 <td>{{ $borrowDate->format('d M Y') }}</td>
@@ -70,18 +70,18 @@
                                 <td>
                                     @if($borrow->status === 'returned')
                                         @if($lateDays > 0)
-                                            <span class="badge badge-warning"><i class="fa-solid fa-circle-exclamation"></i> Selesai (Terlambat)</span>
+                                            <span class="badge badge-warning"><i class="fa-solid fa-triangle-exclamation"></i> Selesai (Terlambat)</span>
                                         @else
-                                            <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Selesai</span>
+                                            <span class="badge badge-success"><i class="fa-solid fa-bookmark"></i> Selesai</span>
                                         @endif
                                     @elseif($borrow->status === 'borrowed')
                                         @if($lateDays > 0)
-                                            <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Terlambat</span>
+                                            <span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Terlambat</span>
                                         @else
-                                            <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Dipinjam</span>
+                                            <span class="badge badge-warning"><i class="fa-solid fa-hourglass-half"></i> Dipinjam</span>
                                         @endif
                                     @elseif($borrow->status === 'pending')
-                                        <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Menunggu Verifikasi</span>
+                                        <span class="badge badge-pending"><i class="fa-solid fa-hourglass-half"></i> Menunggu Verifikasi</span>
                                     @else
                                         <span class="badge badge-danger">{{ ucfirst($borrow->status) }}</span>
                                     @endif
@@ -101,14 +101,14 @@
                                             @else
                                                 Sanksi: Wajib Donasi 1 Buku Fisik
                                                 @if($borrow->fine_status === 'paid')
-                                                    <span class="badge badge-success"><i class="fa-solid fa-check"></i> Sudah Dipenuhi</span>
+                                                    <span class="badge badge-success"><i class="fa-solid fa-bookmark"></i> Sudah Dipenuhi</span>
                                                 @else
-                                                    <span class="badge badge-danger"><i class="fa-solid fa-circle-exclamation"></i> Belum Dipenuhi</span>
+                                                    <span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Belum Dipenuhi</span>
                                                 @endif
                                             @endif
                                         </div>
                                     @else
-                                        <span style="color: var(--dark); font-weight: 500; font-size: 0.85rem;"><i class="fa-solid fa-check-double" style="color: var(--primary);"></i> Tepat Waktu</span>
+                                    <span style="color: var(--dark); font-weight: 500; font-size: 0.85rem;"><i class="fa-solid fa-star" style="color: var(--secondary);"></i> Tepat Waktu</span>
                                     @endif
                                 </td>
                             </tr>

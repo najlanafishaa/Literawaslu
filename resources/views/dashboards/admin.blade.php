@@ -119,15 +119,15 @@
                                     <div style="font-size: 0.78rem; color: var(--gray-600);">Barcode: {{ $borrow->book->barcode }} &bull; Stok: {{ $borrow->book->available_stock }}</div>
                                 </td>
                                 <td>
-                                    @if($borrow->book->drive_link)
-                                        <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                                    @if($borrow->book->is_online)
+                                        <span class="badge badge-online">Online</span>
                                     @else
-                                        <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                                        <span class="badge badge-offline">Offline</span>
                                     @endif
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d M Y, H:i') }}</td>
                                 <td>
-                                    <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Menunggu Persetujuan</span>
+                                    <span class="badge badge-pending"><i class="fa-solid fa-hourglass-half"></i> Menunggu Persetujuan</span>
                                 </td>
                                 <td>
                                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -183,10 +183,10 @@
                                         <div style="font-size: 0.78rem; color: var(--gray-600);">{{ $borrow->book->author }}</div>
                                     </td>
                                     <td>
-                                        @if($borrow->book->drive_link)
-                                            <span class="badge badge-online"><i class="fa-solid fa-globe"></i> Online</span>
+                                        @if($borrow->book->is_online)
+                                            <span class="badge badge-online">Online</span>
                                         @else
-                                            <span class="badge badge-offline"><i class="fa-solid fa-book"></i> Offline</span>
+                                            <span class="badge badge-offline">Offline</span>
                                         @endif
                                     </td>
                                     <td>{{ $borrow->member->user->name }}</td>
@@ -226,10 +226,10 @@
                                 <div>
                                     <div style="font-weight: 600; color: var(--dark); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                                         {{ $popular->book->title }}
-                                        @if($popular->book->drive_link)
-                                            <span class="badge badge-online" style="font-size: 0.65rem !important; padding: 2px 6px !important;"><i class="fa-solid fa-globe"></i> Online</span>
+                                        @if($popular->book->is_online)
+                                            <span class="badge badge-online" style="font-size: 0.65rem !important; padding: 2px 6px !important;">Online</span>
                                         @else
-                                            <span class="badge badge-offline" style="font-size: 0.65rem !important; padding: 2px 6px !important;"><i class="fa-solid fa-book"></i> Offline</span>
+                                            <span class="badge badge-offline" style="font-size: 0.65rem !important; padding: 2px 6px !important;">Offline</span>
                                         @endif
                                     </div>
                                     <div style="font-size: 0.8rem; color: var(--gray-600);">{{ $popular->book->author }}</div>

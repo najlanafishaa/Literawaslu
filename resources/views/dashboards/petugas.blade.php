@@ -18,7 +18,7 @@
             <h3>Total Buku</h3>
             <p>{{ $totalBooks }} Buku</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
     </a>
     <a href="{{ route('members.index') }}" class="stat-card card-dark" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
@@ -39,14 +39,14 @@
             <h3>Total Pengembalian</h3>
             <p>{{ $totalReturns ?? 0 }} Selesai</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
     </a>
     <a href="{{ route('borrows.index') }}" class="stat-card card-red" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Buku Terlambat</h3>
             <p style="{{ $overdueCount > 0 ? 'color: #d62027;' : '' }}">{{ $overdueCount }} Transaksi</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <div class="stat-icon"><i class="fa-solid fa-hourglass-end"></i></div>
     </a>
 </div>
 

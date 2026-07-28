@@ -31,6 +31,10 @@ class Book extends Model
         'available_stock' => 'integer',
     ];
 
+    protected $hidden = [
+        'drive_link',
+    ];
+
     /**
      * Get the borrowings for this book.
      */
