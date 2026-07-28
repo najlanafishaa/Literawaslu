@@ -4,7 +4,7 @@
 @section('header_title', 'Dashboard Admin')
 
 @section('content')
-<div class="welcome-banner" style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
+<div class="welcome-banner">
     <div style="position:relative; z-index:5; flex:1; min-width:200px;">
         <h1>Selamat Datang, {{ auth()->user()->name }}</h1>
         <p>Gunakan panel ini untuk mengelola aktivitas peminjaman buku, scan pengembalian, dan melihat laporan bulanan.</p>

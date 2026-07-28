@@ -55,21 +55,12 @@
 
 <div class="catalog-grid" id="catalogGrid">
     @forelse($books as $book)
-        <div class="book-card" data-book-type="{{ $book->is_online ? 'online' : 'offline' }}" style="position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 460px; padding: 0; border: 1px solid var(--gray-200); border-radius: var(--border-radius); background: var(--light);">
+        <div class="book-card" data-book-type="{{ $book->is_online ? 'online' : 'offline' }}" style="position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 460px; padding: 0; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; background: var(--light);">
             <!-- Blur Cover Background -->
             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 160px; overflow: hidden; z-index: 1;">
                 <div style="width: 100%; height: 100%; background-image: url('{{ $book->cover_image ? asset($book->cover_image) : asset('images/logo-bawaslu.png') }}'); background-size: cover; background-position: center; filter: blur(12px) brightness(0.55); transform: scale(1.15);"></div>
             </div>
             
-            <!-- Floating Book Type Badge -->
-            <div style="position: absolute; top: 12px; right: 12px; z-index: 5;">
-                            @if($book->is_online)
-                    <span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
-                @else
-                    <span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
-                @endif
-            </div>
-
             <!-- Foreground Elements -->
             <div style="position: relative; z-index: 2; padding: 25px 20px 0; display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 15px;">
                 <!-- Foreground Cover Image -->
@@ -89,14 +80,14 @@
             <!-- Card Body Content -->
             <div style="flex-grow: 1; padding: 15px 20px 20px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; background-color: var(--light);">
                 <div style="text-align: center;">
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap;">
-                        <span class="book-category" style="font-size: 0.72rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">{{ $book->category }}</span>
-                        <span style="font-size: 0.72rem; color: var(--gray-400);">&bull;</span>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
                         @if($book->is_online)
-                            <span class="badge badge-online" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
+                            <span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
                         @else
-                            <span class="badge badge-offline" style="font-size: 0.68rem !important; padding: 2px 7px !important;"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
+                            <span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
                         @endif
+                        <span style="font-size: 0.72rem; color: var(--gray-400);">&bull;</span>
+                        <span class="book-category" style="font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--primary); letter-spacing: 0.3px;">{{ $book->category }}</span>
                     </div>
                     <h3 class="book-title" style="font-size: 0.95rem; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px;">{{ $book->title }}</h3>
                     <p class="book-author" style="font-size: 0.8rem; color: var(--gray-600); margin-bottom: 5px;">Oleh: {{ $book->author }}</p>

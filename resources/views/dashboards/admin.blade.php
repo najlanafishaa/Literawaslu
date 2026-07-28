@@ -4,7 +4,7 @@
 @section('header_title', 'Dashboard Super Admin')
 
 @section('content')
-<div class="welcome-banner" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+<div class="welcome-banner">
     <div style="position: relative; z-index: 5; flex: 1; min-width: 220px;">
         <h1>Selamat Datang di Portal Super Admin</h1>
         <p>Akses penuh sistem perpustakaan Literawaslu. Kelola buku, data pengguna, admin, dan pantau laporan transaksi.</p>
@@ -227,9 +227,9 @@
                                     <div style="font-weight: 600; color: var(--dark); display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                                         {{ $popular->book->title }}
                                         @if($popular->book->is_online)
-                                            <span class="badge badge-online" style="font-size: 0.65rem !important; padding: 2px 6px !important;">Online</span>
+                                            <span class="badge badge-online">Online</span>
                                         @else
-                                            <span class="badge badge-offline" style="font-size: 0.65rem !important; padding: 2px 6px !important;">Offline</span>
+                                            <span class="badge badge-offline">Offline</span>
                                         @endif
                                     </div>
                                     <div style="font-size: 0.8rem; color: var(--gray-600);">{{ $popular->book->author }}</div>

@@ -228,9 +228,9 @@
                 @yield('content')
             </main>
 
-            <footer class="app-footer" style="padding: 16px 24px; text-align: center; background-color: var(--light); border-top: 1px solid var(--gray-200); margin-top: auto; font-size: 0.82rem; color: var(--gray-600);">
-                <div style="font-weight: 600; color: var(--dark);">&copy; 2026 Bawaslu Provinsi Lampung</div>
-                <div style="font-size: 0.77rem; color: var(--gray-600); margin-top: 2px;">Developed by Najla Princess&#x1F478;&#x1F3FB;</div>
+            <footer class="app-footer" style="padding: 24px; text-align: center; background: transparent; margin-top: auto; font-size: 0.85rem; color: var(--gray-500);">
+                <div style="font-weight: 700; color: var(--gray-400); margin-bottom: 4px;">&copy; 2026 Bawaslu Provinsi Lampung</div>
+                <div style="font-size: 0.8rem; letter-spacing: 0.3px;">by develop nya najla & Annisa &#x1F478;&#x1F3FB;</div>
             </footer>
         </div>
     </div>

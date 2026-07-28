@@ -258,13 +258,13 @@
 
     <!-- Kop Surat -->
     <div class="kop-surat">
-        <img src="{{ public_path('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" class="kop-logo">
+        <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" class="kop-logo">
         <div class="kop-title">
             <h1>BAWASLU PROVINSI LAMPUNG</h1>
             <h2>PERPUSTAKAAN DIGITAL LITERAWASLU</h2>
             <p>Ruang Literasi Pengawasan &bull; Dokumen Resmi Hasil Rekapitulasi</p>
         </div>
-        <img src="{{ public_path('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" class="kop-logo" style="visibility: hidden;">
+        <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" class="kop-logo" style="visibility: hidden;">
     </div>
 
     <!-- Meta Bar -->

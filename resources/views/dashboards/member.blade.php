@@ -4,13 +4,13 @@
 @section('header_title', 'Dashboard')
 
 @section('content')
-<div class="welcome-banner" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+<div class="welcome-banner">
     <div style="position: relative; z-index: 5; flex: 1; min-width: 220px;">
         <h1>Halo, {{ auth()->user()->name }}!</h1>
         <p>Selamat datang kembali di Perpustakaan Literawaslu. Mari temukan buku favorit Anda hari ini.</p>
         <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="{{ route('catalog') }}" class="btn btn-primary btn-sm" style="background-color: var(--light); color: var(--primary); font-weight: 600;"><i class="fa-solid fa-magnifying-glass"></i> Jelajah Katalog</a>
-            <a href="{{ route('member.card') }}" class="btn btn-secondary btn-sm" style="background-color: transparent; border: 1px solid var(--light); color: var(--light); font-weight: 600;"><i class="fa-solid fa-id-card"></i> Tampilkan Kartu</a>
+            <a href="{{ route('catalog') }}" class="btn btn-sm" style="background: var(--light); color: var(--primary); font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"><i class="fa-solid fa-magnifying-glass"></i> Jelajah Katalog</a>
+            <a href="{{ route('member.card') }}" class="btn btn-sm" style="background: transparent; border: 1px solid rgba(255,255,255,0.6); color: var(--light); font-weight: 600;"><i class="fa-solid fa-id-card"></i> Tampilkan Kartu</a>
         </div>
     </div>
 </div>
@@ -68,8 +68,8 @@
     </a>
 </div>
 
-<div class="card" style="margin-bottom: 25px; overflow: hidden;">
-    <div style="background: var(--primary); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px 20px;">
+<div class="card" style="margin-bottom: 24px; overflow: hidden;">
+    <div style="background: linear-gradient(135deg, var(--primary) 0%, #a01419 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px 20px;">
         <h2 style="margin: 0; color: #ffffff !important; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;"><i class="fa-solid fa-book-open" style="color: #ffffff !important;"></i> Pengajuan & Status Peminjaman</h2>
         <a href="{{ route('catalog') }}" class="btn btn-sm" style="background: rgba(255,255,255,0.2); color: #ffffff !important; border: 1px solid rgba(255,255,255,0.4); font-weight: 600;">
             <i class="fa-solid fa-book-circle-arrow-right"></i> Ajukan Peminjaman via Katalog
@@ -148,7 +148,7 @@
 <div class="dashboard-grid">
     <!-- Left Column: Active Borrowings -->
     <div class="card" style="overflow: hidden;">
-        <div style="background: var(--primary); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
+        <div style="background: linear-gradient(135deg, var(--primary) 0%, #a01419 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
             <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-hand-holding-hand" style="color: #ffffff !important;"></i> Buku yang Sedang Dipinjam</h2>
             <span class="badge" style="background: rgba(255,255,255,0.25); color: #ffffff !important; font-size: 0.75rem;">{{ $activeBorrows->count() }} Sedang Dipinjam</span>
         </div>
@@ -214,7 +214,7 @@
 
     <!-- Right Column: Digital Card Quick View -->
     <div class="card" style="overflow: hidden;">
-        <div style="background: var(--primary); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
+        <div style="background: linear-gradient(135deg, var(--primary) 0%, #a01419 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
             <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-id-card" style="color: #ffffff !important;"></i> Kartu Anggota Digital</h2>
         </div>
         <div class="card-body" style="padding: 20px;">
