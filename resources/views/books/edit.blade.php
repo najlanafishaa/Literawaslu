@@ -55,7 +55,7 @@
                 <select name="category" id="category" class="form-control" required style="width: 100%;" onchange="toggleNewCategoryInput()">
                     <option value="" disabled {{ old('category', $book->category) ? '' : 'selected' }}>-- Pilih Kategori Buku --</option>
                     @foreach($categories as $cat)
-                        <option value="{{ $cat }}" {{ old('category', $book->category) == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                        <option value="{{ $cat }}" {{ old('category', $book->category) == $cat ? 'selected' : '' }}>{{ ucwords(strtolower($cat)) }}</option>
                     @endforeach
                     <option value="new_category_option" {{ old('category') == 'new_category_option' || old('new_category') ? 'selected' : '' }}>[+] Input Kategori Manual / Baru</option>
                 </select>

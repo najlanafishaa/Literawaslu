@@ -38,14 +38,14 @@
     </div>
     <div class="card-body" style="padding: 25px; display: flex; flex-direction: column; gap: 15px;">
 
-        {{-- Tier 1: 100 Poin = 1 Buku --}}
+        {{-- Tier 1: Perunggu --}}
         <div class="reward-tier-row">
             <div class="reward-tier-content">
-                <div style="width: 45px; height: 45px; border-radius: 50%; background-color: rgba(var(--secondary-rgb), 0.15); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                    <i class="fa-solid fa-book"></i>
+                <div style="width: 45px; height: 45px; border-radius: 50%; background-color: #FEF3C7; color: #92400E; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                    <i class="fa-solid fa-medal"></i>
                 </div>
                 <div>
-                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tingkat 1: Batas 1 Buku</h4>
+                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Perunggu — Batas 1 Buku</h4>
                     <p style="font-size: 0.8rem; color: var(--gray-600); margin-top: 2px;">Syarat: Memiliki minimal 100 Poin.</p>
                 </div>
             </div>
@@ -64,14 +64,14 @@
             </div>
         </div>
 
-        {{-- Tier 2: 200 Poin = 2 Buku --}}
+        {{-- Tier 2: Perak --}}
         <div class="reward-tier-row">
             <div class="reward-tier-content">
-                <div style="width: 45px; height: 45px; border-radius: 50%; background-color: rgba(var(--primary-rgb), 0.15); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                    <i class="fa-solid fa-book-bookmark"></i>
+                <div style="width: 45px; height: 45px; border-radius: 50%; background-color: #F1F5F9; color: #475569; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                    <i class="fa-solid fa-medal"></i>
                 </div>
                 <div>
-                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tingkat 2: Batas 2 Buku</h4>
+                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Perak — Batas 2 Buku</h4>
                     <p style="font-size: 0.8rem; color: var(--gray-600); margin-top: 2px;">Syarat: Memiliki minimal 200 Poin.</p>
                 </div>
             </div>
@@ -90,14 +90,14 @@
             </div>
         </div>
 
-        {{-- Tier 3: 300 Poin = 3 Buku --}}
+        {{-- Tier 3: Emas --}}
         <div class="reward-tier-row">
             <div class="reward-tier-content">
-                <div style="width: 45px; height: 45px; border-radius: 50%; background-color: rgba(var(--primary-rgb), 0.15); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                    <i class="fa-solid fa-books"></i>
+                <div style="width: 45px; height: 45px; border-radius: 50%; background-color: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                    <i class="fa-solid fa-trophy"></i>
                 </div>
                 <div>
-                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Tingkat 3: Batas 3 Buku</h4>
+                    <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Emas — Batas 3 Buku</h4>
                     <p style="font-size: 0.8rem; color: var(--gray-600); margin-top: 2px;">Syarat: Memiliki minimal 300 Poin.</p>
                 </div>
             </div>

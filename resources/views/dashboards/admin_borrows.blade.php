@@ -121,20 +121,24 @@
                                 <td>
                                     @if($borrow->status === 'returned')
                                         @if($borrow->return_date->greaterThan($borrow->due_date))
-                                            <span class="badge badge-warning" title="Dikembalikan terlambat"><i class="fa-solid fa-triangle-exclamation"></i> Kembali (Terlambat)</span>
+                                            <span class="badge badge-warning" title="Dikembalikan terlambat">Terlambat (Selesai)</span>
                                         @else
-                                            <span class="badge badge-success"><i class="fa-solid fa-bookmark"></i> Selesai</span>
+                                            <span class="badge badge-success">Selesai</span>
                                         @endif
                                     @elseif($borrow->status === 'borrowed')
                                         @if($diff < 0)
-                                            <span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Terlambat {{ abs($diff) }} Hari</span>
+                                            <span class="badge badge-danger">Terlambat {{ abs($diff) }} Hari</span>
                                         @else
-                                            <span class="badge badge-warning"><i class="fa-solid fa-hourglass-half"></i> Dipinjam</span>
+                                            <span class="badge badge-warning">Dipinjam</span>
                                         @endif
+                                    @elseif($borrow->status === 'pending')
+                                        <span class="badge badge-info" style="background:rgba(59,130,246,.12);color:#1d4ed8;border:1px solid #bfdbfe;">Menunggu</span>
                                     @elseif($borrow->status === 'terlambat')
-                                        <span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Terlambat {{ abs($diff) }} Hari</span>
+                                        <span class="badge badge-danger">Terlambat {{ abs($diff) }} Hari</span>
+                                    @elseif($borrow->status === 'rejected')
+                                        <span class="badge badge-danger">Ditolak</span>
                                     @else
-                                        <span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> {{ ucfirst($borrow->status) }}</span>
+                                        <span class="badge badge-danger">{{ ucfirst($borrow->status) }}</span>
                                     @endif
                                 </td>
                             </tr>

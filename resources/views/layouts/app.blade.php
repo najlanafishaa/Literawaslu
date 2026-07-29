@@ -68,7 +68,7 @@
                         </li>
                         <li>
                             <a href="{{ route('reports.index') }}" class="sidebar-link {{ request()->routeIs('reports.index') ? 'active' : '' }}">
-                                <i class="fa-solid fa-file-invoice-dollar"></i> Laporan
+                                <i class="fa-solid fa-chart-column"></i> Laporan
                             </a>
                         </li>
                         <li>
@@ -103,7 +103,7 @@
 
                         <li>
                             <a href="{{ route('reports.index') }}" class="sidebar-link {{ request()->routeIs('reports.index') ? 'active' : '' }}">
-                                <i class="fa-solid fa-calendar-days"></i> Laporan Bulanan
+                                <i class="fa-solid fa-chart-column"></i> Laporan
                             </a>
                         </li>
                         <li>
@@ -211,6 +211,18 @@
                             @endif
                         </a>
                         
+                    @if(in_array(auth()->user()->role, ['super_admin', 'admin', 'petugas']))
+                        @php
+                            $pendingResetCount = \App\Models\MemberResetRequest::where('status', 'pending')->count();
+                        @endphp
+                        @if($pendingResetCount > 0)
+                            <a href="{{ route('verifications.index') }}" title="Ada permintaan reset password dari pengguna" style="position: relative; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: #FEF3C7; border: 1px solid #FDE68A; color: #92400E; transition: background 0.2s ease;" onmouseover="this.style.background='#FDE68A'" onmouseout="this.style.background='#FEF3C7'">
+                                <i class="fa-solid fa-bell" style="font-size: 15px;"></i>
+                                <span style="position: absolute; top: -4px; right: -4px; background: #D62027; color: white; font-size: 10px; font-weight: 700; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; font-family: 'Plus Jakarta Sans', sans-serif; border: 2px solid white;">{{ $pendingResetCount }}</span>
+                            </a>
+                        @endif
+                    @endif
+
                         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
                             <button type="submit" class="btn btn-outline btn-sm" title="Log Out">

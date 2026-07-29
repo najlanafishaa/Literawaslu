@@ -92,8 +92,6 @@
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </form>
-                                        @else
-                                            <span style="font-size: 0.78rem; color: var(--gray-600);">—</span>
                                         @endif
                                     </div>
                                 </td>

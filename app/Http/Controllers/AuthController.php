@@ -86,13 +86,22 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => [
+                'required', 
+                'string', 
+                'min:6', 
+                'confirmed',
+                'regex:/[a-z]/',      // minimal 1 huruf kecil
+                'regex:/[A-Z]/',      // minimal 1 huruf besar
+                'regex:/[0-9]/'       // minimal 1 angka
+            ],
             'security_question' => 'required|string|max:255',
             'security_answer' => 'required|string|max:255',
         ], [
             'email.unique' => 'Email ini sudah terdaftar di sistem.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'password.min' => 'Password minimal terdiri dari 6 karakter.',
+            'password.regex' => 'Password harus mengandung huruf besar (A-Z), huruf kecil (a-z), dan angka (0-9).',
             'security_question.required' => 'Pertanyaan keamanan wajib dipilih.',
             'security_answer.required' => 'Jawaban keamanan wajib diisi.',
         ]);
@@ -180,12 +189,21 @@ class AuthController extends Controller
 
         // Only validate password if the user filled it
         if ($request->filled('password')) {
-            $rules['password'] = 'required|string|min:6|confirmed';
+            $rules['password'] = [
+                'required', 
+                'string', 
+                'min:6', 
+                'confirmed',
+                'regex:/[a-z]/', 
+                'regex:/[A-Z]/', 
+                'regex:/[0-9]/'
+            ];
         }
 
         $validated = $request->validate($rules, [
             'password.min' => 'Kata sandi minimal harus 6 karakter.',
-            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.'
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+            'password.regex' => 'Kata sandi harus mengandung huruf besar (A-Z), huruf kecil (a-z), dan angka (0-9).'
         ]);
 
         // Update fields

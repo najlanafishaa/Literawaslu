@@ -67,7 +67,10 @@
                                 </td>
                                 <td>{{ $book->author }}</td>
                                 <td>
-                                    @if($book->is_online)
+                                    @if($book->drive_link && $book->stock > 0)
+                                        <span class="badge badge-online">Online</span>
+                                        <span class="badge badge-offline">Offline</span>
+                                    @elseif($book->drive_link || $book->is_online)
                                         <span class="badge badge-online">Online</span>
                                     @else
                                         <span class="badge badge-offline">Offline</span>

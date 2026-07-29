@@ -26,7 +26,7 @@
                 <select name="category" class="form-control" onchange="this.form.submit()">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>{{ $category }}</option>
+                        <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>{{ ucwords(strtolower($category)) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -81,7 +81,10 @@
             <div style="flex-grow: 1; padding: 15px 20px 20px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; background-color: var(--light);">
                 <div style="text-align: center;">
                     <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
-                        @if($book->is_online)
+                        @if($book->drive_link && $book->stock > 0)
+                            <span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
+                            <span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
+                        @elseif($book->drive_link || $book->is_online)
                             <span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
                         @else
                             <span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
@@ -135,30 +138,70 @@
                     </div>
                     
                     <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
-                        @if(($book->available_stock > 0 || $book->drive_link) && auth()->user()->member->status === 'active')
-                            <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
-                                @csrf
-                                <input type="hidden" name="book_id" value="{{ $book->id }}">
-                                <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                    <i class="fa-solid fa-book-arrow-right"></i> {{ $book->available_stock > 0 ? 'Pinjam Buku' : 'Minta Akses Baca' }}
-                                </button>
-                            </form>
-                        @endif
-                        @if($book->drive_link)
-                            @php
-                                $hasApprovedBorrow = \App\Models\Borrow::where('member_id', auth()->user()->member->id)
-                                    ->where('book_id', $book->id)
-                                    ->where('status', 'borrowed')
-                                    ->exists();
-                            @endphp
-                            @if($hasApprovedBorrow)
-                                <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none; white-space: normal; text-align: center;">
-                                    <i class="fa-brands fa-google-drive"></i> Baca Online
-                                </a>
-                            @else
-                                <button type="button" class="btn btn-sm" disabled style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: var(--gray-200); color: var(--gray-600); border: none; cursor: not-allowed; white-space: normal; text-align: center;" title="Ajukan peminjaman & tunggu persetujuan admin untuk membuka akses ini">
-                                    <i class="fa-solid fa-lock"></i> Menunggu Akses
-                                </button>
+                        @if(auth()->user()->member->status === 'active')
+                            @if($book->drive_link && $book->available_stock > 0)
+                                {{-- Book is available BOTH Online and Offline --}}
+                                <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
+                                    @csrf
+                                    <input type="hidden" name="book_id" value="{{ $book->id }}">
+                                    <input type="hidden" name="borrow_mode" value="offline">
+                                    <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                        <i class="fa-solid fa-hand-holding-hand"></i> Pinjam Fisik
+                                    </button>
+                                </form>
+
+                                @php
+                                    $hasApprovedBorrow = \App\Models\Borrow::where('member_id', auth()->user()->member->id)
+                                        ->where('book_id', $book->id)
+                                        ->where('status', 'borrowed')
+                                        ->exists();
+                                @endphp
+                                @if($hasApprovedBorrow)
+                                    <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none; white-space: normal; text-align: center;">
+                                        <i class="fa-brands fa-google-drive"></i> Baca Online
+                                    </a>
+                                @else
+                                    <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
+                                        @csrf
+                                        <input type="hidden" name="book_id" value="{{ $book->id }}">
+                                        <input type="hidden" name="borrow_mode" value="online">
+                                        <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                            <i class="fa-solid fa-tablet-screen-button"></i> Minta Akses Online
+                                        </button>
+                                    </form>
+                                @endif
+                            @elseif($book->available_stock > 0)
+                                {{-- Book is Offline Only --}}
+                                <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
+                                    @csrf
+                                    <input type="hidden" name="book_id" value="{{ $book->id }}">
+                                    <input type="hidden" name="borrow_mode" value="offline">
+                                    <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                        <i class="fa-solid fa-book-arrow-right"></i> Pinjam Buku
+                                    </button>
+                                </form>
+                            @elseif($book->drive_link)
+                                {{-- Book is Online Only --}}
+                                @php
+                                    $hasApprovedBorrow = \App\Models\Borrow::where('member_id', auth()->user()->member->id)
+                                        ->where('book_id', $book->id)
+                                        ->where('status', 'borrowed')
+                                        ->exists();
+                                @endphp
+                                @if($hasApprovedBorrow)
+                                    <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none; white-space: normal; text-align: center;">
+                                        <i class="fa-brands fa-google-drive"></i> Baca Online
+                                    </a>
+                                @else
+                                    <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
+                                        @csrf
+                                        <input type="hidden" name="book_id" value="{{ $book->id }}">
+                                        <input type="hidden" name="borrow_mode" value="online">
+                                        <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                            <i class="fa-solid fa-book-arrow-right"></i> Minta Akses Baca
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         @endif
                         <button onclick="showBookDetail({{ $book->id }})" class="btn btn-outline btn-sm" style="width: 100%; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--dark); border-color: var(--gray-300); white-space: normal; text-align: center;">

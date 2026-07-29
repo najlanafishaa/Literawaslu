@@ -44,9 +44,28 @@
                             <i class="fa-regular fa-eye-slash"></i>
                         </button>
                     </div>
-                    {{-- Indikator kekuatan password --}}
-                    <div id="password-strength-bar" style="height: 5px; border-radius: 3px; margin-top: 6px; transition: all 0.3s; width: 0%; background: var(--primary);"></div>
-                    <div id="password-strength-label" style="font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></div>
+                    {{-- Persyaratan Password --}}
+                    <div id="password-requirements" style="margin-top: 10px; padding: 12px 14px; background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 10px; display: none;">
+                        <p style="font-size: 12px; font-weight: 600; color: #6B7280; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.04em;">Persyaratan Password</p>
+                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                            <div class="req-item" id="req-length" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
+                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <span>Minimal 6 karakter</span>
+                            </div>
+                            <div class="req-item" id="req-upper" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
+                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <span>Mengandung huruf besar (A–Z)</span>
+                            </div>
+                            <div class="req-item" id="req-lower" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
+                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <span>Mengandung huruf kecil (a–z)</span>
+                            </div>
+                            <div class="req-item" id="req-number" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
+                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <span>Mengandung angka (0–9)</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -109,42 +128,42 @@
 
     let passwordIsStrong = false;
 
-    function checkPasswordStrength(val) {
-        const bar   = document.getElementById('password-strength-bar');
-        const label = document.getElementById('password-strength-label');
-        const btn   = document.getElementById('registerBtn');
-        let score = 0;
-        if (val.length >= 8) score++;
-        if (/[A-Z]/.test(val)) score++;
-        if (/[a-z]/.test(val)) score++;
-        if (/[0-9]/.test(val)) score++;
-        if (/[^A-Za-z0-9]/.test(val)) score++;
-
-        if (val.length === 0) {
-            bar.style.width = '0%'; bar.style.background = ''; label.textContent = '';
-            passwordIsStrong = false;
-            btn.disabled = true;
-            btn.style.opacity = '0.5';
-            btn.style.cursor = 'not-allowed';
-            return;
-        }
-        if (score <= 2) {
-            bar.style.width = '33%'; bar.style.background = 'var(--primary)';
-            label.style.color = 'var(--primary)'; label.textContent = '🔴 Lemah — Password belum cukup kuat untuk mendaftar';
-            passwordIsStrong = false;
-        } else if (score === 3 || score === 4) {
-            bar.style.width = '66%'; bar.style.background = 'var(--secondary)';
-            label.style.color = 'var(--secondary)'; label.textContent = '🟡 Sedang — Tambahkan simbol/angka agar lebih kuat';
-            passwordIsStrong = false;
+    function setReq(id, passed) {
+        const el = document.getElementById(id);
+        const icon = el.querySelector('i');
+        if (passed) {
+            el.style.color = '#15803D';
+            icon.className = 'fa-solid fa-circle-check';
+            icon.style.color = '#15803D';
         } else {
-            bar.style.width = '100%'; bar.style.background = 'var(--dark)';
-            label.style.color = 'var(--dark)'; label.textContent = 'Kuat - Kata sandi aman dan siap digunakan';
-            passwordIsStrong = true;
+            el.style.color = '#9CA3AF';
+            icon.className = 'fa-regular fa-circle-xmark';
+            icon.style.color = '#9CA3AF';
         }
+    }
+
+    function checkPasswordStrength(val) {
+        const btn  = document.getElementById('registerBtn');
+        const reqs = document.getElementById('password-requirements');
+
+        const hasLength = val.length >= 6;
+        const hasUpper  = /[A-Z]/.test(val);
+        const hasLower  = /[a-z]/.test(val);
+        const hasNumber = /[0-9]/.test(val);
+
+        // Show/hide the checklist box
+        reqs.style.display = val.length > 0 ? 'block' : 'none';
+
+        setReq('req-length', hasLength);
+        setReq('req-upper',  hasUpper);
+        setReq('req-lower',  hasLower);
+        setReq('req-number', hasNumber);
+
+        passwordIsStrong = hasLength && hasUpper && hasLower && hasNumber;
 
         btn.disabled = !passwordIsStrong;
         btn.style.opacity = passwordIsStrong ? '1' : '0.5';
-        btn.style.cursor = passwordIsStrong ? 'pointer' : 'not-allowed';
+        btn.style.cursor  = passwordIsStrong ? 'pointer' : 'not-allowed';
     }
 
     // Block form submit if password is not strong

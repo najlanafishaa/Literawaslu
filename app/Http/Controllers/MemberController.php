@@ -161,10 +161,12 @@ class MemberController extends Controller
         }
 
         $book = Book::find($request->book_id);
+        $borrowMode = $request->input('borrow_mode');
 
-        $isOnlineBook = !empty($book->drive_link);
+        // Determine if this specific request is for online access or offline physical borrow
+        $isOnlineRequest = ($borrowMode === 'online') || (empty($borrowMode) && !empty($book->drive_link) && $book->available_stock <= 0);
 
-        if ($isOnlineBook) {
+        if ($isOnlineRequest) {
             // Count active online borrows for member
             $activeOnlineCount = Borrow::where('member_id', $member->id)
                 ->whereIn('status', ['pending', 'borrowed', 'terlambat'])

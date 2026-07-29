@@ -155,7 +155,7 @@
         <div class="card-body">
             @if($activeBorrows->isEmpty())
                 <div style="text-align: center; padding: 40px 20px; color: var(--gray-600);">
-                    <i class="fa-solid fa-book-open-reader" style="font-size: 2.5rem; color: #22c55e; margin-bottom: 15px;"></i>
+                    <i class="fa-solid fa-book-open-reader" style="font-size: 2.5rem; color: #9CA3AF; margin-bottom: 15px;"></i>
                     <p style="font-weight: 500;">Anda tidak memiliki peminjaman aktif saat ini.</p>
                     <p style="font-size: 0.85rem; margin-top: 5px;">Silakan datangi admin perpustakaan untuk meminjam buku.</p>
                 </div>

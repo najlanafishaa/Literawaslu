@@ -111,8 +111,16 @@
                                 <td>
                                     @if($borrow->status === 'returned')
                                         <span class="badge badge-success">Selesai</span>
-                                    @else
+                                    @elseif($borrow->status === 'borrowed')
                                         <span class="badge badge-warning">Dipinjam</span>
+                                    @elseif($borrow->status === 'pending')
+                                        <span class="badge badge-info" style="background:rgba(59,130,246,.12);color:#1d4ed8;border:1px solid #bfdbfe;">Menunggu</span>
+                                    @elseif($borrow->status === 'terlambat')
+                                        <span class="badge badge-danger">Terlambat</span>
+                                    @elseif($borrow->status === 'rejected')
+                                        <span class="badge badge-danger">Ditolak</span>
+                                    @else
+                                        <span class="badge badge-warning">{{ ucfirst($borrow->status) }}</span>
                                     @endif
                                 </td>
                             </tr>

@@ -48,7 +48,7 @@
                                 <tr>
                                     <td style="text-align: center;">{{ $index + 1 }}</td>
                                     <td>
-                                        <span id="cat-text-{{ $cat->id }}" style="font-weight: 600; color: var(--dark);">{{ $cat->name }}</span>
+                                        <span id="cat-text-{{ $cat->id }}" style="font-weight: 600; color: var(--dark);">{{ ucwords(strtolower($cat->name)) }}</span>
                                         
                                         <!-- Inline Edit Form (Hidden by default) -->
                                         <form id="cat-form-{{ $cat->id }}" action="{{ route('categories.update', $cat->id) }}" method="POST" style="display: none; margin: 0; gap: 8px; width: 100%;">
