@@ -50,7 +50,22 @@ class ForgotPasswordController extends Controller
         }
 
         if ($user->role === 'member') {
-            // Member -> Lanjut ke verifikasi pertanyaan keamanan
+            // Cek apakah ada permintaan reset yang sudah disetujui Admin
+            $approvedRequest = MemberResetRequest::where('user_id', $user->id)
+                ->where('status', 'approved')
+                ->whereNotNull('token')
+                ->latest()
+                ->first();
+
+            if ($approvedRequest) {
+                // Admin sudah menyetujui — langsung arahkan ke form reset password
+                return redirect()->route('password.reset', [
+                    'token' => $approvedRequest->token,
+                    'email' => $user->email,
+                ])->with('success', 'Permintaan reset Anda telah disetujui. Silakan buat kata sandi baru.');
+            }
+
+            // Belum ada persetujuan — Lanjut ke verifikasi pertanyaan keamanan
             return redirect()->route('password.security', ['email' => $user->email]);
         } else {
             // Admin & Super Admin -> Reset langsung via email
@@ -104,14 +119,14 @@ class ForgotPasswordController extends Controller
             return redirect()->route('password.request')->with('error', 'Akses tidak sah.');
         }
 
-        // Jika user memilih untuk langsung kirim pengajuan ke Admin (misal lupa jawaban)
+        // Jika user memilih untuk kirim pengajuan ke Admin (misal lupa jawaban)
         if ($request->has('request_admin')) {
             MemberResetRequest::create([
                 'user_id' => $user->id,
                 'status' => 'pending',
             ]);
 
-            return redirect()->route('login')->with('success', 'Permintaan reset password berhasil dikirim. Silakan menunggu persetujuan dari Admin.');
+            return redirect()->route('login')->with('success', 'Permintaan reset password telah dikirim ke Admin. Silakan menunggu persetujuan dari Admin.');
         }
 
         $request->validate([
@@ -131,22 +146,8 @@ class ForgotPasswordController extends Controller
         $inputAnswer = strtolower(trim($request->security_answer ?? ''));
         $actualAnswer = strtolower(trim($user->security_answer ?? ''));
 
-        // Jika user memilih untuk langsung bypass (lupa jawaban)
-        if ($request->has('request_admin')) {
-            $token = Str::random(60);
-
-            MemberResetRequest::create([
-                'user_id' => $user->id,
-                'status' => 'approved',
-                'token' => $token,
-            ]);
-
-            return redirect()->route('password.reset', ['token' => $token, 'email' => $user->email])
-                             ->with('success', 'Silakan atur password baru Anda secara instan.');
-        }
-
         if ($inputAnswer !== $actualAnswer) {
-            return back()->with('error', 'Jawaban pertanyaan keamanan salah. Silakan coba lagi atau kirim pengajuan bantuan ke Admin.')
+            return back()->with('error', 'Jawaban pertanyaan keamanan salah. Silakan coba lagi atau klik "Lupa Jawaban? Kirim Permintaan ke Admin".')
                          ->with('show_admin_option', true);
         }
 

@@ -19,13 +19,13 @@
 
         @if(session('error'))
             <div class="alert alert-danger">
-                <i class="fa-solid fa-circle-xmark"></i> {{ session('error') }}
+                <i class="ti ti-circle-x"></i> {{ session('error') }}
             </div>
         @endif
 
         @if(session('success'))
             <div class="alert alert-success">
-                <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+                <i class="ti ti-circle-check"></i> {{ session('success') }}
             </div>
         @endif
 
@@ -46,9 +46,16 @@
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
-                <i class="fa-solid fa-arrow-right"></i> Lanjutkan
+                <i class="ti ti-arrow-right"></i> Lanjutkan
             </button>
         </form>
+
+        <div class="alert alert-info" style="margin-top: 16px;">
+            <i class="ti ti-info-circle"></i>
+            <div>
+                <strong>Sudah mengajukan permintaan ke Admin?</strong> Masukkan email Anda kembali di atas dan klik <em>Lanjutkan</em> — jika Admin sudah menyetujui, Anda akan langsung diarahkan ke halaman buat kata sandi baru.
+            </div>
+        </div>
 
         <div style="text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--gray-600);">
             Kembali ke <a href="{{ route('login') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Halaman Masuk</a>

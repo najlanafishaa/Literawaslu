@@ -20,7 +20,7 @@
 
         @if(session('error'))
             <div class="alert alert-danger">
-                <i class="fa-solid fa-circle-xmark"></i> {{ session('error') }}
+                <i class="ti ti-circle-x"></i> {{ session('error') }}
             </div>
         @endif
 
@@ -40,10 +40,10 @@
 
             <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fa-solid fa-key"></i> Verifikasi Jawaban & Buat Kata Sandi Baru
+                    <i class="ti ti-key"></i> Verifikasi Jawaban & Buat Kata Sandi Baru
                 </button>
-                <button type="submit" name="request_admin" value="bypass" class="btn btn-outline" style="width: 100%;">
-                    <i class="fa-solid fa-magic"></i> Lupa Jawaban? Buat Sandi Baru Secara Instan
+                <button type="submit" name="request_admin" value="1" class="btn btn-outline" style="width: 100%;">
+                    <i class="ti ti-mail-fast"></i> Lupa Jawaban? Kirim Permintaan ke Admin
                 </button>
             </div>
         </form>

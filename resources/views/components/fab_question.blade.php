@@ -6,7 +6,7 @@
         onmouseover="this.style.transform='translateY(-4px) scale(1.03)'; this.style.boxShadow='0 12px 30px rgba(220, 38, 38, 0.5)';"
         onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 8px 25px rgba(220, 38, 38, 0.4)';">
         <div style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-            <i class="fa-solid fa-comments" style="font-size: 16px;"></i>
+            <i class="ti ti-messages" style="font-size: 16px;"></i>
         </div>
         <span style="letter-spacing: 0.2px;">Ajukan Pertanyaan</span>
     </button>
@@ -19,7 +19,7 @@
             <div style="background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%); padding: 20px 24px; color: #ffffff; display: flex; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="width: 38px; height: 38px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fa-solid fa-circle-question" style="font-size: 20px; color: #ffffff;"></i>
+                        <i class="ti ti-help-circle" style="font-size: 20px; color: #ffffff;"></i>
                     </div>
                     <div>
                         <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #ffffff;">Ajukan Pertanyaan</h3>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <button type="button" onclick="toggleQuestionModal(false)" style="background: transparent; border: none; color: rgba(255,255,255,0.8); font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.1)';" onmouseout="this.style.color='rgba(255,255,255,0.8)'; this.style.background='transparent';">
-                    <i class="fa-solid fa-xmark"></i>
+                    <i class="ti ti-x"></i>
                 </button>
             </div>
 
@@ -41,7 +41,7 @@
                     <div style="margin-bottom: 16px;">
                         <label for="fab_name" style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Nama Lengkap <span style="color: #ef4444;">*</span></label>
                         <div style="position: relative;">
-                            <i class="fa-solid fa-user" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px;"></i>
+                            <i class="ti ti-user" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px;"></i>
                             <input type="text" id="fab_name" name="name" required placeholder="Masukkan nama lengkap Anda" 
                                 value="{{ auth()->check() ? auth()->user()->name : '' }}"
                                 style="width: 100%; padding: 10px 14px 10px 38px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;"
@@ -52,7 +52,7 @@
                     <div style="margin-bottom: 16px;">
                         <label for="fab_email" style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Alamat Email <span style="color: #ef4444;">*</span></label>
                         <div style="position: relative;">
-                            <i class="fa-solid fa-envelope" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px;"></i>
+                            <i class="ti ti-mail" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px;"></i>
                             <input type="email" id="fab_email" name="email" required placeholder="contoh@email.com" 
                                 value="{{ auth()->check() ? auth()->user()->email : '' }}"
                                 style="width: 100%; padding: 10px 14px 10px 38px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;"
@@ -80,8 +80,8 @@
                             style="display: flex; align-items: center; gap: 8px; padding: 10px 22px; background: #dc2626; color: #ffffff; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s;"
                             onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">
                             <span id="fabSubmitBtnText">Kirim Pertanyaan</span>
-                            <i id="fabSubmitIcon" class="fa-solid fa-paper-plane"></i>
-                            <i id="fabSpinnerIcon" class="fa-solid fa-circle-notch fa-spin" style="display: none;"></i>
+                            <i id="fabSubmitIcon" class="ti ti-send"></i>
+                            <i id="fabSpinnerIcon" class="ti ti-loader fa-spin" style="display: none;"></i>
                         </button>
                     </div>
                 </form>
@@ -161,7 +161,7 @@
                 alertBox.style.background = '#f0fdf4';
                 alertBox.style.border = '1px solid #bbf7d0';
                 alertBox.style.color = '#166534';
-                alertBox.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i> ' + data.message;
+                alertBox.innerHTML = '<i class="ti ti-circle-check" style="margin-right: 6px;"></i> ' + data.message;
                 alertBox.style.display = 'block';
 
                 form.reset();
@@ -177,7 +177,7 @@
                 alertBox.style.background = '#fef2f2';
                 alertBox.style.border = '1px solid #fecaca';
                 alertBox.style.color = '#991b1b';
-                alertBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> ' + errorMsg;
+                alertBox.innerHTML = '<i class="ti ti-alert-triangle" style="margin-right: 6px;"></i> ' + errorMsg;
                 alertBox.style.display = 'block';
             }
         } catch (error) {
@@ -185,7 +185,7 @@
             alertBox.style.background = '#fef2f2';
             alertBox.style.border = '1px solid #fecaca';
             alertBox.style.color = '#991b1b';
-            alertBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> Gagal menghubungkan ke server: ' + (error.message || 'Terjadi kesalahan jaringan.');
+            alertBox.innerHTML = '<i class="ti ti-alert-triangle" style="margin-right: 6px;"></i> Gagal menghubungkan ke server: ' + (error.message || 'Terjadi kesalahan jaringan.');
             alertBox.style.display = 'block';
         } finally {
             submitBtn.disabled = false;

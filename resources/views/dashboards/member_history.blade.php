@@ -250,7 +250,7 @@
     {{-- Header --}}
     <div class="riwayat-head">
         <div class="riwayat-head-left">
-            <div class="icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="icon"><i class="ti ti-history"></i></div>
             <div>
                 <p class="riwayat-head-title">Riwayat Peminjaman</p>
                 <p class="riwayat-head-sub">Semua transaksi peminjaman buku Anda</p>
@@ -262,7 +262,7 @@
     {{-- Content --}}
     @if($borrows->isEmpty())
         <div class="empty-state">
-            <i class="fa-solid fa-book-open"></i>
+            <i class="ti ti-book-2"></i>
             <p>Belum Ada Riwayat Transaksi</p>
             <p>Buku yang pernah Anda pinjam di Literawaslu akan tampil di sini.</p>
         </div>
@@ -301,7 +301,7 @@
                                         <img src="{{ asset($borrow->book->cover_image) }}" alt="Cover" class="book-thumb">
                                     @else
                                         <div class="book-thumb-placeholder">
-                                            <i class="fa-solid fa-book"></i>
+                                            <i class="ti ti-book-2"></i>
                                         </div>
                                     @endif
                                     <div class="book-texts">
@@ -309,9 +309,9 @@
                                         <span class="book-author">{{ $borrow->book->author ?: '—' }}</span>
                                         <div class="book-tags">
                                             @if($borrow->book->is_online)
-                                                <span class="chip chip-online"><i class="fa-solid fa-wifi" style="font-size:9px;"></i> Online</span>
+                                                <span class="chip chip-online"><i class="ti ti-wifi" style="font-size:9px;"></i> Online</span>
                                             @else
-                                                <span class="chip chip-offline"><i class="fa-solid fa-building-columns" style="font-size:9px;"></i> Offline</span>
+                                                <span class="chip chip-offline"><i class="ti ti-bank" style="font-size:9px;"></i> Offline</span>
                                             @endif
                                             @if($borrow->book->category)
                                                 <span class="chip chip-cat">{{ $borrow->book->category }}</span>
@@ -339,17 +339,17 @@
                             {{-- Status --}}
                             <td>
                                 @if($borrow->status === 'returned')
-                                    <span class="chip chip-done"><i class="fa-solid fa-check"></i> Selesai</span>
+                                    <span class="chip chip-done"><i class="ti ti-check"></i> Selesai</span>
                                 @elseif($borrow->status === 'borrowed')
                                     @if($lateDays > 0)
-                                        <span class="chip chip-late"><i class="fa-solid fa-triangle-exclamation"></i> Terlambat</span>
+                                        <span class="chip chip-late"><i class="ti ti-alert-triangle"></i> Terlambat</span>
                                     @else
-                                        <span class="chip chip-ok"><i class="fa-solid fa-rotate"></i> Dipinjam</span>
+                                        <span class="chip chip-ok"><i class="ti ti-refresh"></i> Dipinjam</span>
                                     @endif
                                 @elseif($borrow->status === 'pending')
-                                    <span class="chip chip-pending"><i class="fa-regular fa-clock"></i> Menunggu</span>
+                                    <span class="chip chip-pending"><i class="ti ti-clock"></i> Menunggu</span>
                                 @elseif($borrow->status === 'rejected')
-                                    <span class="chip chip-reject"><i class="fa-solid fa-xmark"></i> Ditolak</span>
+                                    <span class="chip chip-reject"><i class="ti ti-x"></i> Ditolak</span>
                                 @else
                                     <span class="chip chip-done">{{ ucfirst($borrow->status) }}</span>
                                 @endif
@@ -375,7 +375,7 @@
                                     </div>
                                 @else
                                     <div class="on-time-label">
-                                        <i class="fa-solid fa-circle-check" style="color:#15803D; font-size:13px;"></i>
+                                        <i class="ti ti-circle-check" style="color:#15803D; font-size:13px;"></i>
                                         Tepat waktu
                                     </div>
                                 @endif

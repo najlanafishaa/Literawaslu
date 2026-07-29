@@ -17,11 +17,11 @@
             <p>Rekap statistik data anggota, sirkulasi peminjaman, buku populer, dan catatan keterlambatan.</p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="{{ route('reports.export', request()->all()) }}" class="btn btn-secondary btn-sm no-print">
-                <i class="fa-solid fa-file-excel"></i> Export ke Excel
+            <a href="{{ route('reports.export', request()->all()) }}" class="btn btn-success btn-sm no-print" style="background: #16a34a; color: #ffffff; border: none; font-weight: 600; padding: 8px 16px; border-radius: 8px; box-shadow: 0 2px 6px rgba(22,163,74,0.3); display: inline-flex; align-items: center; gap: 6px;">
+                <i class="ti ti-file-spreadsheet" style="font-size: 1.1rem;"></i> Export ke Excel
             </a>
-            <a href="{{ route('reports.pdf', request()->all()) }}" target="_blank" class="btn btn-primary btn-sm no-print">
-                <i class="fa-solid fa-file-pdf"></i> Cetak Laporan / PDF
+            <a href="{{ route('reports.pdf', request()->all()) }}" target="_blank" class="btn btn-primary btn-sm no-print" style="background: #D62027; color: #ffffff; border: none; font-weight: 700; padding: 8px 18px; border-radius: 8px; box-shadow: 0 4px 12px rgba(214,32,39,0.4); display: inline-flex; align-items: center; gap: 6px;">
+                <i class="ti ti-file-type-pdf" style="font-size: 1.15rem;"></i> Cetak Laporan / PDF
             </a>
         </div>
     </div>
@@ -32,7 +32,7 @@
     <div class="card-body" style="padding: 15px 20px;">
         <form action="{{ route('reports.index') }}" method="GET" style="display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; margin: 0;">
             <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-                <span style="font-size: 0.85rem; font-weight: 700; color: var(--gray-700); margin-right: 5px;"><i class="fa-solid fa-calendar-days"></i> Filter Waktu Laporan:</span>
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--gray-700); margin-right: 5px;"><i class="ti ti-calendar"></i> Filter Waktu Laporan:</span>
                 <a href="{{ route('reports.index', ['filter' => 'all']) }}" class="btn {{ request('filter', 'all') === 'all' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Semua</a>
                 <a href="{{ route('reports.index', ['filter' => 'today']) }}" class="btn {{ request('filter') === 'today' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Hari Ini</a>
                 <a href="{{ route('reports.index', ['filter' => 'week']) }}" class="btn {{ request('filter') === 'week' ? 'btn-primary' : 'btn-outline' }} btn-sm" style="padding: 6px 12px; font-size: 0.8rem;">Minggu Ini</a>
@@ -50,7 +50,7 @@
         </form>
         @if(isset($filterLabel))
             <div style="margin-top: 10px; font-size: 0.8rem; color: var(--gray-600); font-weight: bold;">
-                <i class="fa-solid fa-filter" style="color: var(--primary); margin-right: 4px;"></i> Periode Aktif: {{ $filterLabel }}
+                <i class="ti ti-filter" style="color: var(--primary); margin-right: 4px;"></i> Periode Aktif: {{ $filterLabel }}
             </div>
         @endif
     </div>
@@ -64,7 +64,7 @@
             <p>{{ $totalBorrowCount }} Kali</p>
         </div>
         <div class="stat-icon red">
-            <i class="fa-solid fa-shuffle"></i>
+            <i class="ti ti-arrows-shuffle"></i>
         </div>
     </div>
     <div class="stat-card">
@@ -73,7 +73,7 @@
             <p style="{{ $lateCount > 0 ? 'color: var(--primary);' : '' }}">{{ $lateCount }} Kali</p>
         </div>
         <div class="stat-icon red">
-            <i class="fa-solid fa-clock"></i>
+            <i class="ti ti-clock"></i>
         </div>
     </div>
     <div class="stat-card">
@@ -82,7 +82,7 @@
             <p>{{ $totalFineAmount }} Buku</p>
         </div>
         <div class="stat-icon red">
-            <i class="fa-solid fa-book-journal-whills"></i>
+            <i class="ti ti-books"></i>
         </div>
     </div>
     <div class="stat-card">
@@ -91,7 +91,7 @@
             <p style="color: var(--dark);">{{ $paidFineAmount }} Buku</p>
         </div>
         <div class="stat-icon yellow">
-            <i class="fa-solid fa-circle-check"></i>
+            <i class="ti ti-circle-check"></i>
         </div>
     </div>
     <div class="stat-card">
@@ -100,7 +100,7 @@
             <p style="color: var(--primary);">{{ $unpaidFineAmount }} Buku</p>
         </div>
         <div class="stat-icon red">
-            <i class="fa-solid fa-circle-exclamation"></i>
+            <i class="ti ti-alert-circle"></i>
         </div>
     </div>
 </div>
@@ -110,7 +110,7 @@
     <!-- Monthly Borrowing Trend -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-chart-line" style="color: var(--primary); margin-right: 8px;"></i> Tren Peminjaman per Bulan</h2>
+            <h2><i class="ti ti-chart-line" style="color: var(--primary); margin-right: 8px;"></i> Tren Peminjaman per Bulan</h2>
         </div>
         <div class="card-body" style="position: relative; height: 300px;">
             <canvas id="monthlyTrendChart"></canvas>
@@ -120,7 +120,7 @@
     <!-- Inventory Availability (Donut) -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-layer-group" style="color: var(--secondary); margin-right: 8px;"></i> Ketersediaan Koleksi Buku</h2>
+            <h2><i class="ti ti-stack-2" style="color: var(--secondary); margin-right: 8px;"></i> Ketersediaan Koleksi Buku</h2>
         </div>
         <div class="card-body" style="position: relative; height: 300px; display: flex; justify-content: center; align-items: center;">
             <div style="width: 220px; height: 220px;">
@@ -133,7 +133,7 @@
 <!-- Detailed Logs Tabs/Tables -->
 <div class="card" style="margin-bottom: 30px;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-users" style="color: var(--primary); margin-right: 8px;"></i> Anggota Terdaftar</h2>
+        <h2><i class="ti ti-users" style="color: var(--primary); margin-right: 8px;"></i> Anggota Terdaftar</h2>
         <span class="badge badge-success">{{ $totalMembers }} Terdaftar</span>
     </div>
     <div class="card-body">
@@ -170,7 +170,7 @@
     <!-- Left Column: Overdue and Late Return Audit -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-triangle-exclamation" style="color: var(--primary); margin-right: 8px;"></i> Daftar Denda & Sanksi Keterlambatan</h2>
+            <h2><i class="ti ti-alert-triangle" style="color: var(--primary); margin-right: 8px;"></i> Daftar Denda & Sanksi Keterlambatan</h2>
         </div>
         <div class="card-body">
             @if($overdueBorrows->isEmpty() && empty($returnedLateBorrows))
@@ -268,7 +268,7 @@
     <!-- Right Column: Popular Books Ranking -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-fire" style="color: var(--secondary); margin-right: 8px;"></i> Peringkat Buku Paling Sering Dipinjam</h2>
+            <h2><i class="ti ti-flame" style="color: var(--secondary); margin-right: 8px;"></i> Peringkat Buku Paling Sering Dipinjam</h2>
         </div>
         <div class="card-body">
             @if($popularBooks->isEmpty())
@@ -298,7 +298,7 @@
 <!-- Reward Member Stats Table -->
 <div class="card" style="margin-top: 30px; margin-bottom: 25px;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-medal" style="color: #f1c40f; margin-right: 8px;"></i> Statistik Reward Member (Top 10 Poin Terbanyak)</h2>
+        <h2><i class="ti ti-medal" style="color: #f1c40f; margin-right: 8px;"></i> Statistik Reward Member (Top 10 Poin Terbanyak)</h2>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -323,7 +323,7 @@
                             <td>{{ $mr->total_loans }} Kali</td>
                             <td>
                                 <span class="badge badge-warning" style="font-weight: bold; font-size: 0.82rem; padding: 4px 8px; display: inline-flex; align-items: center; gap: 4px;">
-                                    <i class="fa-solid fa-star"></i> {{ $mr->points }} Poin
+                                    <i class="ti ti-star"></i> {{ $mr->points }} Poin
                                 </span>
                             </td>
                         </tr>

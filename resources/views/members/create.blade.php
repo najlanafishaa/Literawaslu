@@ -11,21 +11,21 @@
             <p>Daftarkan akun pengguna perpustakaan secara manual dari panel administrator.</p>
         </div>
         <div>
-            <i class="fa-solid fa-user-plus" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
+            <i class="ti ti-user-plus" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
         </div>
     </div>
 </div>
 
 @if($errors->any())
     <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
-        <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+        <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
     </div>
 @endif
 
 <div class="dashboard-grid" style="grid-template-columns: 1fr; gap: 25px; margin-bottom: 25px; max-width: 800px; margin: 0 auto;">
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-address-card" style="color: var(--primary); margin-right: 8px;"></i> Data Pengguna Baru</h2>
+            <h2><i class="ti ti-id-badge" style="color: var(--primary); margin-right: 8px;"></i> Data Pengguna Baru</h2>
         </div>
         <div class="card-body" style="padding: 25px;">
             <form action="{{ route('members.store') }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
@@ -75,7 +75,7 @@
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                     <a href="{{ route('members.index') }}" class="btn btn-outline" style="padding: 12px 30px; text-decoration: none;">Batal</a>
                     <button type="submit" class="btn btn-primary" style="padding: 12px 30px;">
-                        <i class="fa-solid fa-user-plus"></i> Daftarkan Pengguna
+                        <i class="ti ti-user-plus"></i> Daftarkan Pengguna
                     </button>
                 </div>
             </form>

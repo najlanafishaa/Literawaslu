@@ -64,6 +64,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/member/card', [MemberController::class, 'card'])->name('member.card');
         Route::get('/member/history', [MemberController::class, 'history'])->name('member.history');
         Route::get('/member/rewards', [MemberController::class, 'rewards'])->name('member.rewards');
+        Route::get('/member/notifications', [MemberController::class, 'notifications'])->name('member.notifications');
+        Route::delete('/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
         Route::post('/member/redeem', [MemberController::class, 'redeem'])->name('member.redeem');
         Route::post('/member/request-borrow', [MemberController::class, 'requestBorrow'])->name('member.request_borrow');
         // Book reviews

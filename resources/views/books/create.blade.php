@@ -6,16 +6,16 @@
 @section('content')
 <div class="card" style="max-width: 650px; margin: 0 auto;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-book-medical" style="color: var(--primary); margin-right: 8px;"></i> Input Data Buku Baru</h2>
+        <h2><i class="ti ti-book-plus" style="color: var(--primary); margin-right: 8px;"></i> Input Data Buku Baru</h2>
         <a href="{{ route('books.index') }}" class="btn btn-outline btn-sm">
-            <i class="fa-solid fa-arrow-left"></i> Kembali
+            <i class="ti ti-arrow-left"></i> Kembali
         </a>
     </div>
     
     <div class="card-body">
         @if($errors->any())
             <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
-                <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+                <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
             </div>
         @endif
 
@@ -27,7 +27,7 @@
                 <div style="display: flex; gap: 8px;">
                     <input type="text" name="barcode" id="barcode" class="form-control" placeholder="Contoh: 9786020523315" value="{{ old('barcode') }}" required>
                     <button type="button" class="btn btn-secondary btn-sm" onclick="generateRandomBarcode()">
-                        <i class="fa-solid fa-arrows-rotate"></i> Auto
+                        <i class="ti ti-refresh"></i> Auto
                     </button>
                 </div>
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">Gunakan barcode resmi buku atau buat kode unik tersendiri.</small>
@@ -94,7 +94,7 @@
             </div>
 
             <div class="form-group" id="driveLinkGroup">
-                <label for="drive_link"><i class="fa-brands fa-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive)</label>
+                <label for="drive_link"><i class="ti ti-brand-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive)</label>
                 <input type="url" name="drive_link" id="drive_link" class="form-control" placeholder="https://drive.google.com/file/d/FILE_ID/view" value="{{ old('drive_link') }}">
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">
                     Isikan link Google Drive untuk menjadikan buku ini <strong>Online</strong>. Biarkan kosong jika buku ini <strong>Offline</strong>.
@@ -102,7 +102,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
-                <i class="fa-solid fa-save"></i> Simpan Buku
+                <i class="ti ti-device-floppy"></i> Simpan Buku
             </button>
         </form>
     </div>

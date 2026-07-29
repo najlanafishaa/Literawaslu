@@ -6,13 +6,13 @@
 @section('content')
 <div class="card" style="max-width: 550px; margin: 0 auto;">
     <div class="card-header" style="flex-wrap: wrap; gap: 10px;">
-        <h2><i class="fa-solid fa-id-card" style="color: var(--primary); margin-right: 8px;"></i> Kartu Pengguna Perpustakaan</h2>
+        <h2><i class="ti ti-id-badge" style="color: var(--primary); margin-right: 8px;"></i> Kartu Pengguna Perpustakaan</h2>
         <div style="display: flex; gap: 8px;">
             <button onclick="downloadCard()" class="btn btn-primary btn-sm" style="background-color: var(--secondary); border-color: var(--secondary); color: var(--dark);">
-                <i class="fa-solid fa-download"></i> Unduh Kartu (PNG)
+                <i class="ti ti-download"></i> Unduh Kartu (PNG)
             </button>
             <button onclick="window.print()" class="btn btn-outline btn-sm">
-                <i class="fa-solid fa-print"></i> Cetak Kartu
+                <i class="ti ti-printer"></i> Cetak Kartu
             </button>
         </div>
     </div>
@@ -92,7 +92,7 @@
                         <!-- Web link with circular globe icon -->
                         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.58rem;">
                             <span style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border: 1.2px solid #1A1A1A; border-radius: 50%; font-size: 9px;">
-                                <i class="fa-solid fa-globe"></i>
+                                <i class="ti ti-world"></i>
                             </span>
                             lampung.bawaslu.go.id
                         </div>
@@ -101,16 +101,16 @@
                         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.58rem;">
                             <div style="display: flex; align-items: center; gap: 3px;">
                                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border: 1.2px solid #1A1A1A; border-radius: 50%; font-size: 7.5px;">
-                                    <i class="fa-brands fa-facebook-f"></i>
+                                    <i class="ti ti-brand-facebook"></i>
                                 </span>
                                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border: 1.2px solid #1A1A1A; border-radius: 50%; font-size: 7.5px;">
-                                    <i class="fa-brands fa-x-twitter"></i>
+                                    <i class="ti ti-brand-x"></i>
                                 </span>
                                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border: 1.2px solid #1A1A1A; border-radius: 50%; font-size: 7.5px;">
-                                    <i class="fa-brands fa-instagram"></i>
+                                    <i class="ti ti-brand-instagram"></i>
                                 </span>
                                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border: 1.2px solid #1A1A1A; border-radius: 50%; font-size: 7px;">
-                                    <i class="fa-brands fa-youtube"></i>
+                                    <i class="ti ti-brand-youtube"></i>
                                 </span>
                                 <span style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border: 1.2px solid #1A1A1A; border-radius: 50%; font-size: 8px; font-weight: bold; font-family: sans-serif; line-height: 1;">
                                     @
@@ -130,7 +130,7 @@
 
         <div style="background-color: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--border-radius); padding: 20px; width: 100%;">
             <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 10px;">
-                <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Panduan Penggunaan Kartu Digital:
+                <i class="ti ti-info-circle" style="color: var(--primary);"></i> Panduan Penggunaan Kartu Digital:
             </h4>
             <ul style="padding-left: 20px; font-size: 0.85rem; color: var(--gray-700); display: flex; flex-direction: column; gap: 8px;">
                 <li>Tunjukkan kartu digital ini kepada Admin Perpustakaan saat ingin melakukan transaksi peminjaman maupun pengembalian.</li>

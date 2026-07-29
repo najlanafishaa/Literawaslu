@@ -105,6 +105,26 @@ class MemberController extends Controller
     }
 
     /**
+     * Show notifications & admin replies page.
+     */
+    public function notifications()
+    {
+        $user = Auth::user();
+        $member = $user->member;
+
+        $activeBorrows = $member ? Borrow::where('member_id', $member->id)
+            ->whereIn('status', ['borrowed', 'terlambat'])
+            ->with('book')
+            ->get() : collect();
+
+        $userQuestions = \App\Models\Question::where('email', $user->email)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('dashboards.member_notifications', compact('member', 'activeBorrows', 'userQuestions'));
+    }
+
+    /**
      * Redeem rewards (exchange points to increase borrowing limit).
      * Rules: 100 pts -> 1 book limit, 200 pts -> 2 books limit, 300 pts -> 3 books limit.
      * Points do NOT decrease upon redemption.

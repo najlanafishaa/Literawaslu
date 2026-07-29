@@ -9,8 +9,8 @@
         <h1>Halo, {{ auth()->user()->name }}!</h1>
         <p>Selamat datang kembali di Perpustakaan Literawaslu. Mari temukan buku favorit Anda hari ini.</p>
         <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="{{ route('catalog') }}" class="btn btn-sm" style="background: var(--light); color: var(--primary); font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"><i class="fa-solid fa-magnifying-glass"></i> Jelajah Katalog</a>
-            <a href="{{ route('member.card') }}" class="btn btn-sm" style="background: transparent; border: 1px solid rgba(255,255,255,0.6); color: var(--light); font-weight: 600;"><i class="fa-solid fa-id-card"></i> Tampilkan Kartu</a>
+            <a href="{{ route('catalog') }}" class="btn btn-sm" style="background: var(--light); color: var(--primary); font-weight: 700; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"><i class="ti ti-search"></i> Jelajah Katalog</a>
+            <a href="{{ route('member.card') }}" class="btn btn-sm" style="background: transparent; border: 1px solid rgba(255,255,255,0.6); color: var(--light); font-weight: 600;"><i class="ti ti-id-badge"></i> Tampilkan Kartu</a>
         </div>
     </div>
 </div>
@@ -23,27 +23,48 @@
             <p>{{ $availableBooksCount }} Buku</p>
         </div>
         <div class="stat-icon">
-            <i class="fa-solid fa-book"></i>
+            <i class="ti ti-book-2"></i>
         </div>
     </a>
     
-    <div class="stat-card card-dark" style="cursor: pointer; position: relative; overflow: hidden; display: flex; align-items: center;" onclick="openQuotaModal()">
-        <div class="stat-info" style="width: 100%; z-index: 2;">
-            <h3 style="font-size: 0.8rem; margin-bottom: 12px; opacity: 0.9;">SISA KUOTA PINJAM</h3>
-            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <div style="background: var(--gray-50); padding: 8px 12px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid var(--gray-200);">
-                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-tablet-screen-button" style="color: var(--secondary);"></i> ONLINE</div>
-                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 3 - $activeBorrows->where('book.is_online', true)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/3</span></div>
+    <div class="stat-card" style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
+        <!-- Header Title -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h3 style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #6B7280; margin: 0;">Sisa Kuota Pinjam</h3>
+            <i class="ti ti-stack-2" style="font-size: 16px; color: #9CA3AF;"></i>
+        </div>
+
+        <!-- Quota Info Grid (Simple, No Colored Backgrounds) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #F3F4F6;">
+            <!-- Online Status -->
+            <div>
+                <div style="display: flex; align-items: center; gap: 5px; font-size: 0.72rem; font-weight: 600; color: #4B5563; margin-bottom: 4px;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #16A34A; display: inline-block;"></span>
+                    <span>Online</span>
                 </div>
-                <div style="background: var(--gray-50); padding: 8px 12px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid var(--gray-200);">
-                    <div style="font-size: 0.65rem; color: var(--gray-600); margin-bottom: 2px; letter-spacing: 0.5px; font-weight: 700;"><i class="fa-solid fa-book-bookmark" style="color: var(--primary);"></i> OFFLINE</div>
-                    <div style="font-size: 1.3rem; font-weight: 800; color: var(--dark); line-height: 1;">{{ max(0, 1 - $activeBorrows->where('book.is_online', false)->count()) }}<span style="font-size: 0.8rem; color: var(--gray-600); font-weight: 500;">/1</span></div>
+                <div style="font-size: 1.25rem; font-weight: 700; color: #111827; line-height: 1.2;">
+                    {{ max(0, 3 - $activeBorrows->where('book.is_online', true)->count()) }}<span style="font-size: 0.8rem; font-weight: 500; color: #9CA3AF;"> / 3</span>
                 </div>
             </div>
-            <small style="opacity: 0.8; font-size: 0.75rem; display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-hand-pointer"></i> Klik rincian &amp; aturan</small>
+
+            <!-- Offline Status -->
+            <div>
+                <div style="display: flex; align-items: center; gap: 5px; font-size: 0.72rem; font-weight: 600; color: #4B5563; margin-bottom: 4px;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #D62027; display: inline-block;"></span>
+                    <span>Offline</span>
+                </div>
+                <div style="font-size: 1.25rem; font-weight: 700; color: #111827; line-height: 1.2;">
+                    {{ max(0, 1 - $activeBorrows->where('book.is_online', false)->count()) }}<span style="font-size: 0.8rem; font-weight: 500; color: #9CA3AF;"> / 1</span>
+                </div>
+            </div>
         </div>
-        <div class="stat-icon" style="position: absolute; right: -15px; bottom: -20px; font-size: 6rem; opacity: 0.05; z-index: 1;">
-            <i class="fa-solid fa-layer-group"></i>
+
+        <!-- Clean Action Link -->
+        <div>
+            <button type="button" onclick="openQuotaModal()" style="background: none; border: none; padding: 0; font-size: 0.78rem; font-weight: 600; color: #D62027; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                <span>Lihat Rincian &amp; Aturan</span>
+                <i class="ti ti-chevron-right" style="font-size: 13px;"></i>
+            </button>
         </div>
     </div>
     
@@ -63,21 +84,21 @@
             </div>
         </div>
         <div class="stat-icon">
-            <i class="fa-solid fa-trophy"></i>
+            <i class="ti ti-award"></i>
         </div>
     </a>
 </div>
 
 <div class="card" style="margin-bottom: 24px; overflow: hidden;">
     <div style="background: linear-gradient(135deg, var(--primary) 0%, #a01419 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px 20px;">
-        <h2 style="margin: 0; color: #ffffff !important; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;"><i class="fa-solid fa-book-open" style="color: #ffffff !important;"></i> Pengajuan & Status Peminjaman</h2>
+        <h2 style="margin: 0; color: #ffffff !important; display: flex; align-items: center; gap: 8px; font-size: 1.15rem;"><i class="ti ti-book-2" style="color: #ffffff !important;"></i> Pengajuan & Status Peminjaman</h2>
         <a href="{{ route('catalog') }}" class="btn btn-sm" style="background: rgba(255,255,255,0.2); color: #ffffff !important; border: 1px solid rgba(255,255,255,0.4); font-weight: 600;">
-            <i class="fa-solid fa-book-circle-arrow-right"></i> Ajukan Peminjaman via Katalog
+            <i class="ti ti-send"></i> Ajukan Peminjaman via Katalog
         </a>
     </div>
     <div class="card-body">
         <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px 20px; border-radius: 4px; margin-bottom: 22px; color: #78350f; display: flex; gap: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-            <i class="fa-solid fa-lightbulb" style="font-size: 1.5rem; color: #f59e0b; margin-top: 2px;"></i>
+            <i class="ti ti-bulb" style="font-size: 1.5rem; color: #f59e0b; margin-top: 2px;"></i>
             <div>
                 <strong style="display: block; margin-bottom: 6px; font-size: 0.95rem;">Catatan Ketentuan Peminjaman:</strong>
                 <ul style="margin: 0; padding-left: 20px; font-size: 0.85rem; line-height: 1.6;">
@@ -91,7 +112,7 @@
         <h4 style="font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 12px;">Daftar Pengajuan & Status Peminjaman Anda:</h4>
         @if(!isset($onlineBorrowRequests) || $onlineBorrowRequests->isEmpty())
             <div style="text-align: center; padding: 30px 20px; color: var(--gray-600);">
-                <i class="fa-solid fa-book-open" style="font-size: 2.5rem; color: var(--gray-300); margin-bottom: 10px;"></i>
+                <i class="ti ti-book-2" style="font-size: 2.5rem; color: var(--gray-300); margin-bottom: 10px;"></i>
                 <p style="font-weight: 600;">Belum ada riwayat pengajuan peminjaman.</p>
                 <a href="{{ route('catalog') }}" class="btn btn-primary btn-sm" style="margin-top: 10px; display: inline-block;">Pilih Buku dari Katalog</a>
             </div>
@@ -125,13 +146,13 @@
                                 <td>{{ \Carbon\Carbon::parse($req->due_date)->format('d M Y') }}</td>
                                 <td>
                                     @if($req->status === 'pending')
-                                        <span class="badge badge-pending"><i class="fa-solid fa-hourglass-half"></i> Menunggu Verifikasi</span>
+                                        <span class="badge badge-pending"><i class="ti ti-hourglass"></i> Menunggu Verifikasi</span>
                                     @elseif($req->status === 'borrowed')
-                                        <span class="badge badge-success"><i class="fa-solid fa-bookmark"></i> Disetujui (Sedang Dipinjam)</span>
+                                        <span class="badge badge-success"><i class="ti ti-bookmark"></i> Disetujui (Sedang Dipinjam)</span>
                                     @elseif($req->status === 'returned')
-                                        <span class="badge badge-secondary"><i class="fa-solid fa-box-archive"></i> Selesai (Dikembalikan)</span>
+                                        <span class="badge badge-secondary"><i class="ti ti-archive"></i> Selesai (Dikembalikan)</span>
                                     @elseif($req->status === 'rejected')
-                                        <span class="badge badge-danger"><i class="fa-solid fa-ban"></i> Ditolak</span>
+                                        <span class="badge badge-danger"><i class="ti ti-ban"></i> Ditolak</span>
                                     @else
                                         <span class="badge badge-danger">{{ ucfirst($req->status) }}</span>
                                     @endif
@@ -149,13 +170,13 @@
     <!-- Left Column: Active Borrowings -->
     <div class="card" style="overflow: hidden;">
         <div style="background: linear-gradient(135deg, var(--primary) 0%, #a01419 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
-            <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-hand-holding-hand" style="color: #ffffff !important;"></i> Buku yang Sedang Dipinjam</h2>
+            <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="ti ti-book-upload" style="color: #ffffff !important;"></i> Buku yang Sedang Dipinjam</h2>
             <span class="badge" style="background: rgba(255,255,255,0.25); color: #ffffff !important; font-size: 0.75rem;">{{ $activeBorrows->count() }} Sedang Dipinjam</span>
         </div>
         <div class="card-body">
             @if($activeBorrows->isEmpty())
                 <div style="text-align: center; padding: 40px 20px; color: var(--gray-600);">
-                    <i class="fa-solid fa-book-open-reader" style="font-size: 2.5rem; color: #9CA3AF; margin-bottom: 15px;"></i>
+                    <i class="ti ti-book-2" style="font-size: 2.5rem; color: #9CA3AF; margin-bottom: 15px;"></i>
                     <p style="font-weight: 500;">Anda tidak memiliki peminjaman aktif saat ini.</p>
                     <p style="font-size: 0.85rem; margin-top: 5px;">Silakan datangi admin perpustakaan untuk meminjam buku.</p>
                 </div>
@@ -215,7 +236,7 @@
     <!-- Right Column: Digital Card Quick View -->
     <div class="card" style="overflow: hidden;">
         <div style="background: linear-gradient(135deg, var(--primary) 0%, #a01419 100%); color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; padding: 14px 20px;">
-            <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-id-card" style="color: #ffffff !important;"></i> Kartu Anggota Digital</h2>
+            <h2 style="margin: 0; color: #ffffff !important; font-size: 1rem; display: flex; align-items: center; gap: 8px;"><i class="ti ti-id-badge" style="color: #ffffff !important;"></i> Kartu Anggota Digital</h2>
         </div>
         <div class="card-body" style="padding: 20px;">
             <div class="digital-card-container">
@@ -260,9 +281,10 @@
             </div>
             <div style="margin-top: 15px; text-align: center;">
                 <a href="{{ route('member.card') }}" class="btn btn-outline btn-sm" style="width: 100%;">
-                    <i class="fa-solid fa-expand"></i> Lihat Detail Kartu
+                    <i class="ti ti-arrows-maximize"></i> Lihat Detail Kartu
                 </a>
             </div>
+        </div>
     </div>
 </div>
 
@@ -270,8 +292,8 @@
 <div id="quotaModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(15,23,42,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
     <div style="background-color: var(--light); border-radius: var(--border-radius); max-width: 600px; width: 100%; box-shadow: var(--box-shadow-md); overflow: hidden;">
         <div style="background-color: var(--primary); color: #ffffff; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: #ffffff;"><i class="fa-solid fa-layer-group" style="margin-right: 8px;"></i> Rincian Kuota Peminjaman</h3>
-            <button type="button" onclick="closeQuotaModal()" style="background: none; border: none; color: #ffffff; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: #ffffff;"><i class="ti ti-stack-2" style="margin-right: 8px;"></i> Rincian Kuota Peminjaman</h3>
+            <button type="button" onclick="closeQuotaModal()" style="background: none; border: none; color: #ffffff; font-size: 1.2rem; cursor: pointer;"><i class="ti ti-x"></i></button>
         </div>
         <div style="padding: 24px;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">

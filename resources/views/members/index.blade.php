@@ -8,9 +8,9 @@
     <div class="card-body" style="padding: 20px;">
         <form action="{{ route('members.index') }}" method="GET" style="display: flex; gap: 10px; max-width: 500px;">
             <input type="text" name="search" class="form-control" placeholder="Cari nama, email, atau kode pengguna..." value="{{ request('search') }}">
-            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+            <button type="submit" class="btn btn-primary"><i class="ti ti-search"></i> Cari</button>
             @if(request('search'))
-                <a href="{{ route('members.index') }}" class="btn btn-outline"><i class="fa-solid fa-rotate-left"></i> Atur Ulang</a>
+                <a href="{{ route('members.index') }}" class="btn btn-outline"><i class="ti ti-rotate"></i> Atur Ulang</a>
             @endif
         </form>
     </div>
@@ -24,7 +24,7 @@
         </div>
         @if(auth()->user()->role === 'super_admin')
             <a href="{{ route('members.create') }}" class="btn btn-primary btn-sm" style="display: flex; align-items: center; gap: 6px; padding: 8px 16px; font-size: 0.85rem; border-radius: var(--border-radius); text-decoration: none;">
-                <i class="fa-solid fa-user-plus"></i> Tambah Pengguna
+                <i class="ti ti-user-plus"></i> Tambah Pengguna
             </a>
         @endif
     </div>
@@ -70,11 +70,11 @@
                                 <td>{{ $member->borrow_limit }} Buku</td>
                                 <td>
                                     @if($member->status === 'active')
-                                        <span class="badge badge-success"><i class="fa-solid fa-check"></i> Terverifikasi</span>
+                                        <span class="badge badge-success"><i class="ti ti-check"></i> Terverifikasi</span>
                                     @elseif($member->status === 'pending')
-                                        <span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Menunggu Verifikasi</span>
+                                        <span class="badge badge-warning"><i class="ti ti-clock"></i> Menunggu Verifikasi</span>
                                     @elseif($member->status === 'rejected')
-                                        <span class="badge badge-danger"><i class="fa-solid fa-xmark"></i> Ditolak</span>
+                                        <span class="badge badge-danger"><i class="ti ti-x"></i> Ditolak</span>
                                     @else
                                         <span class="badge badge-secondary">{{ $member->status }}</span>
                                     @endif
@@ -83,13 +83,13 @@
                                     <div style="display: flex; gap: 8px; align-items: center;">
                                         @if(auth()->user()->role === 'super_admin')
                                             <a href="{{ route('members.edit', $member->id) }}" class="btn btn-outline btn-sm" title="Edit Pengguna" style="padding: 6px 10px;">
-                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                <i class="ti ti-pencil"></i>
                                             </a>
                                             <form action="{{ route('members.destroy', $member->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini dari sistem? Semua data relasi terkait juga akan terhapus.');" style="margin: 0;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline btn-sm" title="Hapus Pengguna" style="padding: 6px 10px; color: var(--primary);">
-                                                    <i class="fa-solid fa-trash"></i>
+                                                    <i class="ti ti-trash"></i>
                                                 </button>
                                             </form>
                                         @endif

@@ -8,14 +8,14 @@
     <div class="card-body" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; padding:20px;">
         <form action="{{ route('books.index') }}" method="GET" style="display: flex; gap: 10px; flex: 1; max-width: 500px;">
             <input type="text" name="search" class="form-control" placeholder="Cari judul, penulis, atau barcode..." value="{{ request('search') }}">
-            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+            <button type="submit" class="btn btn-primary"><i class="ti ti-search"></i> Cari</button>
             @if(request('search'))
-                <a href="{{ route('books.index') }}" class="btn btn-outline"><i class="fa-solid fa-rotate-left"></i> Atur Ulang</a>
+                <a href="{{ route('books.index') }}" class="btn btn-outline"><i class="ti ti-rotate"></i> Atur Ulang</a>
             @endif
         </form>
         
         <a href="{{ route('books.create') }}" class="btn btn-secondary">
-            <i class="fa-solid fa-plus"></i> Tambah Buku Baru
+            <i class="ti ti-plus"></i> Tambah Buku Baru
         </a>
     </div>
 </div>
@@ -55,7 +55,7 @@
                                                 <img src="{{ asset($book->cover_image) }}" alt="Sampul" style="width: 100%; height: 100%; object-fit: cover;">
                                             @else
                                                 <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; color: var(--light);">
-                                                    <i class="fa-solid fa-book" style="font-size: 0.8rem;"></i>
+                                                    <i class="ti ti-book-2" style="font-size: 0.8rem;"></i>
                                                 </div>
                                             @endif
                                         </div>
@@ -91,13 +91,13 @@
                                 <td>
                                     <div style="display: flex; gap: 8px;">
                                         <a href="{{ route('books.edit', $book->id) }}" class="btn btn-outline btn-sm" title="Edit Buku" style="padding: 6px 10px;">
-                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            <i class="ti ti-pencil"></i>
                                         </a>
                                         <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus buku ini dari sistem?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline btn-sm" title="Hapus Buku" style="padding:6px 10px; color:var(--primary); border-color:rgba(var(--primary-rgb),0.2);">
-                                                <i class="fa-solid fa-trash"></i>
+                                                <i class="ti ti-trash"></i>
                                             </button>
                                         </form>
                                     </div>

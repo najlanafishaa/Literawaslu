@@ -19,13 +19,21 @@ class QuestionController extends Controller
         $validated = $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email|max:255',
-            'message' => 'required|string|min:10|max:3000',
+            'message' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $wordCount = count(array_filter(explode(' ', trim($value))));
+                    if ($wordCount < 5) {
+                        $fail('Pesan pertanyaan minimal 5 kata.');
+                    }
+                },
+            ],
         ], [
             'name.required'    => 'Nama wajib diisi.',
             'email.required'   => 'Alamat email wajib diisi.',
             'email.email'      => 'Format alamat email tidak valid.',
             'message.required' => 'Pesan pertanyaan wajib diisi.',
-            'message.min'      => 'Pesan pertanyaan minimal 10 karakter.',
         ]);
 
         $question = Question::create([
@@ -112,12 +120,16 @@ class QuestionController extends Controller
     }
 
     /**
-     * Get count of pending questions for global badge
+     * Delete a question by user
      */
-    public function pendingCount()
+    public function destroy(Question $question)
     {
-        return response()->json([
-            'count' => Question::where('status', 'pending')->count()
-        ]);
+        // Allow user to delete only if question belongs to user's email or user is admin
+        if (auth()->check() && (auth()->user()->email === $question->email || in_array(auth()->user()->role, ['super_admin', 'admin', 'petugas']))) {
+            $question->delete();
+            return redirect()->back()->with('success', 'Pertanyaan & balasan berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'Anda tidak memiliki hak untuk menghapus pertanyaan ini.');
     }
 }

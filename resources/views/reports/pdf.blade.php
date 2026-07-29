@@ -8,24 +8,24 @@
     <style>
         @page {
             size: A4 landscape;
-            margin: 12mm 15mm 15mm 15mm;
+            margin: 10mm 12mm 12mm 12mm;
         }
         
         body {
             font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-            color: #1e293b;
+            color: #0f172a;
             background: #ffffff;
             margin: 0;
             padding: 0;
-            font-size: 12px;
-            line-height: 1.4;
+            font-size: 11.5px;
+            line-height: 1.45;
         }
 
         /* Kop Surat Header */
         .kop-surat {
-            border-bottom: 3px double #D62027;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            border-bottom: 3px solid #D62027;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -37,15 +37,15 @@
         }
 
         .kop-logo {
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             object-fit: contain;
             flex-shrink: 0;
         }
 
         .kop-title h1 {
             margin: 0;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 800;
             color: #D62027;
             letter-spacing: 1px;
@@ -53,81 +53,93 @@
         }
 
         .kop-title h2 {
-            margin: 4px 0 0 0;
-            font-size: 14px;
+            margin: 3px 0 0 0;
+            font-size: 13.5px;
             font-weight: 700;
             color: #1e293b;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .kop-title p {
-            margin: 3px 0 0 0;
-            font-size: 11px;
-            color: #475569;
+            margin: 4px 0 0 0;
+            font-size: 10.5px;
+            color: #64748b;
         }
 
-        /* Metadata & Filter Bar */
+        /* Metadata Bar */
         .meta-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 18px;
             font-size: 11px;
         }
 
         .meta-item {
             display: flex;
-            gap: 5px;
+            gap: 6px;
+            align-items: center;
         }
 
         .meta-label {
             font-weight: 600;
-            color: #475569;
+            color: #64748b;
         }
 
         .meta-value {
             font-weight: 700;
-            color: #1e293b;
+            color: #0f172a;
         }
 
-        /* Summary Stats Cards Grid */
+        /* Section Title */
         .section-title {
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
-            color: #1e293b;
-            margin-bottom: 8px;
+            color: #0f172a;
+            margin-bottom: 10px;
             letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
+        /* Summary Stats Cards Grid Table */
         .summary-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 8px;
             margin-bottom: 20px;
+            margin-left: -8px;
+            margin-right: -8px;
         }
 
-        .summary-table th {
-            background-color: #D62027;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 11px;
-            padding: 8px 10px;
-            text-align: center;
-            border: 1px solid #D62027;
-        }
-
-        .summary-table td {
+        .summary-card {
             background-color: #ffffff;
-            color: #1e293b;
-            font-weight: 700;
-            font-size: 12px;
-            padding: 8px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 14px;
             text-align: center;
-            border: 1px solid #cbd5e1;
+        }
+
+        .summary-card .label {
+            font-size: 9.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 4px;
+            letter-spacing: 0.4px;
+        }
+
+        .summary-card .val {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
         }
 
         /* Main Data Table */
@@ -135,84 +147,90 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #D62027;
         }
 
         .data-table th {
-            background-color: #1e293b;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 10.5px;
-            padding: 8px 6px;
+            background-color: #D62027 !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 10px 8px;
             text-align: left;
-            border: 1px solid #1e293b;
+            border: 1px solid #B91C1C;
             text-transform: uppercase;
+            letter-spacing: 0.4px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
         .data-table td {
-            padding: 7px 6px;
+            padding: 8px 8px;
+            border: 1px solid #e2e8f0;
             font-size: 10.5px;
-            border: 1px solid #cbd5e1;
             vertical-align: middle;
         }
 
-        .data-table tr:nth-child(even) {
+        .data-table tbody tr:nth-child(even) {
             background-color: #f8fafc;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
+        .text-center {
+            text-align: center !important;
+        }
 
-        /* Badges */
+        /* Status Badges */
         .badge {
             display: inline-block;
-            padding: 2px 6px;
+            padding: 4px 10px;
             font-size: 9.5px;
             font-weight: 700;
-            border-radius: 4px;
+            border-radius: 6px;
             text-align: center;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-        .badge-success { background-color: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
-        .badge-warning { background-color: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
-        .badge-danger { background-color: #fee2e2; color: #D62027; border: 1px solid #fca5a5; }
-        .badge-secondary { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+
+        .badge-success { background-color: #dcfce7 !important; color: #15803d !important; border: 1px solid #bbf7d0 !important; }
+        .badge-warning { background-color: #fff7ed !important; color: #ea580c !important; border: 1px solid #ffedd5 !important; }
+        .badge-danger  { background-color: #fef2f2 !important; color: #dc2626 !important; border: 1px solid #fecaca !important; }
+        .badge-secondary { background-color: #f1f5f9 !important; color: #475569 !important; border: 1px solid #e2e8f0 !important; }
 
         /* Signature Block */
         .signature-wrapper {
-            margin-top: 30px;
+            margin-top: 25px;
             display: flex;
             justify-content: flex-end;
             page-break-inside: avoid;
         }
 
         .signature-box {
-            width: 250px;
+            width: 260px;
             text-align: center;
         }
 
         .signature-date {
             font-size: 11px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: #475569;
         }
 
         .signature-role {
             font-size: 11px;
             font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 60px;
+            color: #0f172a;
+            margin-bottom: 55px;
         }
 
         .signature-name {
             font-size: 12px;
-            font-weight: 700;
-            color: #1e293b;
+            font-weight: 800;
+            color: #0f172a;
             text-decoration: underline;
-        }
-
-        .signature-nip {
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 2px;
         }
 
         .no-print-bar {
@@ -223,21 +241,26 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
         .btn-print {
             background-color: #D62027;
             color: #ffffff;
             border: none;
-            padding: 8px 16px;
-            font-weight: 600;
+            padding: 8px 18px;
+            font-weight: 700;
             font-size: 12px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            box-shadow: 0 2px 6px rgba(214,32,39,0.3);
         }
 
         @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
             .no-print-bar {
                 display: none !important;
             }
@@ -251,8 +274,8 @@
             <strong>Mode Cetak Dokumen Laporan Resmi</strong> &bull; Silakan klik tombol atau tekan <code>Ctrl + P</code> untuk menyimpan sebagai PDF.
         </div>
         <div>
-            <button onclick="window.print()" class="btn-print">Cetak / Cetak PDF</button>
-            <button onclick="window.close()" class="btn-print" style="background-color: #475569; margin-left: 5px;">Tutup</button>
+            <button onclick="window.print()" class="btn-print">Cetak / Simpan PDF</button>
+            <button onclick="window.close()" class="btn-print" style="background-color: #475569; margin-left: 6px;">Tutup</button>
         </div>
     </div>
 
@@ -262,7 +285,7 @@
         <div class="kop-title">
             <h1>BAWASLU PROVINSI LAMPUNG</h1>
             <h2>PERPUSTAKAAN DIGITAL LITERAWASLU</h2>
-            <p>Ruang Literasi Pengawasan &bull; Dokumen Resmi Hasil Rekapitulasi</p>
+            <p>Jl. Arif Rahman Hakim No.5, Jagabaya III, Kec. Way Halim, Kota Bandar Lampung, Lampung 35132</p>
         </div>
         <img src="{{ asset('images/logo-bawaslu.png') }}" alt="Logo Bawaslu" class="kop-logo" style="visibility: hidden;">
     </div>
@@ -283,43 +306,57 @@
         </div>
     </div>
 
-    <!-- Summary Section -->
-    <div class="section-title">I. Ringkasan Statistik Laporan</div>
+    <!-- Summary Cards Grid -->
+    <div class="section-title">I. RINGKASAN STATISTIK LAPORAN</div>
     <table class="summary-table">
-        <thead>
-            <tr>
-                <th>Total Peminjaman</th>
-                <th>Jumlah Keterlambatan</th>
-                <th>Total Sanksi Donasi Buku</th>
-                <th>Donasi Buku Dipenuhi</th>
-                <th>Donasi Buku Belum Dipenuhi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ $totalBorrowCount }} Transaksi</td>
-                <td>{{ $lateCount }} Kali</td>
-                <td>{{ $totalFineAmount }} Buku</td>
-                <td style="color: #1e293b;">{{ $paidFineAmount }} Buku</td>
-                <td style="color: #D62027;">{{ $unpaidFineAmount }} Buku</td>
-            </tr>
-        </tbody>
+        <tr>
+            <td style="width: 20%; padding: 0;">
+                <div class="summary-card">
+                    <div class="label">Total Peminjaman</div>
+                    <div class="val">{{ $totalBorrowCount }} Transaksi</div>
+                </div>
+            </td>
+            <td style="width: 20%; padding: 0;">
+                <div class="summary-card">
+                    <div class="label">Jumlah Keterlambatan</div>
+                    <div class="val" style="color: {{ $lateCount > 0 ? '#dc2626' : '#0f172a' }};">{{ $lateCount }} Kali</div>
+                </div>
+            </td>
+            <td style="width: 20%; padding: 0;">
+                <div class="summary-card">
+                    <div class="label">Total Sanksi Donasi</div>
+                    <div class="val">{{ $totalFineAmount }} Buku</div>
+                </div>
+            </td>
+            <td style="width: 20%; padding: 0;">
+                <div class="summary-card">
+                    <div class="label">Donasi Dipenuhi</div>
+                    <div class="val" style="color: #16a34a;">{{ $paidFineAmount }} Buku</div>
+                </div>
+            </td>
+            <td style="width: 20%; padding: 0;">
+                <div class="summary-card">
+                    <div class="label">Donasi Belum Dipenuhi</div>
+                    <div class="val" style="color: #dc2626;">{{ $unpaidFineAmount }} Buku</div>
+                </div>
+            </td>
+        </tr>
     </table>
 
     <!-- Main Table Section -->
-    <div class="section-title">II. Rincian Data Transaksi Peminjaman</div>
+    <div class="section-title" style="margin-top: 15px;">II. RINCIAN DATA TRANSAKSI PEMINJAMAN</div>
     <table class="data-table">
         <thead>
             <tr>
-                <th class="text-center" style="width: 25px;">No</th>
-                <th style="width: 85px;">Kode Pengguna</th>
-                <th>Nama Pengguna</th>
+                <th class="text-center" style="width: 28px;">No</th>
+                <th style="width: 90px;">Kode Member</th>
+                <th style="width: 130px;">Nama Pengguna</th>
                 <th>Judul Buku</th>
-                <th style="width: 80px;">Barcode</th>
+                <th style="width: 85px;">Barcode</th>
                 <th class="text-center" style="width: 75px;">Tgl Pinjam</th>
                 <th class="text-center" style="width: 75px;">Jatuh Tempo</th>
                 <th class="text-center" style="width: 75px;">Tgl Kembali</th>
-                <th class="text-center" style="width: 85px;">Status</th>
+                <th class="text-center" style="width: 95px;">Status</th>
                 <th>Keterangan / Sanksi Keterlambatan</th>
             </tr>
         </thead>
@@ -341,9 +378,9 @@
                         if ($lateDays == 1) {
                             $keterangan = "Terlambat 1 hari (-10 Poin)";
                         } elseif ($lateDays == 2) {
-                            $keterangan = "Terlambat 2 hari (-10 Poin)";
+                            $keterangan = "Terlambat 2 hari (-20 Poin)";
                         } elseif ($lateDays == 3) {
-                            $keterangan = "Terlambat 3 hari (-10 Poin)";
+                            $keterangan = "Terlambat 3 hari (-30 Poin)";
                         } else {
                             $keterangan = "Terlambat {$lateDays} hari (Wajib Donasi 1 Buku Fisik)";
                         }
@@ -351,10 +388,10 @@
                 @endphp
                 <tr>
                     <td class="text-center">{{ $index + 1 }}</td>
-                    <td style="font-family: monospace; font-weight: 600;">{{ $borrow->member ? $borrow->member->member_code : '-' }}</td>
+                    <td style="font-family: monospace; font-weight: 600; color: #475569;">{{ $borrow->member ? $borrow->member->member_code : '-' }}</td>
                     <td><strong>{{ $borrow->member && $borrow->member->user ? $borrow->member->user->name : '-' }}</strong></td>
-                    <td>{{ $borrow->book ? $borrow->book->title : '-' }}</td>
-                    <td style="font-family: monospace;">{{ $borrow->book ? $borrow->book->barcode : '-' }}</td>
+                    <td><strong style="color: #0f172a;">{{ $borrow->book ? $borrow->book->title : '-' }}</strong></td>
+                    <td style="font-family: monospace; font-weight: 500; color: #475569;">{{ $borrow->book ? $borrow->book->barcode : '-' }}</td>
                     <td class="text-center">{{ $borrow->borrow_date ? \Carbon\Carbon::parse($borrow->borrow_date)->format('d/m/Y') : '-' }}</td>
                     <td class="text-center">{{ $borrow->due_date ? \Carbon\Carbon::parse($borrow->due_date)->format('d/m/Y') : '-' }}</td>
                     <td class="text-center">
@@ -373,13 +410,13 @@
                             <span class="badge badge-secondary">{{ ucfirst($borrow->status) }}</span>
                         @endif
                     </td>
-                    <td style="{{ $lateDays > 0 ? 'color: #D62027; font-weight: 600;' : 'color: #1e293b;' }}">
+                    <td style="{{ $lateDays > 0 ? 'color: #dc2626; font-weight: 700;' : 'color: #0f172a;' }}">
                         {{ $keterangan }}
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="10" class="text-center" style="padding: 20px; color: #64748b;">
+                    <td colspan="10" class="text-center" style="padding: 24px; color: #64748b;">
                         Tidak ada data transaksi peminjaman pada periode ini.
                     </td>
                 </tr>
@@ -398,7 +435,6 @@
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // Auto open print dialog when opened
             setTimeout(() => {
                 window.print();
             }, 500);

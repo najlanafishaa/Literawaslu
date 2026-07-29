@@ -19,7 +19,7 @@
             <p>{{ $totalBooks }} Buku</p>
         </div>
         <div class="stat-icon">
-            <i class="fa-solid fa-book"></i>
+            <i class="ti ti-book-2"></i>
         </div>
     </a>
     
@@ -29,7 +29,7 @@
             <p>{{ $totalTransactions }} Transaksi</p>
         </div>
         <div class="stat-icon">
-            <i class="fa-solid fa-hand-holding-hand"></i>
+            <i class="ti ti-book-upload"></i>
         </div>
     </a>
     
@@ -39,7 +39,7 @@
             <p>{{ $totalMembers }} Pengguna</p>
         </div>
         <div class="stat-icon">
-            <i class="fa-solid fa-users"></i>
+            <i class="ti ti-users"></i>
         </div>
     </a>
 
@@ -49,7 +49,7 @@
             <p style="{{ $overdueCount > 0 ? 'color:#d62027;' : '' }}">{{ $overdueCount }} Transaksi</p>
         </div>
         <div class="stat-icon">
-            <i class="fa-solid fa-circle-exclamation"></i>
+            <i class="ti ti-alert-circle"></i>
         </div>
     </a>
 </div>
@@ -57,7 +57,7 @@
 <!-- Monthly Borrowing Trend Chart Card -->
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-chart-line" style="color: var(--primary); margin-right: 8px;"></i> Tren Peminjaman per Bulan</h2>
+        <h2><i class="ti ti-chart-line" style="color: var(--primary); margin-right: 8px;"></i> Tren Peminjaman per Bulan</h2>
     </div>
     <div class="card-body" style="position: relative; height: 300px;">
         <canvas id="dashboardMonthlyChart"></canvas>
@@ -67,20 +67,20 @@
 <!-- Admin Quick Action Links -->
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-compass" style="color: var(--primary); margin-right: 8px;"></i> Navigasi Pintar Kelola Data</h2>
+        <h2><i class="ti ti-compass" style="color: var(--primary); margin-right: 8px;"></i> Navigasi Pintar Kelola Data</h2>
     </div>
     <div class="card-body" style="padding: 16px 20px; display: flex; gap: 12px; flex-wrap: wrap;">
         <a href="{{ route('books.index') }}" class="btn btn-secondary" style="flex: 1; min-width: 140px;">
-            <i class="fa-solid fa-book"></i> Kelola Data Buku
+            <i class="ti ti-book-2"></i> Kelola Data Buku
         </a>
         <a href="{{ route('members.index') }}" class="btn btn-secondary" style="flex: 1; min-width: 140px;">
-            <i class="fa-solid fa-users"></i> Kelola Data Pengguna
+            <i class="ti ti-users"></i> Kelola Data Pengguna
         </a>
         <a href="{{ route('officers.index') }}" class="btn btn-secondary" style="flex: 1; min-width: 140px;">
-            <i class="fa-solid fa-user-shield"></i> Kelola Data Admin
+            <i class="ti ti-shield-lock"></i> Kelola Data Admin
         </a>
         <a href="{{ route('reports.index') }}" class="btn btn-primary" style="flex: 1; min-width: 140px;">
-            <i class="fa-solid fa-file-invoice-dollar"></i> Cetak &amp; Lihat Laporan
+            <i class="ti ti-file-invoice"></i> Cetak &amp; Lihat Laporan
         </a>
     </div>
 </div>
@@ -88,7 +88,7 @@
 <!-- Online Borrow Approval Section -->
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <h2 style="margin: 0;"><i class="fa-solid fa-list-check" style="color: var(--primary); margin-right: 8px;"></i> Daftar Pengajuan Peminjaman Online</h2>
+        <h2 style="margin: 0;"><i class="ti ti-checklist" style="color: var(--primary); margin-right: 8px;"></i> Daftar Pengajuan Peminjaman Online</h2>
         <span class="badge badge-success">{{ isset($pendingBorrowsList) ? $pendingBorrowsList->count() : 0 }} Pengajuan Menunggu</span>
     </div>
     <div class="card-body">
@@ -127,20 +127,20 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d M Y, H:i') }}</td>
                                 <td>
-                                    <span class="badge badge-pending"><i class="fa-solid fa-hourglass-half"></i> Menunggu Persetujuan</span>
+                                    <span class="badge badge-pending"><i class="ti ti-hourglass"></i> Menunggu Persetujuan</span>
                                 </td>
                                 <td>
                                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                                         <form action="{{ route('verifications.borrow.approve', $borrow->id) }}" method="POST" style="margin: 0;">
                                             @csrf
                                             <button type="submit" class="btn btn-secondary btn-sm">
-                                                <i class="fa-solid fa-check"></i> Setujui
+                                                <i class="ti ti-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.borrow.reject', $borrow->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menolak pengajuan ini?');" style="margin: 0;">
                                             @csrf
                                             <button type="submit" class="btn btn-outline btn-sm">
-                                                <i class="fa-solid fa-xmark"></i> Tolak
+                                                <i class="ti ti-x"></i> Tolak
                                             </button>
                                         </form>
                                     </div>
@@ -158,7 +158,7 @@
     <!-- Left Column: Recent Borrowing Log -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary); margin-right: 8px;"></i> Transaksi Peminjaman Terbaru</h2>
+            <h2><i class="ti ti-history" style="color: var(--primary); margin-right: 8px;"></i> Transaksi Peminjaman Terbaru</h2>
         </div>
         <div class="card-body">
             @if($recentBorrows->isEmpty())
@@ -218,7 +218,7 @@
     <!-- Right Column: Most Borrowed Books -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-fire" style="color: var(--secondary); margin-right: 8px;"></i> Buku Terpopuler</h2>
+            <h2><i class="ti ti-trending-up" style="color: var(--secondary); margin-right: 8px;"></i> Buku Terpopuler</h2>
         </div>
         <div class="card-body">
             @if($popularBooks->isEmpty())

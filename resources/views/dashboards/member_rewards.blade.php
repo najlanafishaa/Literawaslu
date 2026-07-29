@@ -13,7 +13,7 @@
                 {{ $member->points }} <span style="font-size: 1.4rem; font-weight: 600; color: rgba(255,255,255,0.9);">Poin</span>
             </div>
             <div style="display: flex; align-items: center; gap: 8px; margin-top: 15px; font-size: 0.85rem; background-color: rgba(0,0,0,0.2); padding: 6px 14px; border-radius: var(--border-radius); width: fit-content;">
-                <i class="fa-solid fa-medal" style="color: var(--secondary);"></i>
+                <i class="ti ti-medal" style="color: var(--secondary);"></i>
                 <span style="color: #ffffff;">Status:</span> 
                 @php
                     $pts = $member->points;
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="reward-hero-icon-wrap" style="font-size: 4.5rem; color: rgba(255,255,255,0.25);">
-            <i class="fa-solid fa-trophy"></i>
+            <i class="ti ti-award"></i>
         </div>
     </div>
 </div>
@@ -42,7 +42,7 @@
         <div class="reward-tier-row">
             <div class="reward-tier-content">
                 <div style="width: 45px; height: 45px; border-radius: 50%; background-color: #FEF3C7; color: #92400E; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                    <i class="fa-solid fa-medal"></i>
+                    <i class="ti ti-medal"></i>
                 </div>
                 <div>
                     <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Perunggu — Batas 1 Buku</h4>
@@ -51,15 +51,15 @@
             </div>
             <div class="reward-tier-btn-wrap">
                 @if($member->borrow_limit >= 1)
-                    <span class="badge badge-success"><i class="fa-solid fa-check"></i> Aktif</span>
+                    <span class="badge badge-success"><i class="ti ti-check"></i> Aktif</span>
                 @elseif($member->points >= 100)
                     <form action="{{ route('member.redeem') }}" method="POST" style="width: 100%;">
                         @csrf
                         <input type="hidden" name="target_limit" value="1">
-                        <button type="submit" class="btn btn-secondary btn-sm btn-block-mobile"><i class="fa-solid fa-unlock"></i> Buka Batas 1 Buku</button>
+                        <button type="submit" class="btn btn-secondary btn-sm btn-block-mobile"><i class="ti ti-lock-open"></i> Buka Batas 1 Buku</button>
                     </form>
                 @else
-                    <button type="button" class="btn btn-outline btn-sm btn-block-mobile" disabled style="cursor: not-allowed; opacity: 0.6;"><i class="fa-solid fa-lock"></i> Butuh {{ 100 - $member->points }} Poin Lagi</button>
+                    <button type="button" class="btn btn-outline btn-sm btn-block-mobile" disabled style="cursor: not-allowed; opacity: 0.6;"><i class="ti ti-lock"></i> Butuh {{ 100 - $member->points }} Poin Lagi</button>
                 @endif
             </div>
         </div>
@@ -68,7 +68,7 @@
         <div class="reward-tier-row">
             <div class="reward-tier-content">
                 <div style="width: 45px; height: 45px; border-radius: 50%; background-color: #F1F5F9; color: #475569; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                    <i class="fa-solid fa-medal"></i>
+                    <i class="ti ti-medal"></i>
                 </div>
                 <div>
                     <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Perak — Batas 2 Buku</h4>
@@ -77,15 +77,15 @@
             </div>
             <div class="reward-tier-btn-wrap">
                 @if($member->borrow_limit >= 2)
-                    <span class="badge badge-success"><i class="fa-solid fa-check"></i> Aktif</span>
+                    <span class="badge badge-success"><i class="ti ti-check"></i> Aktif</span>
                 @elseif($member->points >= 200)
                     <form action="{{ route('member.redeem') }}" method="POST" style="width: 100%;">
                         @csrf
                         <input type="hidden" name="target_limit" value="2">
-                        <button type="submit" class="btn btn-secondary btn-sm btn-block-mobile"><i class="fa-solid fa-unlock"></i> Buka Batas 2 Buku</button>
+                        <button type="submit" class="btn btn-secondary btn-sm btn-block-mobile"><i class="ti ti-lock-open"></i> Buka Batas 2 Buku</button>
                     </form>
                 @else
-                    <button type="button" class="btn btn-outline btn-sm btn-block-mobile" disabled style="cursor: not-allowed; opacity: 0.6;"><i class="fa-solid fa-lock"></i> Butuh {{ 200 - $member->points }} Poin Lagi</button>
+                    <button type="button" class="btn btn-outline btn-sm btn-block-mobile" disabled style="cursor: not-allowed; opacity: 0.6;"><i class="ti ti-lock"></i> Butuh {{ 200 - $member->points }} Poin Lagi</button>
                 @endif
             </div>
         </div>
@@ -94,7 +94,7 @@
         <div class="reward-tier-row">
             <div class="reward-tier-content">
                 <div style="width: 45px; height: 45px; border-radius: 50%; background-color: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                    <i class="fa-solid fa-trophy"></i>
+                    <i class="ti ti-award"></i>
                 </div>
                 <div>
                     <h4 style="font-weight: 600; color: var(--dark); font-size: 1rem;">Emas — Batas 3 Buku</h4>
@@ -103,15 +103,15 @@
             </div>
             <div class="reward-tier-btn-wrap">
                 @if($member->borrow_limit >= 3)
-                    <span class="badge badge-success"><i class="fa-solid fa-check"></i> Aktif</span>
+                    <span class="badge badge-success"><i class="ti ti-check"></i> Aktif</span>
                 @elseif($member->points >= 300)
                     <form action="{{ route('member.redeem') }}" method="POST" style="width: 100%;">
                         @csrf
                         <input type="hidden" name="target_limit" value="3">
-                        <button type="submit" class="btn btn-secondary btn-sm btn-block-mobile"><i class="fa-solid fa-unlock"></i> Buka Batas 3 Buku</button>
+                        <button type="submit" class="btn btn-secondary btn-sm btn-block-mobile"><i class="ti ti-lock-open"></i> Buka Batas 3 Buku</button>
                     </form>
                 @else
-                    <button type="button" class="btn btn-outline btn-sm btn-block-mobile" disabled style="cursor: not-allowed; opacity: 0.6;"><i class="fa-solid fa-lock"></i> Butuh {{ 300 - $member->points }} Poin Lagi</button>
+                    <button type="button" class="btn btn-outline btn-sm btn-block-mobile" disabled style="cursor: not-allowed; opacity: 0.6;"><i class="ti ti-lock"></i> Butuh {{ 300 - $member->points }} Poin Lagi</button>
                 @endif
             </div>
         </div>
@@ -121,7 +121,7 @@
 <!-- Point History Table Card -->
 <div class="card">
     <div class="card-header">
-        <h2><i class="fa-solid fa-clock-rotate-left" style="color: var(--primary); margin-right: 8px;"></i> Riwayat Poin Hadiah</h2>
+        <h2><i class="ti ti-history" style="color: var(--primary); margin-right: 8px;"></i> Riwayat Poin Hadiah</h2>
     </div>
     <div class="card-body">
         @if(!isset($pointHistories) || $pointHistories->isEmpty())
@@ -143,11 +143,11 @@
                                 <td>{{ $history->created_at->format('d M Y H:i') }}</td>
                                 <td>
                                     @if($history->type === 'earn')
-                                        <span class="badge badge-success"><i class="fa-solid fa-plus-circle"></i> Tambah Poin</span>
+                                        <span class="badge badge-success"><i class="ti ti-circle-plus"></i> Tambah Poin</span>
                                     @elseif($history->type === 'deduct')
-                                        <span class="badge badge-danger"><i class="fa-solid fa-minus-circle"></i> Pengurangan (Penalti)</span>
+                                        <span class="badge badge-danger"><i class="ti ti-circle-minus"></i> Pengurangan (Penalti)</span>
                                     @else
-                                        <span class="badge badge-warning"><i class="fa-solid fa-hourglass-half"></i> Penukaran Limit</span>
+                                        <span class="badge badge-warning"><i class="ti ti-hourglass"></i> Penukaran Limit</span>
                                     @endif
                                 </td>
                                 <td>
@@ -169,13 +169,13 @@
 <div class="card" style="overflow: hidden; margin-top: 25px;">
     <div style="background: var(--primary); color: #ffffff; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
         <h2 style="color: #ffffff; margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
-            <i class="fa-solid fa-circle-question" style="color: #ffffff;"></i> Ketentuan & Cara Kerja Poin
+            <i class="ti ti-help-circle" style="color: #ffffff;"></i> Ketentuan & Cara Kerja Poin
         </h2>
     </div>
     <div class="card-body" style="padding: 25px; background: #ffffff; color: var(--dark);">
         <div style="display: flex; flex-direction: column; gap: 20px;">
             <div class="reward-info-item" style="display: flex; gap: 15px; align-items: flex-start;">
-                <div style="font-size: 1.4rem; color: var(--primary); margin-top: 2px;"><i class="fa-solid fa-user-plus"></i></div>
+                <div style="font-size: 1.4rem; color: var(--primary); margin-top: 2px;"><i class="ti ti-user-plus"></i></div>
                 <div>
                     <h4 style="font-size: 1rem; font-weight: 700; color: var(--dark);">Bonus Registrasi</h4>
                     <p style="font-size: 0.88rem; color: var(--gray-700); margin-top: 4px;">
@@ -185,7 +185,7 @@
             </div>
 
             <div class="reward-info-item" style="display: flex; gap: 15px; align-items: flex-start;">
-                <div style="font-size: 1.4rem; color: var(--primary); margin-top: 2px;"><i class="fa-solid fa-hand-holding-hand"></i></div>
+                <div style="font-size: 1.4rem; color: var(--primary); margin-top: 2px;"><i class="ti ti-book-upload"></i></div>
                 <div>
                     <h4 style="font-size: 1rem; font-weight: 700; color: var(--dark);">Peminjaman Buku</h4>
                     <p style="font-size: 0.88rem; color: var(--gray-700); margin-top: 4px;">
@@ -195,7 +195,7 @@
             </div>
 
             <div class="reward-info-item" style="display: flex; gap: 15px; align-items: flex-start; border-top: 1px solid var(--gray-200); padding-top: 20px;">
-                <div style="font-size: 1.4rem; color: #d62027; margin-top: 2px;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div style="font-size: 1.4rem; color: #d62027; margin-top: 2px;"><i class="ti ti-alert-triangle"></i></div>
                 <div>
                     <h4 style="font-size: 1rem; font-weight: 700; color: var(--dark);">Keterlambatan</h4>
                     <p style="font-size: 0.88rem; color: var(--gray-700); margin-top: 4px; line-height: 1.6;">

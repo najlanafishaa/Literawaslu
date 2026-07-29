@@ -13,7 +13,7 @@
             </style>
             <div style="width: 100%; max-width: 480px; margin: 40px auto; background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); padding: 32px 24px; text-align: center; animation: fadeInSoft 200ms ease-out forwards; font-family: 'Plus Jakarta Sans', sans-serif;">
                 <div style="width: 48px; height: 48px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-                    <i class="fa-solid fa-check" style="font-size: 24px; color: #15803D;"></i>
+                    <i class="ti ti-check" style="font-size: 24px; color: #15803D;"></i>
                 </div>
                 <h2 style="font-weight: 600; font-size: 18px; color: #111827; margin-bottom: 8px;">Berhasil Keluar</h2>
                 <p style="font-size: 14px; color: #6B7280; margin-bottom: 24px; line-height: 1.5;">Anda telah berhasil keluar dari sistem. Terima kasih telah menggunakan Literawaslu.</p>
@@ -42,28 +42,28 @@
 
                 @if(session('warning'))
                     <div class="alert alert-warning" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px;">
-                        <i class="fa-solid fa-clock-rotate-left" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: var(--secondary);"></i>
+                        <i class="ti ti-history" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: var(--secondary);"></i>
                         {{ session('warning') }}
                     </div>
                 @endif
 
                 @if(session('error'))
                     <div class="alert alert-danger" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px;">
-                        <i class="fa-solid fa-circle-xmark" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
+                        <i class="ti ti-circle-x" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: var(--primary);"></i>
                         {{ session('error') }}
                     </div>
                 @endif
 
                 @if(session('success') && session('success') !== 'Anda telah berhasil keluar dari sistem.')
                     <div class="alert alert-success" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px;">
-                        <i class="fa-solid fa-circle-check" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: #15803d;"></i>
+                        <i class="ti ti-circle-check" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: #15803d;"></i>
                         {{ session('success') }}
                     </div>
                 @endif
 
                 @if($errors->any())
                     <div class="alert alert-danger">
-                        <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+                        <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
                     </div>
                 @endif
 
@@ -83,7 +83,7 @@
                 <div style="position: relative;">
                     <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required style="padding-right: 40px;">
                     <button type="button" onclick="togglePassword('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
-                        <i class="fa-regular fa-eye-slash"></i>
+                        <i class="ti ti-eye-off"></i>
                     </button>
                 </div>
             </div>
@@ -94,7 +94,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%;">
-                <i class="fa-solid fa-right-to-bracket"></i> Masuk Sekarang
+                <i class="ti ti-login"></i> Masuk Sekarang
             </button>
         </form>
 
@@ -130,12 +130,12 @@
         
         if (input.type === 'password') {
             input.type = 'text';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
+            icon.classList.remove('ti-eye-off');
+            icon.classList.add('ti-eye');
         } else {
             input.type = 'password';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
+            icon.classList.remove('ti-eye');
+            icon.classList.add('ti-eye-off');
         }
     }
 </script>

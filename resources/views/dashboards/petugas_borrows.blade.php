@@ -10,7 +10,7 @@
 <!-- Active Transactions List -->
 <div class="card">
     <div class="card-header">
-        <h2><i class="fa-solid fa-list-check" style="color: var(--dark); margin-right: 8px;"></i> Daftar Peminjaman Aktif (Sedang Dipinjam)</h2>
+        <h2><i class="ti ti-list-check" style="color: var(--dark); margin-right: 8px;"></i> Daftar Peminjaman Aktif (Sedang Dipinjam)</h2>
         <span class="badge badge-warning">{{ $activeBorrows->count() }} Peminjaman</span>
     </div>
     <div class="card-body">
@@ -69,7 +69,7 @@
                                         @csrf
                                         <input type="hidden" name="barcode" value="{{ $borrow->book->barcode }}">
                                         <button type="submit" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 6px 12px;">
-                                            <i class="fa-solid fa-circle-left"></i> Kembalikan
+                                            <i class="ti ti-corner-down-left"></i> Kembalikan
                                         </button>
                                     </form>
                                 </td>
@@ -92,7 +92,7 @@
 
 <div class="card" style="margin-top: 25px; margin-bottom: 25px;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-book-medical" style="color: var(--primary); margin-right: 8px;"></i> Daftar Sanksi Wajib Donasi Buku Fisik (> 3 Hari Terlambat)</h2>
+        <h2><i class="ti ti-book-plus" style="color: var(--primary); margin-right: 8px;"></i> Daftar Sanksi Wajib Donasi Buku Fisik (> 3 Hari Terlambat)</h2>
         <span class="badge badge-danger">{{ $unpaidFines->count() }} Transaksi</span>
     </div>
     <div class="card-body">
@@ -131,7 +131,7 @@
                                     <form action="{{ route('borrows.pay_fine', $fineBorrow->id) }}" method="POST" style="margin: 0;">
                                         @csrf
                                         <button type="submit" class="btn btn-primary btn-sm" style="font-size: 0.75rem; padding: 6px 12px; display: inline-flex; align-items: center; gap: 4px; height: auto;">
-                                            <i class="fa-solid fa-check"></i> Konfirmasi Terima Buku
+                                            <i class="ti ti-check"></i> Konfirmasi Terima Buku
                                         </button>
                                     </form>
                                 </td>

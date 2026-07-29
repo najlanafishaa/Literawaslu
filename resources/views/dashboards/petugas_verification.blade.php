@@ -6,7 +6,7 @@
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-header">
-        <h2 style="margin: 0;"><i class="fa-solid fa-user-check" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Pendaftaran Pengguna Baru</h2>
+        <h2 style="margin: 0;"><i class="ti ti-user-check" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Pendaftaran Pengguna Baru</h2>
     </div>
     
     <div class="card-body">
@@ -36,13 +36,13 @@
                                         <form action="{{ route('verifications.member.approve', $member->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-secondary btn-sm">
-                                                <i class="fa-solid fa-check"></i> Setujui
+                                                <i class="ti ti-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.member.reject', $member->id) }}" method="POST" onsubmit="return confirm('Tolak pendaftaran member ini?');">
                                             @csrf
                                             <button type="submit" class="btn btn-outline btn-sm">
-                                                <i class="fa-solid fa-xmark"></i> Tolak
+                                                <i class="ti ti-x"></i> Tolak
                                             </button>
                                         </form>
                                     </div>
@@ -58,7 +58,7 @@
 
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-header">
-        <h2 style="margin: 0;"><i class="fa-solid fa-laptop-code" style="color: var(--secondary); margin-right: 8px;"></i> Verifikasi Peminjaman Online</h2>
+        <h2 style="margin: 0;"><i class="ti ti-device-laptop" style="color: var(--secondary); margin-right: 8px;"></i> Verifikasi Peminjaman Online</h2>
     </div>
     
     <div class="card-body">
@@ -102,13 +102,13 @@
                                         <form action="{{ route('verifications.borrow.approve', $borrow->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-secondary btn-sm">
-                                                <i class="fa-solid fa-check"></i> Setujui
+                                                <i class="ti ti-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.borrow.reject', $borrow->id) }}" method="POST" onsubmit="return confirm('Tolak permintaan pinjaman ini?');">
                                             @csrf
                                             <button type="submit" class="btn btn-outline btn-sm">
-                                                <i class="fa-solid fa-xmark"></i> Tolak
+                                                <i class="ti ti-x"></i> Tolak
                                             </button>
                                         </form>
                                     </div>
@@ -126,7 +126,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h2 style="margin: 0;"><i class="fa-solid fa-key" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Atur Ulang Kata Sandi Pengguna</h2>
+        <h2 style="margin: 0;"><i class="ti ti-key" style="color: var(--primary); margin-right: 8px;"></i> Verifikasi Atur Ulang Kata Sandi Pengguna</h2>
     </div>
     
     <div class="card-body">
@@ -159,13 +159,13 @@
                                         <form action="{{ route('verifications.reset.approve', $req->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-secondary btn-sm">
-                                                <i class="fa-solid fa-check"></i> Setujui
+                                                <i class="ti ti-check"></i> Setujui
                                             </button>
                                         </form>
                                         <form action="{{ route('verifications.reset.reject', $req->id) }}" method="POST" onsubmit="return confirm('Tolak permintaan atur ulang kata sandi ini?');">
                                             @csrf
                                             <button type="submit" class="btn btn-outline btn-sm">
-                                                <i class="fa-solid fa-xmark"></i> Tolak
+                                                <i class="ti ti-x"></i> Tolak
                                             </button>
                                         </form>
                                     </div>

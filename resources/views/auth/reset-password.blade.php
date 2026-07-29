@@ -20,7 +20,7 @@
 
         @if($errors->any())
             <div class="alert alert-danger">
-                <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+                <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
             </div>
         @endif
 
@@ -34,7 +34,7 @@
                 <div style="position: relative;">
                     <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required autofocus style="padding-right: 40px;">
                     <button type="button" onclick="togglePassword('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
-                        <i class="fa-regular fa-eye"></i>
+                        <i class="ti ti-eye-off"></i>
                     </button>
                 </div>
             </div>
@@ -44,13 +44,13 @@
                 <div style="position: relative;">
                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="••••••••" required style="padding-right: 40px;">
                     <button type="button" onclick="togglePassword('password_confirmation', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
-                        <i class="fa-regular fa-eye"></i>
+                        <i class="ti ti-eye-off"></i>
                     </button>
                 </div>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
-                <i class="fa-solid fa-key"></i> Perbarui Kata Sandi
+                <i class="ti ti-key"></i> Perbarui Kata Sandi
             </button>
         </form>
     </div>

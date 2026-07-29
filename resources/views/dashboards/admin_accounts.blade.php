@@ -6,7 +6,7 @@
 @section('content')
 <div class="card" style="margin-bottom: 25px;">
     <div class="card-header">
-        <h2 style="margin: 0;"><i class="fa-solid fa-user-plus" style="color: var(--primary); margin-right: 8px;"></i> Buat Akun Baru</h2>
+        <h2 style="margin: 0;"><i class="ti ti-user-plus" style="color: var(--primary); margin-right: 8px;"></i> Buat Akun Baru</h2>
     </div>
     <div class="card-body">
         <form action="{{ route('accounts.store') }}" method="POST">
@@ -33,7 +33,7 @@
                     </select>
                 </div>
                 <div style="display: flex; align-items: flex-end; padding-bottom: 2px;">
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Buat Akun</button>
+                    <button type="submit" class="btn btn-primary"><i class="ti ti-plus"></i> Buat Akun</button>
                 </div>
             </div>
         </form>
@@ -75,7 +75,7 @@
                                     <form action="{{ route('accounts.demote', $user->id) }}" method="POST" onsubmit="return confirm('Turunkan Super Admin ini menjadi Admin?');" style="display:inline;">
                                         @csrf
                                         <button type="submit" class="btn btn-outline btn-sm">
-                                            <i class="fa-solid fa-arrow-down"></i> Turunkan Akses
+                                            <i class="ti ti-chevron-down"></i> Turunkan Akses
                                         </button>
                                     </form>
                                 @endif
@@ -84,7 +84,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline btn-sm" style="color: var(--primary);">
-                                            <i class="fa-solid fa-trash"></i> Hapus
+                                            <i class="ti ti-trash"></i> Hapus
                                         </button>
                                     </form>
                                 @endif

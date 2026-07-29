@@ -11,14 +11,14 @@
             <p>Atur identitas perpustakaan serta parameter operasional seperti durasi pinjam, denda, dan poin reward.</p>
         </div>
         <div>
-            <i class="fa-solid fa-sliders" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
+            <i class="ti ti-adjustments-horizontal" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
         </div>
     </div>
 </div>
 
 @if($errors->any())
     <div class="alert alert-danger" style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
-        <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+        <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
     </div>
 @endif
 
@@ -29,7 +29,7 @@
         <!-- Column 1: Library Identity & Operational Parameters -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fa-solid fa-sliders" style="color: var(--primary); margin-right: 8px;"></i> Aturan & Parameter Operasional</h2>
+                <h2><i class="ti ti-adjustments-horizontal" style="color: var(--primary); margin-right: 8px;"></i> Aturan & Parameter Operasional</h2>
             </div>
             <div class="card-body" style="padding: 25px; display: flex; flex-direction: column; gap: 20px;">
                 <div class="form-group">
@@ -71,7 +71,7 @@
                 <p style="font-size: 0.8rem; color: var(--gray-600);">Tekan simpan untuk memperbarui aturan operasional perpustakaan.</p>
             </div>
             <button type="submit" class="btn btn-primary" style="padding: 10px 30px;">
-                <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Pengaturan
+                <i class="ti ti-device-floppy"></i> Simpan Semua Pengaturan
             </button>
         </div>
     </div>

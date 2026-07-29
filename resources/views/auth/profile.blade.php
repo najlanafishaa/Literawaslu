@@ -11,21 +11,21 @@
             <p>Kelola data nama, email, dan kata sandi masuk untuk akun Anda.</p>
         </div>
         <div>
-            <i class="fa-solid fa-user-gear" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
+            <i class="ti ti-user-cog" style="font-size: 3rem; color: var(--light); opacity: 0.9;"></i>
         </div>
     </div>
 </div>
 
 @if($errors->any())
     <div class="alert alert-danger">
-        <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+        <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
     </div>
 @endif
 
 <div class="dashboard-grid" style="grid-template-columns: 1fr; gap: 25px; margin-bottom: 25px; max-width: 800px; margin: 0 auto;">
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-address-card" style="color: var(--primary); margin-right: 8px;"></i> Data Akun</h2>
+            <h2><i class="ti ti-id-badge" style="color: var(--primary); margin-right: 8px;"></i> Data Akun</h2>
         </div>
         <div class="card-body" style="padding: 25px;">
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
@@ -64,7 +64,7 @@
                 <hr style="border: 0; border-top: 1px solid var(--gray-200); margin: 10px 0;">
 
                 <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--dark); margin-bottom: 5px;">
-                    <i class="fa-solid fa-key" style="color: var(--secondary); margin-right: 6px;"></i> Ubah Kata Sandi
+                    <i class="ti ti-key" style="color: var(--secondary); margin-right: 6px;"></i> Ubah Kata Sandi
                 </h3>
                 <p style="font-size: 0.8rem; color: var(--gray-600); margin-bottom: 10px;">
                     Kosongkan kolom di bawah ini jika Anda tidak ingin mengubah kata sandi masuk Anda.
@@ -92,7 +92,7 @@
 
                 <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
                     <button type="submit" class="btn btn-primary" style="padding: 12px 30px;">
-                        <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                        <i class="ti ti-device-floppy"></i> Simpan Perubahan
                     </button>
                 </div>
             </form>

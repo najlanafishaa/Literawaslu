@@ -202,7 +202,7 @@
         
         <div class="card">
             <div class="icon-wrapper">
-                <i class="fa-solid fa-user-shield"></i>
+                <i class="ti ti-shield-check"></i>
             </div>
             
             <h1>Registrasi Berhasil</h1>
@@ -216,12 +216,12 @@
             <div class="user-details">
                 <div class="detail-row">
                     <span class="detail-label">Status Verifikasi:</span>
-                    <span class="detail-value" style="color: var(--primary);"><i class="fa-solid fa-hourglass-half"></i> Belum Aktif</span>
+                    <span class="detail-value" style="color: var(--primary);"><i class="ti ti-hourglass"></i> Belum Aktif</span>
                 </div>
             </div>
             
             <a href="{{ route('login') }}" class="btn btn-logout">
-                <i class="fa-solid fa-arrow-left"></i> Kembali ke Halaman Login
+                <i class="ti ti-arrow-left"></i> Kembali ke Halaman Login
             </a>
         </div>
         

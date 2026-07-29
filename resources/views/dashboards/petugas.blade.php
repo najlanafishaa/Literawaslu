@@ -18,42 +18,42 @@
             <h3>Total Buku</h3>
             <p>{{ $totalBooks }} Buku</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+        <div class="stat-icon"><i class="ti ti-book-2"></i></div>
     </a>
     <a href="{{ route('members.index') }}" class="stat-card card-dark" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Total Pengguna</h3>
             <p>{{ $totalMembers }} Pengguna</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-icon"><i class="ti ti-users"></i></div>
     </a>
     <a href="{{ route('borrows.index') }}" class="stat-card card-yellow" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Total Peminjaman</h3>
             <p>{{ $totalTransactions }} Transaksi</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-hand-holding-hand"></i></div>
+        <div class="stat-icon"><i class="ti ti-book-upload"></i></div>
     </a>
     <a href="{{ route('borrows.index') }}" class="stat-card card-green" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Total Pengembalian</h3>
             <p>{{ $totalReturns ?? 0 }} Selesai</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
+        <div class="stat-icon"><i class="ti ti-arrow-bar-to-down"></i></div>
     </a>
     <a href="{{ route('borrows.index') }}" class="stat-card card-red" style="text-decoration:none; cursor:pointer;">
         <div class="stat-info">
             <h3>Buku Terlambat</h3>
             <p style="{{ $overdueCount > 0 ? 'color: #d62027;' : '' }}">{{ $overdueCount }} Transaksi</p>
         </div>
-        <div class="stat-icon"><i class="fa-solid fa-hourglass-end"></i></div>
+        <div class="stat-icon"><i class="ti ti-alarm"></i></div>
     </a>
 </div>
 
 <!-- Monthly Borrowing Trend Chart Card -->
 <div class="card" style="margin-bottom:20px;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-chart-line" style="color:var(--primary); margin-right:8px;"></i> Tren Peminjaman per Bulan</h2>
+        <h2><i class="ti ti-chart-line" style="color:var(--primary); margin-right:8px;"></i> Tren Peminjaman per Bulan</h2>
     </div>
     <div class="card-body" style="position:relative; height:240px;">
         <canvas id="petugasMonthlyChart"></canvas>
@@ -63,17 +63,17 @@
 <!-- Quick Actions -->
 <div class="card" style="margin-bottom:20px;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-bolt" style="color:var(--secondary); margin-right:8px;"></i> Pintasan Aktivitas Transaksi</h2>
+        <h2><i class="ti ti-bolt" style="color:var(--secondary); margin-right:8px;"></i> Pintasan Aktivitas Transaksi</h2>
     </div>
     <div class="card-body" style="display:flex; gap:12px; flex-wrap:wrap;">
         <a href="{{ route('borrows.index') }}" class="btn btn-primary" style="flex:1; min-width:140px;">
-            <i class="fa-solid fa-hand-holding-hand"></i> Peminjaman &amp; Pengembalian
+            <i class="ti ti-book-upload"></i> Peminjaman &amp; Pengembalian
         </a>
         <a href="{{ route('members.index') }}" class="btn btn-secondary" style="flex:1; min-width:140px;">
-            <i class="fa-solid fa-users"></i> Lihat Data Pengguna
+            <i class="ti ti-users"></i> Lihat Data Pengguna
         </a>
         <a href="{{ route('reports.index') }}" class="btn btn-secondary" style="flex:1; min-width:140px;">
-            <i class="fa-solid fa-calendar-days"></i> Laporan Bulanan
+            <i class="ti ti-calendar"></i> Laporan Bulanan
         </a>
     </div>
 </div>
@@ -81,7 +81,7 @@
 <!-- Recent Transactions Log -->
 <div class="card">
     <div class="card-header">
-        <h2><i class="fa-solid fa-history" style="color:var(--dark); margin-right:8px;"></i> Log Peminjaman Terakhir</h2>
+        <h2><i class="ti ti-history" style="color:var(--dark); margin-right:8px;"></i> Log Peminjaman Terakhir</h2>
     </div>
     <div class="card-body" style="padding:0;">
         @if($recentBorrows->isEmpty())

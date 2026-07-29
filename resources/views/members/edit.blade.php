@@ -6,16 +6,16 @@
 @section('content')
 <div class="card" style="max-width: 600px; margin: 0 auto;">
     <div class="card-header">
-        <h2><i class="fa-solid fa-user-pen" style="color: var(--primary); margin-right: 8px;"></i> Ubah Status Pengguna</h2>
+        <h2><i class="ti ti-user-edit" style="color: var(--primary); margin-right: 8px;"></i> Ubah Status Pengguna</h2>
         <a href="{{ route('members.index') }}" class="btn btn-outline btn-sm">
-            <i class="fa-solid fa-arrow-left"></i> Kembali
+            <i class="ti ti-arrow-left"></i> Kembali
         </a>
     </div>
     
     <div class="card-body">
         @if($errors->any())
             <div style="background-color: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: var(--border-radius); font-size: 0.85rem; margin-bottom: 20px; font-weight: 500;">
-                <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+                <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
             </div>
         @endif
 
@@ -59,7 +59,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
-                <i class="fa-solid fa-save"></i> Perbarui Status Pengguna
+                <i class="ti ti-device-floppy"></i> Perbarui Status Pengguna
             </button>
         </form>
     </div>

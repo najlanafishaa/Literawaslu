@@ -17,7 +17,7 @@
 
         @if($errors->any())
             <div class="alert alert-danger">
-                <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
+                <i class="ti ti-alert-circle"></i> {{ $errors->first() }}
             </div>
         @endif
 
@@ -41,7 +41,7 @@
                     <div style="position: relative;">
                         <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required style="padding-right: 40px;" oninput="checkPasswordStrength(this.value)">
                         <button type="button" onclick="togglePassword('password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
-                            <i class="fa-regular fa-eye-slash"></i>
+                            <i class="ti ti-eye-off"></i>
                         </button>
                     </div>
                     {{-- Persyaratan Password --}}
@@ -49,19 +49,19 @@
                         <p style="font-size: 12px; font-weight: 600; color: #6B7280; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.04em;">Persyaratan Password</p>
                         <div style="display: flex; flex-direction: column; gap: 5px;">
                             <div class="req-item" id="req-length" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
-                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <i class="ti ti-circle-x" style="font-size: 14px;"></i>
                                 <span>Minimal 6 karakter</span>
                             </div>
                             <div class="req-item" id="req-upper" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
-                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <i class="ti ti-circle-x" style="font-size: 14px;"></i>
                                 <span>Mengandung huruf besar (A–Z)</span>
                             </div>
                             <div class="req-item" id="req-lower" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
-                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <i class="ti ti-circle-x" style="font-size: 14px;"></i>
                                 <span>Mengandung huruf kecil (a–z)</span>
                             </div>
                             <div class="req-item" id="req-number" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #9CA3AF; transition: color 200ms ease;">
-                                <i class="fa-regular fa-circle-xmark" style="font-size: 14px;"></i>
+                                <i class="ti ti-circle-x" style="font-size: 14px;"></i>
                                 <span>Mengandung angka (0–9)</span>
                             </div>
                         </div>
@@ -73,7 +73,7 @@
                     <div style="position: relative;">
                         <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="••••••••" required style="padding-right: 40px;">
                         <button type="button" onclick="togglePassword('password_confirmation', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-500); cursor: pointer; padding: 0;">
-                            <i class="fa-regular fa-eye-slash"></i>
+                            <i class="ti ti-eye-off"></i>
                         </button>
                     </div>
                 </div>
@@ -94,12 +94,12 @@
             </div>
 
             <div class="alert alert-warning" style="display: block; font-size: 0.8rem;">
-                <i class="fa-solid fa-circle-info" style="color: var(--secondary); margin-right: 5px;"></i>
+                <i class="ti ti-info-circle" style="color: var(--secondary); margin-right: 5px;"></i>
                 Setelah pendaftaran selesai, sistem secara otomatis akan menerbitkan kartu digital perpustakaan dan memberikan poin bonus pendaftaran sebesar <strong>10 Poin</strong>!
             </div>
 
             <button type="submit" id="registerBtn" class="btn btn-primary" style="width: 100%; opacity: 0.5; cursor: not-allowed;" disabled>
-                <i class="fa-solid fa-user-plus"></i> Daftar & Terbitkan Kartu
+                <i class="ti ti-user-plus"></i> Daftar & Terbitkan Kartu
             </button>
         </form>
 
@@ -117,12 +117,12 @@
         const icon = button.querySelector('i');
         if (input.type === 'password') {
             input.type = 'text';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
+            icon.classList.remove('ti-eye-off');
+            icon.classList.add('ti-eye');
         } else {
             input.type = 'password';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
+            icon.classList.remove('ti-eye');
+            icon.classList.add('ti-eye-off');
         }
     }
 
@@ -133,11 +133,11 @@
         const icon = el.querySelector('i');
         if (passed) {
             el.style.color = '#15803D';
-            icon.className = 'fa-solid fa-circle-check';
+            icon.className = 'ti ti-circle-check';
             icon.style.color = '#15803D';
         } else {
             el.style.color = '#9CA3AF';
-            icon.className = 'fa-regular fa-circle-xmark';
+            icon.className = 'ti ti-circle-x';
             icon.style.color = '#9CA3AF';
         }
     }

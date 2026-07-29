@@ -8,11 +8,11 @@
     <div class="card-header">
         <div style="display: flex; align-items: center; gap: 12px;">
             <a href="{{ route('catalog') }}" class="btn btn-outline btn-sm" style="flex-shrink: 0;">
-                <i class="fa-solid fa-arrow-left"></i> Kembali
+                <i class="ti ti-arrow-left"></i> Kembali
             </a>
             <div>
                 <h2 style="margin: 0; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-brands fa-google-drive" style="color: #4285F4;"></i>
+                    <i class="ti ti-brand-google-drive" style="color: #4285F4;"></i>
                     {{ $book->title }}
                 </h2>
                 <span style="font-size: 0.78rem; color: var(--gray-600);">Oleh: {{ $book->author }} &bull; {{ $book->publisher }} ({{ $book->year }})</span>
@@ -36,7 +36,7 @@
 </div>
 
 <div style="margin-top:15px; padding:12px 20px; background-color:var(--gray-100); border:1px solid var(--gray-200); border-radius:var(--border-radius); display:flex; align-items:center; gap:10px;">
-    <i class="fa-solid fa-eye" style="color:var(--primary); font-size:1.1rem;"></i>
+    <i class="ti ti-eye" style="color:var(--primary); font-size:1.1rem;"></i>
     <span style="font-size:0.82rem; color:var(--gray-700);">
         Mode <strong>baca online saja</strong>. Unduh file tidak diizinkan.
     </span>

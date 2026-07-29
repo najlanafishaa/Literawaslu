@@ -44,7 +44,7 @@
             
             <div style="display: flex; gap: 10px;">
                 <button type="submit" class="btn btn-primary" style="flex: 1;">
-                    <i class="fa-solid fa-save"></i> Simpan Perubahan
+                    <i class="ti ti-device-floppy"></i> Simpan Perubahan
                 </button>
             </div>
         </form>

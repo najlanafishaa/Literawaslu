@@ -8,7 +8,7 @@
     <!-- Add Category Form -->
     <div class="card">
         <div class="card-header">
-            <h2><i class="fa-solid fa-plus" style="color: var(--primary); margin-right: 8px;"></i> Tambah Kategori</h2>
+            <h2><i class="ti ti-plus" style="color: var(--primary); margin-right: 8px;"></i> Tambah Kategori</h2>
         </div>
         <div class="card-body" style="padding: 20px;">
             <form action="{{ route('categories.store') }}" method="POST">
@@ -18,7 +18,7 @@
                     <input type="text" name="name" id="name" class="form-control" placeholder="Contoh: Novel, Pemilu" required>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fa-solid fa-save"></i> Simpan Kategori
+                    <i class="ti ti-device-floppy"></i> Simpan Kategori
                 </button>
             </form>
         </div>
@@ -27,7 +27,7 @@
     <!-- Category List Table -->
     <div class="card">
         <div class="card-header" style="justify-content: space-between;">
-            <h2><i class="fa-solid fa-tags" style="color: var(--dark); margin-right: 8px;"></i> Daftar Kategori Buku</h2>
+            <h2><i class="ti ti-tags" style="color: var(--dark); margin-right: 8px;"></i> Daftar Kategori Buku</h2>
             <span class="badge badge-success">{{ $categories->count() }} Kategori</span>
         </div>
         <div class="card-body">
@@ -55,21 +55,21 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="text" name="name" class="form-control" style="padding: 4px 8px; font-size: 0.85rem;" value="{{ $cat->name }}" required>
-                                            <button type="submit" class="btn btn-primary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;"><i class="fa-solid fa-check"></i></button>
-                                            <button type="button" onclick="cancelEdit({{ $cat->id }})" class="btn btn-outline btn-sm" style="padding: 4px 8px; font-size: 0.75rem;"><i class="fa-solid fa-times"></i></button>
+                                            <button type="submit" class="btn btn-primary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;"><i class="ti ti-check"></i></button>
+                                            <button type="button" onclick="cancelEdit({{ $cat->id }})" class="btn btn-outline btn-sm" style="padding: 4px 8px; font-size: 0.75rem;"><i class="ti ti-x"></i></button>
                                         </form>
                                     </td>
                                     <td>
                                         <div style="display: flex; gap: 8px; justify-content: center;">
                                             <button id="cat-edit-btn-{{ $cat->id }}" onclick="enableEdit({{ $cat->id }})" class="btn btn-secondary btn-sm" style="padding: 5px 10px; font-size: 0.75rem; background-color: var(--gray-100); border-color: var(--gray-200); color: var(--dark);">
-                                                <i class="fa-solid fa-pencil"></i> Ubah
+                                                <i class="ti ti-pencil"></i> Ubah
                                             </button>
                                             
                                             <form action="{{ route('categories.destroy', $cat->id) }}" method="POST" style="margin: 0;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori \'{{ $cat->name }}\'? Ini akan mempengaruhi penyaringan kategori buku.')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline btn-sm" style="padding: 5px 10px; font-size: 0.75rem; color: var(--primary); border-color: var(--primary);">
-                                                    <i class="fa-solid fa-trash"></i> Hapus
+                                                    <i class="ti ti-trash"></i> Hapus
                                                 </button>
                                             </form>
                                         </div>

@@ -8,7 +8,7 @@
     <div class="card-body" style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
         <p style="font-size: 0.9rem; color: var(--gray-600); margin: 0;">Gunakan halaman ini untuk mendaftarkan dan mengelola akun administrator (Super Admin) serta Admin.</p>
         <a href="{{ route('officers.create') }}" class="btn btn-secondary" style="text-decoration: none;">
-            <i class="fa-solid fa-user-plus"></i> Tambah Akun Baru
+            <i class="ti ti-user-plus"></i> Tambah Akun Baru
         </a>
     </div>
 </div>
@@ -52,14 +52,14 @@
                                 <td>
                                     <div style="display: flex; gap: 8px; align-items: center;">
                                         <a href="{{ route('officers.edit', $officer->id) }}" class="btn btn-outline btn-sm" title="Edit Akun" style="padding: 6px 10px;">
-                                            <i class="fa-solid fa-user-gear"></i>
+                                            <i class="ti ti-user-cog"></i>
                                         </a>
                                         @if($officer->id !== auth()->id())
                                             <form action="{{ route('officers.destroy', $officer->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini? Akun tersebut tidak akan bisa masuk lagi.');" style="margin: 0;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-outline btn-sm" title="Hapus Akun" style="padding: 6px 10px; color: var(--primary); border-color: rgba(227,30,36,0.2);">
-                                                    <i class="fa-solid fa-user-slash"></i>
+                                                    <i class="ti ti-user-off"></i>
                                                 </button>
                                             </form>
                                         @else

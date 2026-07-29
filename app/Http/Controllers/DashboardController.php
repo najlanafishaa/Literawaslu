@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Member;
 use App\Models\Borrow;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -103,8 +104,11 @@ class DashboardController extends Controller
 
             $totalBorrows = $member ? Borrow::where('member_id', $member->id)->count() : 0;
             $availableBooksCount = Book::where('is_available', true)->count();
+            $userQuestions = Question::where('email', $user->email)
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-            return view('dashboards.member', compact('member', 'activeBorrows', 'onlineBorrowRequests', 'remainingQuota', 'totalBorrows', 'availableBooksCount'));
+            return view('dashboards.member', compact('member', 'activeBorrows', 'onlineBorrowRequests', 'remainingQuota', 'totalBorrows', 'availableBooksCount', 'userQuestions'));
         }
     }
 

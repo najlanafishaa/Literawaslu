@@ -7,7 +7,7 @@
 <div class="content-header" style="margin-bottom: 24px;">
     <div>
         <h1 style="font-size: 1.6rem; font-weight: 700; color: var(--dark); margin: 0 0 4px 0;">
-            <i class="fa-solid fa-comments" style="color: var(--primary); margin-right: 8px;"></i>
+            <i class="ti ti-messages" style="color: var(--primary); margin-right: 8px;"></i>
             Kelola Pertanyaan Pengguna
         </h1>
         <p style="color: var(--gray-600); margin: 0; font-size: 0.9rem;">
@@ -23,7 +23,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                 <span style="font-size: 13px; font-weight: 600; color: #64748b;">TOTAL PERTANYAAN</span>
                 <div style="width: 34px; height: 34px; border-radius: 8px; background: #eff6ff; color: #3b82f6; display: flex; align-items: center; justify-content: center;">
-                    <i class="fa-solid fa-folder-open"></i>
+                    <i class="ti ti-folder-open"></i>
                 </div>
             </div>
             <div style="font-size: 24px; font-weight: 800; color: #0f172a;">{{ $pendingCount + $repliedCount }}</div>
@@ -35,7 +35,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                 <span style="font-size: 13px; font-weight: 600; color: #b91c1c;">BELUM DIBALAS</span>
                 <div style="width: 34px; height: 34px; border-radius: 8px; background: #fef2f2; color: #ef4444; display: flex; align-items: center; justify-content: center;">
-                    <i class="fa-solid fa-clock font-size: 16px"></i>
+                    <i class="ti ti-clock" style="font-size: 16px"></i>
                 </div>
             </div>
             <div style="font-size: 24px; font-weight: 800; color: #ef4444;">{{ $pendingCount }}</div>
@@ -47,7 +47,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                 <span style="font-size: 13px; font-weight: 600; color: #15803d;">SUDAH DIBALAS</span>
                 <div style="width: 34px; height: 34px; border-radius: 8px; background: #f0fdf4; color: #22c55e; display: flex; align-items: center; justify-content: center;">
-                    <i class="fa-solid fa-circle-check"></i>
+                    <i class="ti ti-circle-check"></i>
                 </div>
             </div>
             <div style="font-size: 24px; font-weight: 800; color: #16a34a;">{{ $repliedCount }}</div>
@@ -64,18 +64,18 @@
                 <input type="hidden" name="status" value="{{ request('status') }}">
             @endif
             <div style="position: relative; flex: 1;">
-                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px;"></i>
+                <i class="ti ti-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px;"></i>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, email, atau pesan..." 
                     style="width: 100%; padding: 8px 12px 8px 34px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 13.5px; outline: none;">
             </div>
             <button type="submit" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
-                <i class="fa-solid fa-filter"></i> Cari
+                <i class="ti ti-filter"></i> Cari
             </button>
         </form>
         
         @if(request('search') || request('status'))
             <a href="{{ route('questions.index') }}" style="font-size: 13px; color: #ef4444; text-decoration: none; font-weight: 600;">
-                <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                <i class="ti ti-rotate"></i> Reset Filter
             </a>
         @endif
     </div>
@@ -98,7 +98,7 @@
                         <td style="padding: 16px 20px; vertical-align: top;">
                             <div style="font-weight: 700; color: #1e293b; font-size: 14px;">{{ $q->name }}</div>
                             <div style="font-size: 12.5px; color: #64748b; margin-top: 2px;">
-                                <i class="fa-regular fa-envelope" style="margin-right: 4px;"></i>{{ $q->email }}
+                                <i class="ti ti-mail" style="margin-right: 4px;"></i>{{ $q->email }}
                             </div>
                         </td>
                         <td style="padding: 16px 20px; vertical-align: top; max-width: 320px;">
@@ -118,11 +118,11 @@
                         <td style="padding: 16px 20px; vertical-align: top;">
                             @if($q->status === 'pending')
                                 <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; background: #fef2f2; color: #dc2626; font-size: 12px; font-weight: 700; border: 1px solid #fecaca;">
-                                    <i class="fa-solid fa-clock" style="font-size: 10px;"></i> Belum Dibalas
+                                    <i class="ti ti-clock" style="font-size: 10px;"></i> Belum Dibalas
                                 </span>
                             @else
                                 <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; background: #f0fdf4; color: #16a34a; font-size: 12px; font-weight: 700; border: 1px solid #bbf7d0;">
-                                    <i class="fa-solid fa-circle-check" style="font-size: 10px;"></i> Sudah Dibalas
+                                    <i class="ti ti-circle-check" style="font-size: 10px;"></i> Sudah Dibalas
                                 </span>
                             @endif
                         </td>
@@ -130,7 +130,7 @@
                             <button type="button" onclick="openReplyModal({{ json_encode($q) }})" 
                                 class="btn btn-sm {{ $q->status === 'pending' ? 'btn-primary' : 'btn-outline' }}" 
                                 style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 6px 14px;">
-                                <i class="{{ $q->status === 'pending' ? 'fa-solid fa-reply' : 'fa-solid fa-eye' }}"></i>
+                                <i class="{{ $q->status === 'pending' ? 'ti ti-corner-up-left' : 'ti ti-eye' }}"></i>
                                 <span>{{ $q->status === 'pending' ? 'Balas' : 'Detail / Edit' }}</span>
                             </button>
                         </td>
@@ -138,7 +138,7 @@
                 @empty
                     <tr>
                         <td colspan="5" style="padding: 40px; text-align: center; color: #94a3b8;">
-                            <i class="fa-solid fa-inbox" style="font-size: 36px; margin-bottom: 12px; display: block; color: #cbd5e1;"></i>
+                            <i class="ti ti-inbox" style="font-size: 36px; margin-bottom: 12px; display: block; color: #cbd5e1;"></i>
                             Tidak ada pertanyaan yang ditemukan.
                         </td>
                     </tr>
@@ -163,7 +163,7 @@
         <div style="background: linear-gradient(135deg, #991b1b 0%, #dc2626 100%); padding: 20px 24px; color: #ffffff; display: flex; align-items: center; justify-content: space-between;">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div style="width: 38px; height: 38px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fa-solid fa-reply-all" style="font-size: 18px; color: #ffffff;"></i>
+                    <i class="ti ti-corner-up-left-double" style="font-size: 18px; color: #ffffff;"></i>
                 </div>
                 <div>
                     <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #ffffff;">Balas Pertanyaan Pengguna</h3>
@@ -171,7 +171,7 @@
                 </div>
             </div>
             <button type="button" onclick="closeReplyModal()" style="background: transparent; border: none; color: rgba(255,255,255,0.8); font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">
-                <i class="fa-solid fa-xmark"></i>
+                <i class="ti ti-x"></i>
             </button>
         </div>
 
@@ -210,7 +210,7 @@
                         Batal
                     </button>
                     <button type="submit" id="adminReplySubmitBtn" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px; padding: 10px 22px;">
-                        <i class="fa-solid fa-paper-plane"></i>
+                        <i class="ti ti-send"></i>
                         <span>Kirim Balasan</span>
                     </button>
                 </div>

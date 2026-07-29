@@ -41,11 +41,11 @@
             
             <div class="filter-actions">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-magnifying-glass"></i> Cari
+                    <i class="ti ti-search"></i> Cari
                 </button>
                 @if(request()->anyFilled(['search', 'category', 'borrow_type']))
                     <a href="{{ route('catalog') }}" class="btn btn-outline">
-                        <i class="fa-solid fa-rotate-left"></i> Atur Ulang
+                        <i class="ti ti-rotate"></i> Atur Ulang
                     </a>
                 @endif
             </div>
@@ -70,7 +70,7 @@
                     @else
                         <!-- Elegant Book Icon Placeholder with gradient -->
                         <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--light); padding: 10px;">
-                            <i class="fa-solid fa-book" style="font-size: 2.2rem; margin-bottom: 5px;"></i>
+                            <i class="ti ti-book-2" style="font-size: 2.2rem; margin-bottom: 5px;"></i>
                             <span style="font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Tanpa Sampul</span>
                         </div>
                     @endif
@@ -82,12 +82,12 @@
                 <div style="text-align: center;">
                     <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;">
                         @if($book->drive_link && $book->stock > 0)
-                            <span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
-                            <span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
+                            <span class="badge badge-online"><i class="ti ti-device-tablet"></i> Online</span>
+                            <span class="badge badge-offline"><i class="ti ti-book"></i> Offline</span>
                         @elseif($book->drive_link || $book->is_online)
-                            <span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>
+                            <span class="badge badge-online"><i class="ti ti-device-tablet"></i> Online</span>
                         @else
-                            <span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>
+                            <span class="badge badge-offline"><i class="ti ti-book"></i> Offline</span>
                         @endif
                         <span style="font-size: 0.72rem; color: var(--gray-400);">&bull;</span>
                         <span class="book-category" style="font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--primary); letter-spacing: 0.3px;">{{ $book->category }}</span>
@@ -100,7 +100,7 @@
                         @if($book->reviews->count() > 0)
                             <div style="display: flex; gap: 2px;">
                                 @for($i = 1; $i <= 5; $i++)
-                                    <i class="{{ $i <= round($book->average_rating) ? 'fa-solid' : 'fa-regular' }} fa-star"></i>
+                                    <i class="{{ $i <= round($book->average_rating) ? 'ti ti-star-filled' : 'ti ti-star' }}"></i>
                                 @endfor
                             </div>
                             <span style="color: var(--gray-700); font-weight: bold; margin-left: 3px;">{{ $book->average_rating }}</span>
@@ -111,7 +111,7 @@
                     </div>
 
                     <div style="font-size: 0.75rem; color: var(--gray-600); display: flex; justify-content: center; gap: 10px; margin-top: 6px;">
-                        <span><i class="fa-solid fa-building-columns"></i> {{ $book->publisher }}</span>
+                        <span><i class="ti ti-building-bank"></i> {{ $book->publisher }}</span>
                         <span>•</span>
                         <span>{{ $book->year }}</span>
                     </div>
@@ -120,7 +120,7 @@
                 <div style="border-top: 1px solid var(--gray-100); padding-top: 12px; margin-top: 12px;">
                     <!-- Stock Ratio Info -->
                     <div style="display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 8px; align-items: center; flex-wrap: wrap; gap: 4px;">
-                        <span style="color: var(--gray-600);"><i class="fa-solid fa-layer-group"></i> Stok:</span>
+                        <span style="color: var(--gray-600);"><i class="ti ti-stack-2"></i> Stok:</span>
                         <span style="font-weight: 700; color: {{ $book->available_stock > 0 ? 'var(--success)' : 'var(--primary)' }}">
                             {{ $book->available_stock }} / {{ $book->stock }} Buku
                         </span>
@@ -131,7 +131,7 @@
                             @if($book->available_stock > 0)
                                 <span class="badge badge-success" style="background-color: rgba(40,167,69,0.1); color: var(--success); font-weight: 700; letter-spacing: 0.3px;">✦ Tersedia</span>
                             @else
-                                <span class="badge badge-danger" style="background-color: rgba(214,32,39,0.1); color: var(--primary);"><i class="fa-solid fa-ban"></i> Kosong</span>
+                                <span class="badge badge-danger" style="background-color: rgba(214,32,39,0.1); color: var(--primary);"><i class="ti ti-ban"></i> Kosong</span>
                             @endif
                         </span>
                         <span style="font-size: 0.75rem; color: var(--gray-600); font-family: monospace;">{{ $book->barcode }}</span>
@@ -146,7 +146,7 @@
                                     <input type="hidden" name="book_id" value="{{ $book->id }}">
                                     <input type="hidden" name="borrow_mode" value="offline">
                                     <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                        <i class="fa-solid fa-hand-holding-hand"></i> Pinjam Fisik
+                                        <i class="ti ti-book-upload"></i> Pinjam Fisik
                                     </button>
                                 </form>
 
@@ -158,7 +158,7 @@
                                 @endphp
                                 @if($hasApprovedBorrow)
                                     <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none; white-space: normal; text-align: center;">
-                                        <i class="fa-brands fa-google-drive"></i> Baca Online
+                                        <i class="ti ti-brand-google-drive"></i> Baca Online
                                     </a>
                                 @else
                                     <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
@@ -166,7 +166,7 @@
                                         <input type="hidden" name="book_id" value="{{ $book->id }}">
                                         <input type="hidden" name="borrow_mode" value="online">
                                         <button type="submit" class="btn btn-secondary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                            <i class="fa-solid fa-tablet-screen-button"></i> Minta Akses Online
+                                            <i class="ti ti-device-tablet"></i> Minta Akses Online
                                         </button>
                                     </form>
                                 @endif
@@ -177,7 +177,7 @@
                                     <input type="hidden" name="book_id" value="{{ $book->id }}">
                                     <input type="hidden" name="borrow_mode" value="offline">
                                     <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                        <i class="fa-solid fa-book-arrow-right"></i> Pinjam Buku
+                                        <i class="ti ti-send"></i> Pinjam Buku
                                     </button>
                                 </form>
                             @elseif($book->drive_link)
@@ -190,7 +190,7 @@
                                 @endphp
                                 @if($hasApprovedBorrow)
                                     <a href="{{ route('book.read', $book->id) }}" class="btn btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; background-color: #4285F4; color: white; border: none; text-decoration: none; white-space: normal; text-align: center;">
-                                        <i class="fa-brands fa-google-drive"></i> Baca Online
+                                        <i class="ti ti-brand-google-drive"></i> Baca Online
                                     </a>
                                 @else
                                     <form action="{{ route('member.request_borrow') }}" method="POST" style="margin: 0;">
@@ -198,14 +198,14 @@
                                         <input type="hidden" name="book_id" value="{{ $book->id }}">
                                         <input type="hidden" name="borrow_mode" value="online">
                                         <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                            <i class="fa-solid fa-book-arrow-right"></i> Minta Akses Baca
+                                            <i class="ti ti-send"></i> Minta Akses Baca
                                         </button>
                                     </form>
                                 @endif
                             @endif
                         @endif
                         <button onclick="showBookDetail({{ $book->id }})" class="btn btn-outline btn-sm" style="width: 100%; margin: 0; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--dark); border-color: var(--gray-300); white-space: normal; text-align: center;">
-                            <i class="fa-solid fa-magnifying-glass-plus"></i> Detail Buku
+                            <i class="ti ti-zoom-in"></i> Detail Buku
                         </button>
                     </div>
                 </div>
@@ -214,15 +214,15 @@
     @empty
         <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background-color: var(--light); border-radius: var(--border-radius); border: 1px solid var(--gray-200);">
             @if(request('category') && !request('search'))
-                <i class="fa-solid fa-book-open" style="font-size: 3rem; color: var(--gray-300); margin-bottom: 15px;"></i>
+                <i class="ti ti-book-2" style="font-size: 3rem; color: var(--gray-300); margin-bottom: 15px;"></i>
                 <p style="font-weight: 600; color: var(--gray-700);">Belum ada buku dalam kategori "{{ request('category') }}"</p>
                 <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 5px;">Kategori ini belum memiliki buku. Silakan cek kategori lainnya.</p>
             @elseif(request('search'))
-                <i class="fa-solid fa-magnifying-glass" style="font-size: 3rem; color: var(--gray-300); margin-bottom: 15px;"></i>
+                <i class="ti ti-search" style="font-size: 3rem; color: var(--gray-300); margin-bottom: 15px;"></i>
                 <p style="font-weight: 600; color: var(--gray-700);">Buku tidak ditemukan</p>
                 <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 5px;">Tidak ada hasil untuk "{{ request('search') }}"{{ request('category') ? ' di kategori "'.request('category').'"' : '' }}. Coba kata kunci lain.</p>
             @else
-                <i class="fa-solid fa-folder-open" style="font-size: 3rem; color: var(--gray-300); margin-bottom: 15px;"></i>
+                <i class="ti ti-folder-open" style="font-size: 3rem; color: var(--gray-300); margin-bottom: 15px;"></i>
                 <p style="font-weight: 600; color: var(--gray-700);">Belum ada buku tersedia</p>
                 <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 5px;">Perpustakaan belum memiliki buku. Silakan cek kembali nanti.</p>
             @endif
@@ -241,7 +241,7 @@
             <div id="modalCoverWrap" style="flex-shrink:0; width:110px; height:155px; border-radius:10px; overflow:hidden; background:var(--gray-100); display:flex; align-items:center; justify-content:center;">
                 <img id="modalCover" src="" alt="" style="width:100%; height:100%; object-fit:cover; display:none;">
                 <div id="modalCoverIcon" style="width:100%; height:100%; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex; flex-direction:column; align-items:center; justify-content:center; color:white;">
-                    <i class="fa-solid fa-book" style="font-size:2rem;"></i>
+                    <i class="ti ti-book-2" style="font-size:2rem;"></i>
                 </div>
             </div>
             <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
@@ -279,7 +279,7 @@
                     <form id="modalReviewForm" action="" method="POST">
                         @csrf
                         <p style="font-size:0.85rem; font-weight:700; color:var(--dark); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
-                            <i class="fa-solid fa-pen-to-square" style="color:var(--primary);"></i> <span id="modalReviewFormTitle">Tulis Ulasan Anda</span>
+                            <i class="ti ti-edit" style="color:var(--primary);"></i> <span id="modalReviewFormTitle">Tulis Ulasan Anda</span>
                         </p>
                         <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
                             <label style="font-size:0.8rem; color:var(--gray-700); font-weight:600;">Rating:</label>
@@ -299,7 +299,7 @@
                 </div>
                 
                 <div id="modalReviewNotEligible" style="display:none; font-size:0.75rem; color:var(--gray-500); background:var(--gray-50); border-radius:8px; padding:10px; border:1px solid var(--gray-100); text-align:center;">
-                    <i class="fa-solid fa-lock" style="margin-right:4px;"></i> Anda harus pernah mengembalikan buku ini atau meminjamnya selama minimal 7 hari untuk dapat memberikan ulasan.
+                    <i class="ti ti-lock" style="margin-right:4px;"></i> Anda harus pernah mengembalikan buku ini atau meminjamnya selama minimal 7 hari untuk dapat memberikan ulasan.
                 </div>
             </div>
         </div>
@@ -310,17 +310,17 @@
                     @csrf
                     <input type="hidden" id="modalBookId" name="book_id" value="">
                     <button type="submit" class="btn btn-primary" style="width:100%; gap:8px; display:flex; align-items:center; justify-content:center;">
-                        <i class="fa-solid fa-book-open"></i> Pinjam Buku Ini
+                        <i class="ti ti-send"></i> Pinjam Buku Ini
                     </button>
                 </form>
                 <a id="modalReadOnlineBtn" href="#" style="display:none; width:100%; gap:8px; align-items:center; justify-content:center; background-color:#4285F4; color:white; border:none; text-decoration:none; padding:8px 16px; border-radius:var(--border-radius); font-size:0.85rem; font-weight:600; text-align:center;">
-                    <i class="fa-brands fa-google-drive"></i> Baca Online
+                    <i class="ti ti-brand-google-drive"></i> Baca Online
                 </a>
             </div>
         </div>
         <div id="modalReadOnlyWrap" style="padding:0 25px 25px; display:none;">
             <a id="modalReadOnlyBtn" href="#" style="width:100%; gap:8px; display:flex; align-items:center; justify-content:center; background-color:#4285F4; color:white; border:none; text-decoration:none; padding:10px 16px; border-radius:var(--border-radius); font-size:0.85rem; font-weight:600;">
-                <i class="fa-brands fa-google-drive"></i> Baca Online
+                <i class="ti ti-brand-google-drive"></i> Baca Online
             </a>
         </div>
     </div>
@@ -396,17 +396,17 @@ function showBookDetail(id) {
 
     const typeWrap = document.getElementById('modalTypeBadgeWrap');
     if (b.isOnline) {
-        typeWrap.innerHTML = '<span class="badge badge-online"><i class="fa-solid fa-tablet-screen-button"></i> Online</span>';
+        typeWrap.innerHTML = '<span class="badge badge-online"><i class="ti ti-device-tablet"></i> Online</span>';
     } else {
-        typeWrap.innerHTML = '<span class="badge badge-offline"><i class="fa-solid fa-book-bookmark"></i> Offline</span>';
+        typeWrap.innerHTML = '<span class="badge badge-offline"><i class="ti ti-book"></i> Offline</span>';
     }
 
 
     const stockEl = document.getElementById('modalStock');
     if (b.stock > 0) {
-        stockEl.innerHTML = `<span style="color:var(--success)"><i class="fa-solid fa-layer-group"></i> Tersedia: ${b.stock} / ${b.totalStock} Buku</span>`;
+        stockEl.innerHTML = `<span style="color:var(--success)"><i class="ti ti-stack-2"></i> Tersedia: ${b.stock} / ${b.totalStock} Buku</span>`;
     } else {
-        stockEl.innerHTML = `<span style="color:var(--primary)"><i class="fa-solid fa-ban"></i> Stok Habis</span>`;
+        stockEl.innerHTML = `<span style="color:var(--primary)"><i class="ti ti-ban"></i> Stok Habis</span>`;
     }
 
     // Average rating display
@@ -414,7 +414,7 @@ function showBookDetail(id) {
     if (b.reviewsCount > 0) {
         let stars = '';
         for (let i = 1; i <= 5; i++) {
-            stars += `<i class="${i <= Math.round(b.averageRating) ? 'fa-solid' : 'fa-regular'} fa-star" style="color:#f1c40f;"></i> `;
+            stars += `<i class="${i <= Math.round(b.averageRating) ? 'ti ti-star-filled' : 'ti ti-star'}" style="color:#f1c40f;"></i> `;
         }
         ratingHeader.innerHTML = `${stars} <strong style="color:var(--dark); margin-left:4px;">${b.averageRating}</strong> <span style="color:var(--gray-500); font-size:0.75rem;">(${b.reviewsCount} Ulasan)</span>`;
     } else {
@@ -451,9 +451,9 @@ function showBookDetail(id) {
         document.getElementById('modalBookId').value = b.id;
         borrowWrap.style.display = 'block';
         if (b.stock > 0) {
-            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-arrow-right"></i> Pinjam Buku Ini';
+            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="ti ti-send"></i> Pinjam Buku Ini';
         } else {
-            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="fa-solid fa-book-arrow-right"></i> Minta Akses Baca';
+            borrowWrap.querySelector('button[type="submit"]').innerHTML = '<i class="ti ti-send"></i> Minta Akses Baca';
         }
         if (b.driveLink) {
             readOnlineBtn.href = b.readUrl;
@@ -479,7 +479,7 @@ function showBookDetail(id) {
         b.reviews.forEach(r => {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                stars += `<i class="${i <= r.rating ? 'fa-solid' : 'fa-regular'} fa-star" style="color:#f1c40f; font-size:0.75rem;"></i>`;
+                stars += `<i class="${i <= r.rating ? 'ti ti-star-filled' : 'ti ti-star'}" style="color:#f1c40f; font-size:0.75rem;"></i>`;
             }
             const item = document.createElement('div');
             item.style.borderBottom = '1px solid var(--gray-100)';
