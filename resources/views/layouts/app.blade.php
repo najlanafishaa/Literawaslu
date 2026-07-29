@@ -81,6 +81,17 @@
                                 <i class="fa-solid fa-sliders"></i> Pengaturan
                             </a>
                         </li>
+                        <li>
+                            @php
+                                $pendingQuestionCount = \App\Models\Question::where('status', 'pending')->count();
+                            @endphp
+                            <a href="{{ route('questions.index') }}" class="sidebar-link {{ request()->routeIs('questions.*') ? 'active' : '' }}" style="display: flex; align-items: center; justify-content: space-between;">
+                                <span><i class="fa-solid fa-comments"></i> Kelola Pertanyaan</span>
+                                @if($pendingQuestionCount > 0)
+                                    <span style="background: #ef4444; color: #ffffff; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; line-height: 1;">{{ $pendingQuestionCount }}</span>
+                                @endif
+                            </a>
+                        </li>
                     @endif
                     
                     <!-- Regular Admin (Petugas) Menus -->
@@ -211,6 +222,18 @@
                             @endif
                         </a>
                         
+                    @if(auth()->user()->role === 'super_admin')
+                        @php
+                            $headerPendingQuestions = \App\Models\Question::where('status', 'pending')->count();
+                        @endphp
+                        <a href="{{ route('questions.index') }}" title="Pertanyaan Baru Belum Dibalas" style="position: relative; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; transition: background 0.2s ease;" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">
+                            <i class="fa-solid fa-comments" style="font-size: 15px;"></i>
+                            @if($headerPendingQuestions > 0)
+                                <span style="position: absolute; top: -4px; right: -4px; background: #dc2626; color: white; font-size: 10px; font-weight: 700; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 10px; display: flex; align-items: center; justify-content: center; line-height: 1; font-family: 'Plus Jakarta Sans', sans-serif; border: 2px solid white; box-shadow: 0 2px 4px rgba(220,38,38,0.3);">{{ $headerPendingQuestions }}</span>
+                            @endif
+                        </a>
+                    @endif
+
                     @if(in_array(auth()->user()->role, ['super_admin', 'admin', 'petugas']))
                         @php
                             $pendingResetCount = \App\Models\MemberResetRequest::where('status', 'pending')->count();
@@ -240,9 +263,61 @@
                 @yield('content')
             </main>
 
-            <footer class="app-footer" style="padding: 24px; text-align: center; background: transparent; margin-top: auto; font-size: 0.85rem; color: var(--gray-500);">
-                <div style="font-weight: 700; color: var(--gray-400); margin-bottom: 4px;">&copy; 2026 Bawaslu Provinsi Lampung</div>
-                <div style="font-size: 0.8rem; letter-spacing: 0.3px;">by develop nya najla & Annisa &#x1F478;&#x1F3FB;</div>
+            <!-- Custom footer styles for social icon hovers -->
+            <style>
+                .footer-social-icon {
+                    color: #FFFFFF !important;
+                    font-size: 1.8rem;
+                    text-decoration: none;
+                    transition: color 0.2s ease-in-out;
+                }
+                .footer-social-icon:hover {
+                    color: #D62027 !important;
+                }
+            </style>
+            
+            <footer class="app-footer" style="padding: 40px 24px; background: #000000; color: #cbd5e1; border-top: 4px solid #D62027; font-family: 'Plus Jakarta Sans', sans-serif;">
+                <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 32px; justify-content: space-between; text-align: left;">
+                    <!-- Maps Section (Left side) -->
+                    <div style="flex: 1; min-width: 280px; max-width: 500px;">
+                        <h4 style="color: #F5B025; font-size: 1.6rem; font-weight: 700; margin: 0 0 16px 0;">Lokasi Bawaslu Provinsi Lampung</h4>
+                        <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5); border: 1px solid #222222; height: 230px; width: 100%; position: relative;">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1986.05771410446!2d105.281644!3d-5.39938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40db000915bd07%3A0xc8a687b6657dad9d!2sKantor%20Bawaslu%20Provinsi%20Lampung!5e0!3m2!1sid!2sid!4v1785314012897!5m2!1sid!2sid" width="100%" height="230" style="border:0; display:block; width:100%; height:100%;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Section (Right side) -->
+                    <div style="flex: 1; min-width: 280px;">
+                        <h4 style="color: #F5B025; font-size: 1.6rem; font-weight: 700; margin: 0 0 16px 0;">Kontak Kami</h4>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <strong style="color: #FFFFFF; display: block; font-size: 1.1rem; font-weight: 700; margin-bottom: 6px;">Alamat</strong>
+                            <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #cbd5e1;">
+                                Badan Pengawas Pemilihan Umum Provinsi Lampung<br>
+                                Jl. Arif Rahman Hakim No.5, Jagabaya III, Kec. Way Halim, Kota Bandar Lampung, Lampung 35132, Bandar Lampung, Indonesia
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <strong style="color: #FFFFFF; display: block; font-size: 1.1rem; font-weight: 700; margin-bottom: 6px;">Email</strong>
+                            <a href="mailto:bawasluu@gmail.com" style="color: #cbd5e1; text-decoration: underline; font-size: 0.95rem; transition: color 0.2s;" onmouseover="this.style.color='#D62027'" onmouseout="this.style.color='#cbd5e1'">bawasluu@gmail.com</a>
+                        </div>
+
+                        <!-- Social Media Icons -->
+                        <div style="display: flex; gap: 20px; margin-top: 16px;">
+                            <a href="https://www.facebook.com/bawasluprovinsilampung" target="_blank" title="Facebook" class="footer-social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="https://x.com/BawasluLampung_" target="_blank" title="Twitter/X" class="footer-social-icon"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fbawaslulampung%2F&is_from_rle" target="_blank" title="Instagram" class="footer-social-icon"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/@bawaslulampung3009" target="_blank" title="YouTube" class="footer-social-icon"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="max-width: 1200px; margin: 32px auto 0 auto; padding-top: 24px; border-top: 1px solid #222222; text-align: center; font-size: 0.85rem; color: #888888; line-height: 1.6;">
+                    <div>&copy; 2026 Badan Pengawas Pemilihan Umum.</div>
+                    <div>Seluruh hak cipta dilindungi undang-undang.</div>
+                    <div style="font-size: 0.75rem; margin-top: 6px; color: #555555;">by develop nya najla & Annisa &#x1F478;&#x1F3FB;</div>
+                </div>
             </footer>
         </div>
     </div>
@@ -386,6 +461,9 @@
             }
         }
     </style>
+    @if(!auth()->check() || !in_array(auth()->user()->role, ['super_admin', 'admin', 'petugas']))
+        @include('components.fab_question')
+    @endif
     @yield('scripts')
 </body>
 </html>

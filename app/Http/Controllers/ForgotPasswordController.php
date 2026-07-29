@@ -98,16 +98,26 @@ class ForgotPasswordController extends Controller
      */
     public function verifySecurityQuestion(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'security_answer' => 'required|string',
-        ]);
-
         $user = User::where('email', $request->email)->first();
 
         if (!$user || $user->role !== 'member') {
             return redirect()->route('password.request')->with('error', 'Akses tidak sah.');
         }
+
+        // Jika user memilih untuk langsung kirim pengajuan ke Admin (misal lupa jawaban)
+        if ($request->has('request_admin')) {
+            MemberResetRequest::create([
+                'user_id' => $user->id,
+                'status' => 'pending',
+            ]);
+
+            return redirect()->route('login')->with('success', 'Permintaan reset password berhasil dikirim. Silakan menunggu persetujuan dari Admin.');
+        }
+
+        $request->validate([
+            'email' => 'required|email',
+            'security_answer' => 'required|string',
+        ]);
 
         // Limit check
         $todayReqCount = MemberResetRequest::where('user_id', $user->id)
@@ -121,14 +131,18 @@ class ForgotPasswordController extends Controller
         $inputAnswer = strtolower(trim($request->security_answer ?? ''));
         $actualAnswer = strtolower(trim($user->security_answer ?? ''));
 
-        // Jika user memilih untuk langsung kirim pengajuan ke Admin (misal lupa jawaban)
+        // Jika user memilih untuk langsung bypass (lupa jawaban)
         if ($request->has('request_admin')) {
+            $token = Str::random(60);
+
             MemberResetRequest::create([
                 'user_id' => $user->id,
-                'status' => 'pending',
+                'status' => 'approved',
+                'token' => $token,
             ]);
 
-            return redirect()->route('login')->with('success', 'Permintaan reset password berhasil dikirim. Silakan menunggu persetujuan dari Admin.');
+            return redirect()->route('password.reset', ['token' => $token, 'email' => $user->email])
+                             ->with('success', 'Silakan atur password baru Anda secara instan.');
         }
 
         if ($inputAnswer !== $actualAnswer) {

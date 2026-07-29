@@ -35,15 +35,15 @@
 
             <div class="form-group">
                 <label for="security_answer">Jawaban Anda</label>
-                <input type="text" name="security_answer" id="security_answer" class="form-control" placeholder="Masukkan jawaban Anda..." required autofocus autocomplete="off">
+                <input type="text" name="security_answer" id="security_answer" class="form-control" placeholder="Masukkan jawaban Anda (kosongkan jika lupa)..." autofocus autocomplete="off">
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <i class="fa-solid fa-key"></i> Verifikasi Jawaban & Buat Kata Sandi Baru
                 </button>
-                <button type="submit" name="request_admin" value="1" class="btn btn-outline" style="width: 100%;" onclick="return confirm('Ajukan bantuan atur ulang kata sandi secara manual ke Admin perpustakaan?');">
-                    <i class="fa-solid fa-headset"></i> Lupa Jawaban? Ajukan Atur Ulang ke Admin
+                <button type="submit" name="request_admin" value="bypass" class="btn btn-outline" style="width: 100%;">
+                    <i class="fa-solid fa-magic"></i> Lupa Jawaban? Buat Sandi Baru Secara Instan
                 </button>
             </div>
         </form>

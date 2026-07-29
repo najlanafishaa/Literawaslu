@@ -6,6 +6,7 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         @fonts
 
         <!-- Styles / Scripts -->
@@ -222,5 +223,6 @@
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif
+        @include('components.fab_question')
     </body>
 </html>

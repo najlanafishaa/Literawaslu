@@ -122,16 +122,7 @@
     </div>
 </div>
 
-@if(session('simulated_link'))
-    <div class="alert alert-success" style="margin-bottom: 25px;">
-        <i class="fa-solid fa-bookmark"></i>
-        Link Atur Ulang Kata Sandi berhasil dibuat! Salin link berikut dan kirimkan ke Pengguna: 
-        <br>
-        <a href="{{ session('simulated_link') }}" target="_blank" style="word-break: break-all; color: var(--primary); font-weight: 700; text-decoration: underline;">
-            {{ session('simulated_link') }}
-        </a>
-    </div>
-@endif
+
 
 <div class="card">
     <div class="card-header">

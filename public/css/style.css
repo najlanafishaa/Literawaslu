@@ -1753,6 +1753,21 @@ select option {
     color: var(--dark);
 }
 
+/* Toast position styling to avoid FAB overlap */
+.toast-container {
+    position: fixed;
+    bottom: 90px !important;
+    right: 24px !important;
+    z-index: 100001 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+.toast {
+    pointer-events: auto;
+}
+
 /* ===================================================
    AUTH PAGE LAYOUT
    Sembunyikan sidebar, header-nav, dan footer

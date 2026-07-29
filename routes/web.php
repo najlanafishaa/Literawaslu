@@ -15,6 +15,10 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\BookReviewController;
+use App\Http\Controllers\QuestionController;
+
+// Public route for FAB question submission
+Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
 
 // 1. Root Route
 Route::get('/', function () {
@@ -140,5 +144,10 @@ Route::middleware('auth')->group(function () {
         // Settings
         Route::get('/admin/settings', [SettingController::class, 'index'])->name('settings.index');
         Route::post('/admin/settings', [SettingController::class, 'update'])->name('settings.update');
+
+        // Questions Management
+        Route::get('/admin/questions', [QuestionController::class, 'index'])->name('questions.index');
+        Route::post('/admin/questions/{question}/reply', [QuestionController::class, 'reply'])->name('questions.reply');
+        Route::get('/admin/questions/pending-count', [QuestionController::class, 'pendingCount'])->name('questions.pending_count');
     });
 });
