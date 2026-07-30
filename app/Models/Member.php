@@ -96,7 +96,10 @@ class Member extends Model
      */
     public function canBorrow(): bool
     {
-        return !$this->hasActiveBorrow() && !$this->hasUnpaidFine();
+        return $this->status === 'active'
+            && $this->points > 0
+            && !$this->hasActiveBorrow()
+            && !$this->hasUnpaidFine();
     }
 
     /**
@@ -104,12 +107,22 @@ class Member extends Model
      */
     public function borrowBlockReason(): ?string
     {
-        if ($this->hasUnpaidFine()) {
-            return 'Anda memiliki denda yang belum dibayar. Selesaikan kewajiban terlebih dahulu.';
+        if ($this->status === 'suspended') {
+            return 'Akun Anda dibekukan karena poin Anda telah habis atau kewajiban belum diselesaikan.';
         }
+
+        if ($this->points <= 0) {
+            return 'Akun Anda dibekukan karena poin Anda telah habis.';
+        }
+
+        if ($this->hasUnpaidFine()) {
+            return 'Anda memiliki kewajiban donasi buku fisik yang belum dipenuhi.';
+        }
+
         if ($this->hasActiveBorrow()) {
             return 'Anda masih memiliki buku yang sedang dipinjam. Kembalikan buku terlebih dahulu.';
         }
+
         return null;
     }
 

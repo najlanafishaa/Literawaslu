@@ -84,6 +84,11 @@ class MemberController extends Controller
     {
         $member = Auth::user()->member;
 
+        if ($member) {
+            Borrow::syncActiveBorrowStates($member);
+            $member->refresh();
+        }
+
         $borrows = Borrow::where('member_id', $member->id)
             ->with('book')
             ->orderBy('borrow_date', 'desc')
@@ -100,6 +105,10 @@ class MemberController extends Controller
     public function rewards()
     {
         $member = Auth::user()->member;
+        if ($member) {
+            Borrow::syncActiveBorrowStates($member);
+            $member->refresh();
+        }
         $pointHistories = $member ? $member->pointHistories : collect();
         return view('dashboards.member_rewards', compact('member', 'pointHistories'));
     }
@@ -173,6 +182,9 @@ class MemberController extends Controller
 
         $member = Auth::user()->member;
 
+        Borrow::syncActiveBorrowStates($member);
+        $member->refresh();
+
         if ($member->status === 'pending') {
             return back()->with('error', 'Akun Anda sedang menunggu verifikasi. Anda belum bisa meminjam buku.');
         }
@@ -219,7 +231,10 @@ class MemberController extends Controller
             return back()->with('error', 'Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.');
         }
 
-        // Rule: tidak bisa pinjam kalau ada sanksi belum diselesaikan
+        if ($member->status === 'suspended' || $member->points <= 0) {
+            return back()->with('error', 'Akun Anda dibekukan karena poin Anda telah habis atau kewajiban belum diselesaikan.');
+        }
+
         if ($member->hasUnpaidFine()) {
             return back()->with('error', 'Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.');
         }

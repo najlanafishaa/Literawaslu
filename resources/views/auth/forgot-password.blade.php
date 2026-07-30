@@ -24,8 +24,13 @@
         @endif
 
         @if(session('success'))
-            <div class="alert alert-success">
-                <i class="ti ti-circle-check"></i> {{ session('success') }}
+            <div class="alert alert-success" style="margin-top: 16px;">
+                <i class="ti ti-check-circle"></i>
+                <div>
+                    Permintaan reset password telah berhasil dikirim. Silakan menunggu proses verifikasi dari Admin. Apabila membutuhkan bantuan atau ingin menanyakan status pengajuan, silakan hubungi Admin melalui email di bawah ini.
+                    <br><br>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=literawasluu@gmail.com" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600; text-decoration: underline;">literawasluu@gmail.com</a>
+                </div>
             </div>
         @endif
 
@@ -56,6 +61,8 @@
                 <strong>Sudah mengajukan permintaan ke Admin?</strong> Masukkan email Anda kembali di atas dan klik <em>Lanjutkan</em> — jika Admin sudah menyetujui, Anda akan langsung diarahkan ke halaman buat kata sandi baru.
             </div>
         </div>
+
+
 
         <div style="text-align: center; margin-top: 25px; font-size: 0.85rem; color: var(--gray-600);">
             Kembali ke <a href="{{ route('login') }}" style="color: var(--primary); font-weight: 600; text-decoration: none; border-bottom: 1px dashed var(--primary);">Halaman Masuk</a>

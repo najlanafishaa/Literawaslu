@@ -282,16 +282,11 @@
                 <tbody>
                     @foreach($borrows as $borrow)
                         @php
-                            $due        = \Carbon\Carbon::parse($borrow->due_date);
-                            $borrowDate = \Carbon\Carbon::parse($borrow->borrow_date);
-                            $returnDate = $borrow->return_date ? \Carbon\Carbon::parse($borrow->return_date) : null;
+                            $due        = \Carbon\Carbon::parse($borrow->due_date)->startOfDay();
+                            $borrowDate = \Carbon\Carbon::parse($borrow->borrow_date)->startOfDay();
+                            $returnDate = $borrow->return_date ? \Carbon\Carbon::parse($borrow->return_date)->startOfDay() : null;
 
-                            $lateDays = 0;
-                            if ($returnDate && $returnDate->greaterThan($due)) {
-                                $lateDays = $returnDate->diffInDays($due);
-                            } elseif (!$returnDate && \Carbon\Carbon::now()->startOfDay()->greaterThan($due)) {
-                                $lateDays = \Carbon\Carbon::now()->startOfDay()->diffInDays($due);
-                            }
+                            $lateDays = $borrow->daysLate();
                         @endphp
                         <tr>
                             {{-- Buku --}}
@@ -339,19 +334,22 @@
                             {{-- Status --}}
                             <td>
                                 @if($borrow->status === 'returned')
-                                    <span class="chip chip-done"><i class="ti ti-check"></i> Selesai</span>
-                                @elseif($borrow->status === 'borrowed')
-                                    @if($lateDays > 0)
-                                        <span class="chip chip-late"><i class="ti ti-alert-triangle"></i> Terlambat</span>
-                                    @else
-                                        <span class="chip chip-ok"><i class="ti ti-refresh"></i> Dipinjam</span>
-                                    @endif
+                                    <span class="chip chip-done"><i class="ti ti-check"></i> Dikembalikan</span>
                                 @elseif($borrow->status === 'pending')
                                     <span class="chip chip-pending"><i class="ti ti-clock"></i> Menunggu</span>
                                 @elseif($borrow->status === 'rejected')
                                     <span class="chip chip-reject"><i class="ti ti-x"></i> Ditolak</span>
                                 @else
-                                    <span class="chip chip-done">{{ ucfirst($borrow->status) }}</span>
+                                    @php
+                                        $borrowStatusLabel = $borrow->current_status_label;
+                                    @endphp
+                                    @if($borrowStatusLabel === 'Terlambat')
+                                        <span class="chip chip-late"><i class="ti ti-alert-triangle"></i> Terlambat</span>
+                                    @elseif($borrowStatusLabel === 'Akan Jatuh Tempo')
+                                        <span class="chip chip-warning"><i class="ti ti-alert-circle"></i> Akan Jatuh Tempo</span>
+                                    @else
+                                        <span class="chip chip-ok"><i class="ti ti-refresh"></i> Tepat Waktu</span>
+                                    @endif
                                 @endif
                             </td>
 
@@ -363,9 +361,9 @@
                                     <div class="sanction-label">{{ $lateDays }} hari terlambat</div>
                                     <div class="sanction-sub">
                                         @if($lateDays <= 3)
-                                            Sanksi: −10 Poin
+                                            Sanksi: −10 Poin per hari
                                         @else
-                                            Donasi 1 Buku Fisik
+                                            Donasi 1 Buku Fisik + −10 Poin per hari
                                             @if($borrow->fine_status === 'paid')
                                                 <span class="chip chip-ok" style="margin-top:4px; display:inline-flex;">Sudah dipenuhi</span>
                                             @else

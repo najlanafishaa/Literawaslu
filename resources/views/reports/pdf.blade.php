@@ -368,9 +368,9 @@
                     
                     $lateDays = 0;
                     if ($returnDate && $returnDate->greaterThan($due)) {
-                        $lateDays = (int) $returnDate->diffInDays($due);
+                        $lateDays = (int) $due->copy()->diffInDays($returnDate->copy(), false);
                     } elseif (!$returnDate && \Carbon\Carbon::now()->startOfDay()->greaterThan($due)) {
-                        $lateDays = (int) \Carbon\Carbon::now()->startOfDay()->diffInDays($due);
+                        $lateDays = (int) $due->copy()->diffInDays(\Carbon\Carbon::now()->startOfDay(), false);
                     }
 
                     $keterangan = 'Tepat Waktu';
@@ -382,7 +382,7 @@
                         } elseif ($lateDays == 3) {
                             $keterangan = "Terlambat 3 hari (-30 Poin)";
                         } else {
-                            $keterangan = "Terlambat {$lateDays} hari (Wajib Donasi 1 Buku Fisik)";
+                            $keterangan = "Terlambat {$lateDays} hari (-10 Poin/hari + Wajib Donasi 1 Buku Fisik)";
                         }
                     }
                 @endphp

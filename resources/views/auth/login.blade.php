@@ -55,9 +55,18 @@
                 @endif
 
                 @if(session('success') && session('success') !== 'Anda telah berhasil keluar dari sistem.')
+                    @php
+                        $successMsg = session('success');
+                        $parts = explode('|||', $successMsg);
+                    @endphp
                     <div class="alert alert-success" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px;">
                         <i class="ti ti-circle-check" style="font-size: 1.4rem; margin-bottom: 8px; display: block; color: #15803d;"></i>
-                        {{ session('success') }}
+                        <div>{{ $parts[0] }}</div>
+                        @if(isset($parts[1]))
+                            <div style="margin-top: 10px;">
+                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ $parts[1] }}" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600; text-decoration: underline;">{{ $parts[1] }}</a>
+                            </div>
+                        @endif
                     </div>
                 @endif
 

@@ -21,6 +21,8 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         if (in_array($user->role, ['super_admin', 'admin', 'petugas'])) {
+            Borrow::syncActiveBorrowStates();
+
             // Build date filter
             [$startDate, $endDate, $filterLabel] = $this->resolveDateFilter($request);
 
@@ -88,6 +90,11 @@ class DashboardController extends Controller
             }
         } else {
             $member = $user->member;
+
+            if ($member) {
+                Borrow::syncActiveBorrowStates($member);
+                $member->refresh();
+            }
 
             $activeBorrows = $member ? Borrow::where('member_id', $member->id)
                 ->whereIn('status', ['borrowed', 'terlambat'])

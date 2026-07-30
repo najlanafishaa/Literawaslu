@@ -49,6 +49,13 @@ class AuthController extends Controller
                     $request->session()->regenerateToken();
                     return back()->with('error', 'Pendaftaran akun Anda ditolak oleh Admin.');
                 }
+
+                if ($user->member->status === 'suspended' || $user->member->points <= 0) {
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+                    return back()->with('error', 'Akun Anda dibekukan karena poin habis atau kewajiban belum diselesaikan.');
+                }
             }
             
             $request->session()->regenerate();

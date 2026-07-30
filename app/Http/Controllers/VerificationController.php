@@ -40,13 +40,14 @@ class VerificationController extends Controller
     public function rejectMember(Member $member)
     {
         $user = $member->user;
+        $name = $user ? $user->name : 'Member';
         
         $member->delete();
         if ($user) {
             $user->delete();
         }
         
-        return back()->with('success', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
+        return back()->with('success', "Pendaftaran anggota '{$name}' telah berhasil ditolak dan akun telah dihapus.");
     }
 
     /**
@@ -56,7 +57,7 @@ class VerificationController extends Controller
     {
         // Pastikan stok masih ada
         if ($borrow->book->available_stock <= 0) {
-            return back()->with('error', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
+            return back()->with('error', "Gagal menyetujui peminjaman. Stok buku '{$borrow->book->title}' sedang habis.");
         }
         
         $borrow->update(['status' => 'borrowed']);
@@ -68,7 +69,7 @@ class VerificationController extends Controller
         // Tambah total_loans member saat disetujui
         $borrow->member->increment('total_loans');
 
-        return back()->with('success', "Peminjaman telah disetujui. Buku sudah dapat diakses sesuai jenis peminjaman.");
+        return back()->with('success', "Peminjaman buku '{$borrow->book->title}' untuk '{$borrow->member->user->name}' telah berhasil disetujui.");
     }
     
     /**
@@ -77,7 +78,7 @@ class VerificationController extends Controller
     public function rejectBorrow(Borrow $borrow)
     {
         $borrow->update(['status' => 'rejected']);
-        return back()->with('success', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
+        return back()->with('success', "Pengajuan peminjaman buku '{$borrow->book->title}' telah ditolak.");
     }
 
     /**
@@ -97,7 +98,7 @@ class VerificationController extends Controller
         // Log the link
         Log::info("Reset Password Link for Member ({$resetRequest->user->email}): {$resetUrl}");
 
-        return back()->with('success', "Permintaan reset password berhasil dikirim. Silakan menunggu persetujuan dari Admin.")
+        return back()->with('success', "Permintaan reset password untuk '{$resetRequest->user->email}' telah disetujui.")
                      ->with('simulated_link', $resetUrl);
     }
 
@@ -106,8 +107,9 @@ class VerificationController extends Controller
      */
     public function rejectResetRequest(MemberResetRequest $resetRequest)
     {
+        $email = $resetRequest->user ? $resetRequest->user->email : '';
         $resetRequest->delete();
 
-        return back()->with('success', "Pengajuan tidak dapat diproses. Silakan periksa kembali ketentuan peminjaman atau hubungi Admin.");
+        return back()->with('success', "Pengajuan reset password untuk '{$email}' telah ditolak.");
     }
 }

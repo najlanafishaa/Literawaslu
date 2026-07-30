@@ -226,14 +226,10 @@ class ReportController extends Controller
 
                 $keterangan = 'Tepat Waktu';
                 if ($lateDays > 0) {
-                    if ($lateDays == 1) {
-                        $keterangan = "Terlambat 1 hari (-10 Poin)";
-                    } elseif ($lateDays == 2) {
-                        $keterangan = "Terlambat 2 hari (-20 Poin)";
-                    } elseif ($lateDays == 3) {
-                        $keterangan = "Terlambat 3 hari (-30 Poin)";
+                    if ($lateDays <= 3) {
+                        $keterangan = "Terlambat {$lateDays} hari (-10 Poin)";
                     } else {
-                        $keterangan = "Terlambat {$lateDays} hari (Wajib Donasi 1 Buku Fisik)";
+                        $keterangan = "Terlambat {$lateDays} hari (-10 Poin/hari + Wajib Donasi 1 Buku Fisik)";
                     }
                 }
 

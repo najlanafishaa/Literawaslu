@@ -15,15 +15,12 @@ class BorrowController extends Controller
      */
     public function index()
     {
+        Borrow::syncActiveBorrowStates();
+
         $activeBorrows = Borrow::whereIn('status', ['borrowed', 'terlambat'])
             ->with(['member.user', 'book'])
             ->orderBy('borrow_date', 'desc')
             ->get();
-
-        // Apply on-demand late point deductions for overdue borrows
-        foreach ($activeBorrows as $borrow) {
-            $this->applyLatePointDeduction($borrow);
-        }
 
         $members = Member::with('user')->get();
         $books = Book::where('is_available', true)->get();
@@ -50,12 +47,17 @@ class BorrowController extends Controller
             return back()->with('error', "Member dengan kode '{$request->member_code}' tidak ditemukan.");
         }
 
-        // Validate if member is active
+        Borrow::syncActiveBorrowStates($member);
+        $member->refresh();
+
         if ($member->status !== 'active') {
             return back()->with('error', "Gagal memproses peminjaman. Akun member '{$member->user->name}' tidak aktif.");
         }
 
-        // Rule: Member cannot borrow if they have an active borrow
+        if ($member->points <= 0) {
+            return back()->with('error', "Gagal memproses peminjaman. Akun member '{$member->user->name}' dibekukan karena poin habis.");
+        }
+
         if ($member->hasActiveBorrow()) {
             return back()->with('error', "Member '{$member->user->name}' masih memiliki buku yang sedang dipinjam. Harus dikembalikan terlebih dahulu.");
         }
@@ -123,39 +125,30 @@ class BorrowController extends Controller
             ? (int) $returnDate->diffInDays($dueDate)
             : 0;
 
+        if ($daysLate > 0) {
+            $borrow->syncLatePenaltyState($returnDate);
+        }
+
         $borrow->return_date = $returnDate;
         $borrow->status = 'returned';
 
-        // Hitung deduction poin berdasarkan keterlambatan: tetap 10 poin jika terlambat
-        $pointDeduction = $daysLate > 0 ? 10 : 0;
-
-        // Sanksi ganti buku jika terlambat > 3 hari (mulai hari ke-4)
-        if ($daysLate > 3) {
-            $borrow->fine_status = 'unpaid'; // wajib ganti 1 buku fisik
+        if ($daysLate >= 4) {
+            $borrow->fine_status = $borrow->fine_status === 'paid' ? 'paid' : 'unpaid';
         } else {
-            $borrow->fine_status = 'none';
+            $borrow->fine_status = $borrow->fine_status === 'paid' ? 'paid' : 'none';
         }
-        $borrow->fine_amount = 0; // tidak ada denda uang
+        $borrow->fine_amount = 0;
 
         $borrow->save();
 
         $member->total_loans += 1;
-        
-        // Poin pengembalian buku: Offline = 5 poin, Online = 1 poin
+
         $isOnline = !empty($book->drive_link);
         $basePoints = $isOnline ? 1 : 5;
-        
-        if ($pointDeduction > 0) {
-            // Deduct late penalty points
-            $member->points = max(0, $member->points - $pointDeduction);
-            \App\Models\PointHistory::create([
-                'member_id' => $member->id,
-                'type' => 'deduct',
-                'points' => $pointDeduction,
-                'description' => "Pengurangan poin keterlambatan pengembalian buku '{$book->title}' ({$daysLate} hari)",
-            ]);
+
+        if ($daysLate > 0) {
+            $member->status = $member->points <= 0 ? 'suspended' : $member->status;
         } else {
-            // Tambahkan poin reward jika dikembalikan tepat waktu
             $member->points += $basePoints;
             \App\Models\PointHistory::create([
                 'member_id' => $member->id,
@@ -229,6 +222,8 @@ class BorrowController extends Controller
                 $filterLabel = ($startDate && $endDate) ? $startDate->format('d M Y') . ' – ' . $endDate->format('d M Y') : 'Kustom';
                 break;
         }
+
+        Borrow::syncActiveBorrowStates();
 
         $query = Borrow::with(['member.user', 'book']);
 

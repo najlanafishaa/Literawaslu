@@ -200,14 +200,10 @@
                                     <td>{{ $due->format('d M Y') }}</td>
                                     <td><span style="color: var(--primary); font-weight: 700;">{{ $lateDays }} Hari</span></td>
                                     <td>
-                                        @if($lateDays == 1)
-                                            Pengurangan 10 Poin
-                                        @elseif($lateDays == 2)
-                                            Pengurangan 20 Poin
-                                        @elseif($lateDays == 3)
-                                            Pengurangan 30 Poin
+                                        @if($lateDays <= 3)
+                                            Pengurangan 10 Poin per Hari
                                         @else
-                                            Wajib Donasi 1 Buku Fisik
+                                            Wajib Donasi 1 Buku Fisik + Pengurangan 10 Poin per Hari
                                         @endif
                                     </td>
                                     <td>
@@ -235,14 +231,10 @@
                                     <td>{{ $due->format('d M Y') }}</td>
                                     <td><span style="color: var(--primary); font-weight: 700;">{{ $lateDays }} Hari</span></td>
                                     <td>
-                                        @if($lateDays == 1)
-                                            Pengurangan 10 Poin
-                                        @elseif($lateDays == 2)
-                                            Pengurangan 20 Poin
-                                        @elseif($lateDays == 3)
-                                            Pengurangan 30 Poin
+                                        @if($lateDays <= 3)
+                                            Pengurangan 10 Poin per Hari
                                         @else
-                                            Wajib Donasi 1 Buku Fisik
+                                            Wajib Donasi 1 Buku Fisik + Pengurangan 10 Poin per Hari
                                         @endif
                                     </td>
                                     <td>

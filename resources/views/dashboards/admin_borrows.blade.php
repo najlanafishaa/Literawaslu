@@ -107,12 +107,15 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($borrow->fine_amount > 0)
-                                        <div style="font-weight: bold; color: var(--primary);">{{ $borrow->fine_amount }} Buku Fisik</div>
-                                        @if($borrow->fine_status === 'unpaid')
-                                            <span class="badge badge-danger"><i class="ti ti-alert-triangle"></i> Belum Dipenuhi</span>
-                                        @elseif($borrow->fine_status === 'paid')
-                                            <span class="badge badge-success"><i class="ti ti-bookmark"></i> Sudah Dipenuhi</span>
+                                    @php
+                                        $lateLabel = $borrow->daysLate();
+                                    @endphp
+                                    @if($lateLabel > 0)
+                                        <div style="font-weight: bold; color: var(--primary);">{{ $lateLabel }} Hari Terlambat</div>
+                                        @if($lateLabel <= 3)
+                                            <span style="color: var(--dark); font-size: 0.85rem; font-weight: 500;">Pengurangan 10 Poin per Hari</span>
+                                        @else
+                                            <span style="color: var(--primary); font-size: 0.85rem; font-weight: 500;">Wajib Donasi 1 Buku Fisik + 10 Poin per Hari</span>
                                         @endif
                                     @else
                                         <span style="color: var(--dark); font-size: 0.85rem; font-weight: 500;">Tepat Waktu</span>
