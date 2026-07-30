@@ -352,6 +352,8 @@
                             <a href="https://x.com/BawasluLampung_" target="_blank" title="Twitter/X" class="footer-social-icon"><i class="ti ti-brand-x"></i></a>
                             <a href="https://www.instagram.com/bawaslulampung/" target="_blank" title="Instagram" class="footer-social-icon"><i class="ti ti-brand-instagram"></i></a>
                             <a href="https://www.youtube.com/@bawaslulampung3009" target="_blank" title="YouTube" class="footer-social-icon"><i class="ti ti-brand-youtube"></i></a>
+                            <a href="https://www.threads.com/@bawaslulampung" target="_blank" title="Threads" class="footer-social-icon"><i class="ti ti-brand-threads"></i></a>
+                            <a href="https://www.tiktok.com/@bawaslu.lampung?_r=1&_t=ZS-98SYW7wHSDv" target="_blank" title="TikTok" class="footer-social-icon"><i class="ti ti-brand-tiktok"></i></a>
                         </div>
                     </div>
                 </div>
