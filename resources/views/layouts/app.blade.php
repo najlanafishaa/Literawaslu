@@ -181,17 +181,17 @@
                             </div>
                             <div class="user-info">
                                 <h4>{{ auth()->user()->name }}</h4>
-                            <p>
-                                @if(auth()->user()->role === 'super_admin')
-                                    Super Admin
-                                @elseif(in_array(auth()->user()->role, ['admin', 'petugas']))
-                                    Admin
-                                @else
-                                    Pengguna
-                                @endif
-                            </p>
-                        </div>
-                        <i class="ti ti-pencil" style="margin-left: auto; color: var(--gray-500); font-size: 0.9rem;"></i>
+                                <p>
+                                    @if(auth()->user()->role === 'super_admin')
+                                        Super Admin
+                                    @elseif(in_array(auth()->user()->role, ['admin', 'petugas']))
+                                        Admin
+                                    @else
+                                        Pengguna
+                                    @endif
+                                </p>
+                            </div>
+                            <i class="ti ti-pencil" style="margin-left: auto; color: var(--gray-500); font-size: 0.9rem;"></i>
                         </div>
                     </a>
                 @else

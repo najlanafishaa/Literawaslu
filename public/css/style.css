@@ -273,6 +273,8 @@ div.card-red:not(.stat-card) h2, div.card-red:not(.stat-card) h3, div.card-red:n
     flex-direction: column;
     position: fixed;
     height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
     left: 0;
     top: 0;
     z-index: 100;
@@ -671,9 +673,34 @@ body.sidebar-open .sidebar-overlay {
         display: flex;
         align-items: center;
     }
+    .page-title {
+        display: none !important;
+    }
+    .role-badge {
+        display: none !important;
+    }
+    .btn-label-desktop {
+        display: none !important;
+    }
     .header-nav {
-        padding: 0 16px;
+        padding: 0 12px;
         height: 58px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
     }
     .content-body {
         padding: 20px 24px;

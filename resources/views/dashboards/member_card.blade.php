@@ -9,7 +9,7 @@
         <h2><i class="ti ti-id-badge" style="color: var(--primary); margin-right: 8px;"></i> Kartu Pengguna Perpustakaan</h2>
         <div style="display: flex; gap: 8px;">
             <button onclick="downloadCard()" class="btn btn-primary btn-sm" style="background-color: var(--secondary); border-color: var(--secondary); color: var(--dark);">
-                <i class="ti ti-download"></i> Unduh Kartu (PNG)
+                <i class="ti ti-download"></i> Unduh Kartu (PDF)
             </button>
             <button onclick="window.print()" class="btn btn-outline btn-sm">
                 <i class="ti ti-printer"></i> Cetak Kartu
@@ -141,6 +141,13 @@
     </div>
 </div>
 
+<!-- Print-only container. Left empty and hidden on screen; populated with
+     clean clones of the front/back faces right before printing (see the
+     'beforeprint' handler below), instead of trying to coax the on-screen
+     3D-flip markup (position:absolute, rotateY transforms, backface-visibility)
+     into printing correctly. -->
+<div id="printCardArea" style="display: none;"></div>
+
 <style>
     /* 3D Card Flipping Styles */
     .card-flip-inner.flipped {
@@ -148,23 +155,37 @@
     }
     
     @media print {
-        body * {
-            visibility: hidden;
+    @media print {
+        /* Make the printed page itself the size of the card (450x260px @ 96dpi
+           converted to mm), instead of the browser's default A4/Letter. Note:
+           this is only honored by Chrome's own "Save as PDF" destination -
+           OS/driver-based printers like "Microsoft Print to PDF" ignore custom
+           @page sizes and fall back to their own standard paper list. */
+        @page {
+            size: 119.06mm 68.79mm;
+            margin: 0;
         }
-        .card-front, .card-front * {
-            visibility: visible;
+
+        /* Hide literally everything else on the page, and show only the
+           print-only container (populated by JS right before printing - see
+           the 'beforeprint' handler). This avoids fighting the on-screen
+           card's 3D-flip markup (position:absolute, rotateY transform,
+           backface-visibility), which kept causing the back face to render
+           wrong, overlap, or disappear entirely. */
+        body > *:not(#printCardArea) {
+            display: none !important;
         }
-        .card-front {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: none !important;
-            background: #b1b5b9 !important;
-            color: #1A1A1A !important;
-            border: 1px solid rgba(0,0,0,0.1) !important;
+        #printCardArea {
+            display: block !important;
+        }
+        #printCardArea > div {
+            margin: 0 auto !important;
+            page-break-inside: avoid;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+        }
+        #printCardArea > div:first-child {
+            page-break-after: always;
         }
     }
 </style>
@@ -172,30 +193,124 @@
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+    // Builds two clean, plain copies of the card faces into #printCardArea
+    // right before the browser prints - whether triggered by the "Cetak
+    // Kartu" button (window.print()) or the user's own Ctrl+P. We strip out
+    // all the 3D-flip-only styling (absolute positioning, rotateY transform,
+    // backface-visibility) on the clones directly via JS, rather than trying
+    // to fight it with @media print CSS overrides, which kept leaving the
+    // back face broken, overlapping, or missing entirely.
+    function preparePrintCard() {
+        const front = document.querySelector('.card-front');
+        const back = document.querySelector('.card-back');
+        const area = document.getElementById('printCardArea');
+        if (!front || !back || !area) return;
+
+        // Must be a direct child of <body> - the print CSS only hides
+        // "body > *:not(#printCardArea)", so if this container stayed nested
+        // inside the normal page layout, its hidden ancestor would hide it too.
+        if (area.parentElement !== document.body) {
+            document.body.appendChild(area);
+        }
+
+        area.innerHTML = '';
+
+        [front, back].forEach(original => {
+            const clone = original.cloneNode(true);
+            clone.removeAttribute('id');
+            clone.style.position = 'static';
+            clone.style.left = 'auto';
+            clone.style.top = 'auto';
+            clone.style.transform = 'none';
+            clone.style.webkitTransform = 'none';
+            clone.style.backfaceVisibility = 'visible';
+            clone.style.webkitBackfaceVisibility = 'visible';
+            clone.style.boxShadow = 'none';
+            clone.style.margin = '0 auto';
+            // Explicit px sizing set directly on the clone (inline style),
+            // not left to the external #printCardArea CSS rule - the clone
+            // still carries the original's inline "width:100%; height:100%"
+            // copied over from cloneNode(), and inline style always beats an
+            // external stylesheet rule unless that rule uses !important.
+            // This was why the card kept coming out the wrong size again.
+            clone.style.width = '450px';
+            clone.style.height = '260px';
+            clone.style.maxWidth = 'none';
+            clone.style.minWidth = '0';
+            clone.style.minHeight = '0';
+            clone.style.boxSizing = 'border-box';
+            clone.style.overflow = 'hidden';
+            area.appendChild(clone);
+        });
+    }
+
+    window.addEventListener('beforeprint', preparePrintCard);
+
     function toggleCardFlip() {
         const cardInner = document.getElementById('membershipCard');
         cardInner.classList.toggle('flipped');
     }
 
     function downloadCard() {
-        const card = document.querySelector('.card-front');
+        const front = document.querySelector('.card-front');
+        const back = document.querySelector('.card-back');
         showToast('Memproses unduhan kartu anggota...', 'warning');
-        
+
+        // The back face is normally rotated 180deg (rotateY) and hidden via
+        // backface-visibility so it looks right in the 3D flip UI. html2canvas
+        // can't render that 3D transform correctly, so we temporarily neutralize
+        // it just for the capture, then restore it right after.
+        const originalTransform = back.style.transform;
+        const originalBackfaceVisibility = back.style.backfaceVisibility;
+        back.style.transform = 'none';
+        back.style.backfaceVisibility = 'visible';
+
+        const restoreBack = () => {
+            back.style.transform = originalTransform;
+            back.style.backfaceVisibility = originalBackfaceVisibility;
+        };
+
         // Wait briefly for rendering to settle
         setTimeout(() => {
-            html2canvas(card, {
-                scale: 3, // Very high definition
-                backgroundColor: null, // transparent corners
-                useCORS: true,
-                logging: false
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Kartu-Pengguna-{{ $member->member_code }}.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                showToast('Kartu pengguna berhasil diunduh!', 'success');
+            Promise.all([
+                html2canvas(front, { scale: 3, backgroundColor: '#b1b5b9', useCORS: true, logging: false }),
+                html2canvas(back, { scale: 3, backgroundColor: '#b1b5b9', useCORS: true, logging: false })
+            ]).then(([frontCanvas, backCanvas]) => {
+                restoreBack();
+
+                const { jsPDF } = window.jspdf;
+
+                // Use the card's fixed design size (matches the 450x260px
+                // .card-front/.card-back size and the @page print size below)
+                // instead of measuring the live element - offsetWidth/Height
+                // can drift with layout/viewport and was making the PDF page
+                // come out the wrong size (browser then defaulted to A4 and
+                // shrank the card down to fit).
+                const pxToMm = 0.2645833333;
+                const CARD_WIDTH_PX = 450;
+                const CARD_HEIGHT_PX = 260;
+                const pageWidth = CARD_WIDTH_PX * pxToMm;   // ~119.06mm
+                const pageHeight = CARD_HEIGHT_PX * pxToMm; // ~68.79mm
+                const orientation = 'landscape';
+
+                const pdf = new jsPDF({
+                    orientation,
+                    unit: 'mm',
+                    format: [pageWidth, pageHeight]
+                });
+
+                // Page 1: front
+                pdf.addImage(frontCanvas.toDataURL('image/png'), 'PNG', 0, 0, pageWidth, pageHeight);
+                // Page 2: back
+                pdf.addPage([pageWidth, pageHeight], orientation);
+                pdf.addImage(backCanvas.toDataURL('image/png'), 'PNG', 0, 0, pageWidth, pageHeight);
+
+                pdf.save('Kartu-Pengguna-{{ $member->member_code }}.pdf');
+                showToast('Kartu pengguna berhasil diunduh (2 halaman)!', 'success');
             }).catch(err => {
+                restoreBack();
                 showToast('Gagal mengunduh kartu: ' + err.message, 'danger');
             });
         }, 100);
