@@ -31,13 +31,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        $defaultCategories = [
-            'pemerintahan', 'november', 'hukum dan undang-undang', 'motivasi', 
-            'politik', 'sosial', 'demokrasi', 'keagamaan', 'sengketa pemilu', 
-            'riset pilkada', 'akuntansi', 'skripsi', 'laporan hasil pengawasan'
-        ];
-        $dbCategories = Category::orderBy('name')->pluck('name')->toArray();
-        $categories = array_unique(array_merge($defaultCategories, $dbCategories));
+        // Hanya ambil kategori dari tabel categories
+        $categories = Category::orderBy('name')->pluck('name')->toArray();
         sort($categories);
         
         return view('books.create', compact('categories'));
@@ -98,13 +93,8 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        $defaultCategories = [
-            'pemerintahan', 'november', 'hukum dan undang-undang', 'motivasi', 
-            'politik', 'sosial', 'demokrasi', 'keagamaan', 'sengketa pemilu', 
-            'riset pilkada', 'akuntansi', 'skripsi', 'laporan hasil pengawasan'
-        ];
-        $dbCategories = Category::orderBy('name')->pluck('name')->toArray();
-        $categories = array_unique(array_merge($defaultCategories, $dbCategories));
+        // Hanya ambil kategori dari tabel categories (sama seperti di method create)
+        $categories = Category::orderBy('name')->pluck('name')->toArray();
         sort($categories);
 
         return view('books.edit', compact('book', 'categories'));

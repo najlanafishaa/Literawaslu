@@ -43,13 +43,8 @@ class MemberController extends Controller
         }
 
         $books = $query->with('reviews')->orderBy('title', 'asc')->get();
-        $defaultCategories = [
-            'pemerintahan', 'november', 'hukum dan undang-undang', 'motivasi', 
-            'politik', 'sosial', 'demokrasi', 'keagamaan', 'sengketa pemilu', 
-            'riset pilkada', 'akuntansi', 'skripsi', 'laporan hasil pengawasan'
-        ];
-        $dbCategories = Category::orderBy('name')->pluck('name')->toArray();
-        $categories = array_unique(array_merge($defaultCategories, $dbCategories));
+        // Mengambil kategori hanya dari database agar sinkron dengan admin
+        $categories = Category::orderBy('name')->pluck('name')->toArray();
         sort($categories);
         $member = Auth::user()->member;
 
