@@ -35,7 +35,7 @@ class BookReviewController extends Controller
             // Update existing review
             $existing->update([
                 'rating' => $request->rating,
-                'review' => $request->review,
+                'comment' => $request->review,
             ]);
             return back()->with('success', 'Ulasan Anda berhasil diperbarui.');
         }
@@ -44,7 +44,7 @@ class BookReviewController extends Controller
             'book_id' => $book->id,
             'member_id' => $member->id,
             'rating' => $request->rating,
-            'review' => $request->review,
+            'comment' => $request->review,
         ]);
 
         return back()->with('success', 'Ulasan Anda berhasil dikirim. Terima kasih!');
