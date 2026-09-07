@@ -187,6 +187,7 @@ class BookController extends Controller
             BookDeletionRequest::create([
                 'book_id' => $book->id,
                 'requested_by' => auth()->id(),
+                'reason' => 'Pengajuan penghapusan buku dari sistem.',
                 'status' => 'pending'
             ]);
 

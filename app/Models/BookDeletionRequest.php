@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookDeletionRequest extends Model
 {
-    protected $fillable = ['book_id', 'requested_by', 'status'];
+    protected $fillable = ['book_id', 'requested_by', 'reason', 'status', 'reviewed_by', 'reviewed_at'];
 
     public function book()
     {
