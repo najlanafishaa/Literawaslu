@@ -91,6 +91,29 @@ class DashboardController extends Controller
         } else {
             $member = $user->member;
 
+            // Auto-create member profile if missing (e.g. role changed via SQL)
+            if (!$member) {
+                $lastMember = \App\Models\Member::orderBy('id', 'desc')->first();
+                $nextNum = $lastMember ? ((int) str_replace('MEM-', '', $lastMember->member_code)) + 1 : 1;
+                $code = 'MEM-' . str_pad($nextNum, 7, '0', STR_PAD_LEFT);
+
+                $member = \App\Models\Member::create([
+                    'user_id'     => $user->id,
+                    'member_code' => $code,
+                    'total_loans' => 0,
+                    'points'      => 10,
+                    'borrow_limit'=> 1,
+                    'status'      => 'active',
+                ]);
+
+                \App\Models\PointHistory::create([
+                    'member_id'   => $member->id,
+                    'type'        => 'earn',
+                    'points'      => 10,
+                    'description' => 'Bonus Poin Registrasi Akun Baru',
+                ]);
+            }
+
             if ($member) {
                 Borrow::syncActiveBorrowStates($member);
                 $member->refresh();
