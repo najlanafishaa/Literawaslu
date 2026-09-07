@@ -183,7 +183,7 @@ class BookController extends Controller
             return back()->with('error', 'Gagal menghapus buku. Buku sedang dalam status dipinjam.');
         }
 
-        if (auth()->user()->role === 'petugas') {
+        if (in_array(auth()->user()->role, ['admin', 'petugas'])) {
             BookDeletionRequest::create([
                 'book_id' => $book->id,
                 'requested_by' => auth()->id(),

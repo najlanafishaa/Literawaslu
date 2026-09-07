@@ -111,11 +111,11 @@
                                         <a href="{{ route('books.edit', $book->id) }}" class="btn btn-outline btn-sm" title="Edit Buku" style="padding: 6px 10px;">
                                             <i class="ti ti-pencil"></i>
                                         </a>
-                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('{{ auth()->user()->role === 'petugas' ? 'Ajukan penghapusan buku ini ke Super Admin?' : 'Apakah Anda yakin ingin menghapus buku ini dari sistem?' }}');">
+                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('{{ in_array(auth()->user()->role, ['admin', 'petugas']) ? 'Ajukan penghapusan buku ini ke Super Admin?' : 'Apakah Anda yakin ingin menghapus buku ini dari sistem?' }}');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-outline btn-sm" title="{{ auth()->user()->role === 'petugas' ? 'Ajukan Hapus Buku' : 'Hapus Buku' }}" style="padding:6px 10px; color:var(--primary); border-color:rgba(var(--primary-rgb),0.2);">
-                                                <i class="ti ti-trash"></i> {{ auth()->user()->role === 'petugas' ? 'Ajukan Hapus' : '' }}
+                                            <button type="submit" class="btn btn-outline btn-sm" title="{{ in_array(auth()->user()->role, ['admin', 'petugas']) ? 'Ajukan Hapus Buku' : 'Hapus Buku' }}" style="padding:6px 10px; color:var(--primary); border-color:rgba(var(--primary-rgb),0.2);">
+                                                <i class="ti ti-trash"></i> {{ in_array(auth()->user()->role, ['admin', 'petugas']) ? 'Ajukan Hapus' : '' }}
                                             </button>
                                         </form>
                                     </div>
