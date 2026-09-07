@@ -171,11 +171,24 @@ Route::middleware('auth')->group(function () {
 
 // Temporary route to run migrations and commands on live server (InfinityFree)
 Route::get('/run-live-migrations-and-fixes', function () {
+    $results = [];
+
+    // Step 1: Run migrations
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        \Illuminate\Support\Facades\Artisan::call('members:reorder-codes');
-        return "Berhasil! Migrasi database dan pengurutan ulang member code telah dijalankan di server live.";
+        $results[] = "✅ Migrasi berhasil dijalankan.";
     } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+        $results[] = "⚠️ Migrasi (ada yang dilewati/sudah ada): " . $e->getMessage();
     }
+
+    // Step 2: Reorder member codes
+    try {
+        \Illuminate\Support\Facades\Artisan::call('members:reorder-codes');
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        $results[] = "✅ Nomor anggota berhasil diurutkan ulang: " . $output;
+    } catch (\Exception $e) {
+        $results[] = "❌ Gagal mengurutkan nomor anggota: " . $e->getMessage();
+    }
+
+    return implode("<br><br>", $results);
 });
