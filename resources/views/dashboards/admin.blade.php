@@ -1,13 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Admin')
-@section('header_title', 'Dashboard Super Admin')
+@section('title', auth()->user()->role === 'super_admin' ? 'Dashboard Super Admin' : 'Dashboard Admin')
+@section('header_title', auth()->user()->role === 'super_admin' ? 'Dashboard Super Admin' : 'Dashboard Admin')
 
 @section('content')
 <div class="welcome-banner">
     <div style="position: relative; z-index: 5; flex: 1; min-width: 220px;">
-        <h1>Selamat Datang di Portal Super Admin</h1>
-        <p>Akses penuh sistem perpustakaan Literawaslu. Kelola buku, data pengguna, admin, dan pantau laporan transaksi.</p>
+        @if(auth()->user()->role === 'super_admin')
+            <h1>Selamat Datang di Portal Super Admin</h1>
+            <p>Akses penuh sistem perpustakaan Literawaslu. Kelola buku, data pengguna, admin, dan pantau laporan transaksi.</p>
+        @else
+            <h1>Selamat Datang, Admin!</h1>
+            <p>Kelola buku, peminjaman, dan data anggota perpustakaan Literawaslu.</p>
+        @endif
     </div>
 </div>
 
