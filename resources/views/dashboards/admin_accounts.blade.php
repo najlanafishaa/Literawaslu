@@ -27,7 +27,8 @@
                 <div style="flex: 1; min-width: 200px;">
                     <label style="font-weight: bold; margin-bottom: 5px; display: block;">Peran / Hak Akses</label>
                     <select name="role" class="form-control" required>
-                        <option value="petugas">Admin</option>
+                        <option value="admin">Admin</option>
+                        <option value="petugas">Petugas</option>
                         <option value="member">Pengguna Perpustakaan</option>
                         <option value="super_admin">Super Admin</option>
                     </select>
@@ -64,8 +65,10 @@
                             <td>
                                 @if($user->role === 'super_admin')
                                     <span class="badge badge-danger">Super Admin</span>
-                                @elseif($user->role === 'petugas')
+                                @elseif($user->role === 'admin')
                                     <span class="badge badge-warning">Admin</span>
+                                @elseif($user->role === 'petugas')
+                                    <span class="badge badge-info">Petugas</span>
                                 @else
                                     <span class="badge badge-secondary">Pengguna</span>
                                 @endif

@@ -29,7 +29,7 @@ class AccountController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:super_admin,petugas,member',
+            'role' => 'required|in:super_admin,admin,petugas,member',
         ]);
 
         $user = User::create([
@@ -68,9 +68,9 @@ class AccountController extends Controller
             return back()->with('error', 'Tidak bisa men-demote satu-satunya super admin!');
         }
 
-        $user->update(['role' => 'petugas']);
+        $user->update(['role' => 'admin']);
         
-        return back()->with('success', "Akun {$user->name} berhasil diturunkan (demote) menjadi Admin Biasa (Petugas).");
+        return back()->with('success', "Akun {$user->name} berhasil diturunkan menjadi Admin.");
     }
 
     public function destroy(User $user)
