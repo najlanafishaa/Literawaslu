@@ -8,6 +8,7 @@ use App\Models\MemberResetRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use App\Models\ActivityLog;
 
 class VerificationController extends Controller
 {
@@ -31,6 +32,14 @@ class VerificationController extends Controller
     public function approveMember(Member $member)
     {
         $member->update(['status' => 'active']);
+        
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Verifikasi Member',
+            'description' => "Menyetujui pendaftaran member: {$member->user->name}",
+            'ip_address' => request()->ip()
+        ]);
+        
         return back()->with('success', "Registrasi berhasil. Akun Anda telah dibuat dan disetujui.");
     }
     
@@ -46,6 +55,13 @@ class VerificationController extends Controller
         if ($user) {
             $user->delete();
         }
+        
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Tolak Member',
+            'description' => "Menolak pendaftaran member: {$name}",
+            'ip_address' => request()->ip()
+        ]);
         
         return back()->with('success', "Pendaftaran anggota '{$name}' telah berhasil ditolak dan akun telah dihapus.");
     }
@@ -69,6 +85,13 @@ class VerificationController extends Controller
         // Tambah total_loans member saat disetujui
         $borrow->member->increment('total_loans');
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Verifikasi Peminjaman',
+            'description' => "Menyetujui peminjaman buku '{$borrow->book->title}' untuk '{$borrow->member->user->name}'",
+            'ip_address' => request()->ip()
+        ]);
+
         return back()->with('success', "Peminjaman buku '{$borrow->book->title}' untuk '{$borrow->member->user->name}' telah berhasil disetujui.");
     }
     
@@ -78,6 +101,14 @@ class VerificationController extends Controller
     public function rejectBorrow(Borrow $borrow)
     {
         $borrow->update(['status' => 'rejected']);
+        
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Tolak Peminjaman',
+            'description' => "Menolak peminjaman buku '{$borrow->book->title}' untuk '{$borrow->member->user->name}'",
+            'ip_address' => request()->ip()
+        ]);
+        
         return back()->with('success', "Pengajuan peminjaman buku '{$borrow->book->title}' telah ditolak.");
     }
 

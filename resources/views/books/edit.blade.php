@@ -71,8 +71,8 @@
             </div>
 
             <div class="form-group">
-                <label for="description">Deskripsi Buku <span style="color: var(--gray-500); font-weight: 400;">(opsional)</span></label>
-                <textarea name="description" id="description" class="form-control" rows="4" placeholder="Tulis ringkasan atau deskripsi singkat buku ini...">{{ old('description', $book->description) }}</textarea>
+                <label for="description">Deskripsi Buku</label>
+                <textarea name="description" id="description" class="form-control" rows="4" placeholder="Tulis ringkasan atau deskripsi singkat buku ini..." required>{{ old('description', $book->description) }}</textarea>
             </div>
 
             <div class="form-row">
@@ -82,7 +82,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="cover_image">Foto Sampul Buku (Opsional)</label>
+                    <label for="cover_image">Foto Sampul Buku</label>
                     <input type="file" name="cover_image" id="cover_image" class="form-control" accept="image/*" style="padding: 5px;">
                     <small style="color: var(--gray-600); margin-top: 5px; display: block;">Format: JPG, PNG, GIF. Maksimal 512 KB.</small>
                     @if($book->cover_image)
@@ -98,7 +98,7 @@
                 <label for="drive_link"><i class="ti ti-brand-google-drive" style="color: #4285F4; margin-right: 4px;"></i> Link Baca Online (Google Drive)</label>
                 <input type="url" name="drive_link" id="drive_link" class="form-control" placeholder="https://drive.google.com/file/d/FILE_ID/view" value="{{ old('drive_link', $book->drive_link) }}">
                 <small style="color: var(--gray-600); margin-top: 5px; display: block;">
-                    Isikan link Google Drive untuk menjadikan buku ini <strong>Online</strong>. Biarkan kosong jika buku ini <strong>Offline</strong>.
+                    Isikan link Google Drive (Opsional, khusus untuk buku yang bisa dibaca online).
                 </small>
             </div>
 

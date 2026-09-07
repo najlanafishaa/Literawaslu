@@ -74,7 +74,7 @@ class DashboardController extends Controller
             }
             ksort($monthlyTrends);
 
-            if ($user->role === 'super_admin') {
+            if (in_array($user->role, ['super_admin', 'admin'])) {
                 return view('dashboards.admin', compact(
                     'totalBooks', 'borrowedBooks', 'availableBooks',
                     'totalMembers', 'totalTransactions', 'totalReturns', 'overdueCount',

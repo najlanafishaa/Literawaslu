@@ -59,6 +59,12 @@ class AuthController extends Controller
             }
             
             $request->session()->regenerate();
+            \App\Models\ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'Login',
+                'description' => "Pengguna login ke dalam sistem.",
+                'ip_address' => $request->ip()
+            ]);
             return redirect()->route('dashboard')->with('success', "Selamat datang kembali, {$user->name}!");
         }
 
@@ -150,6 +156,13 @@ class AuthController extends Controller
                 'description' => 'Bonus Poin Registrasi Akun Baru',
             ]);
 
+            \App\Models\ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'Register',
+                'description' => "Pengguna baru mendaftar dengan email: {$user->email}.",
+                'ip_address' => $request->ip()
+            ]);
+
             \Illuminate\Support\Facades\DB::commit();
 
             return redirect()->route('unverified');
@@ -164,6 +177,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        if (Auth::check()) {
+            \App\Models\ActivityLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'Logout',
+                'description' => "Pengguna keluar dari sistem.",
+                'ip_address' => $request->ip()
+            ]);
+        }
         Auth::logout();
 
         $request->session()->invalidate();

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         // 1. Create Super Admin
         User::create([
             'name' => 'Super Admin',
-            'email' => 'admin@literawaslu.com',
+            'email' => 'superadmin@literawaslu.com',
             'password' => Hash::make('password'),
             'role' => 'super_admin',
             'security_question' => 'Apa nama hewan favorit Anda?',
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         // 2. Create Regular Admin (Petugas)
         User::create([
             'name' => 'Petugas Perpus',
-            'email' => 'petugas@literawaslu.com',
+            'email' => 'admin@literawaslu.com',
             'password' => Hash::make('password'),
             'role' => 'petugas',
             'security_question' => 'Siapa nama hewan peliharaan Anda?',

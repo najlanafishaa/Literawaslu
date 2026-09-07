@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\ActivityLog;
+use App\Models\BookDeletionRequest;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -61,9 +63,9 @@ class BookController extends Controller
             'publisher' => 'required|string|max:255',
             'year' => 'required|integer|min:1000|max:' . date('Y'),
             'category' => 'required|string|max:100',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'stock' => 'required|integer|min:0',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:512',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:512',
             'drive_link' => 'nullable|url|max:500',
         ], [
             'barcode.unique' => 'Barcode ini sudah terdaftar pada buku lain.',
@@ -83,7 +85,14 @@ class BookController extends Controller
             $data['cover_image'] = 'images/covers/' . $imageName;
         }
 
-        Book::create($data);
+        $book = Book::create($data);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Menambah Buku',
+            'description' => "Menambahkan buku baru dengan judul: {$book->title}",
+            'ip_address' => $request->ip()
+        ]);
 
         return redirect()->route('books.index')->with('success', 'Buku baru berhasil ditambahkan ke dalam sistem.');
     }
@@ -123,7 +132,7 @@ class BookController extends Controller
             'publisher' => 'required|string|max:255',
             'year' => 'required|integer|min:1000|max:' . date('Y'),
             'category' => 'required|string|max:100',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'stock' => 'required|integer|min:0',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:512',
             'drive_link' => 'nullable|url|max:500',
@@ -157,22 +166,86 @@ class BookController extends Controller
 
         $book->update($data);
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Mengubah Buku',
+            'description' => "Memperbarui data buku: {$book->title}",
+            'ip_address' => $request->ip()
+        ]);
+
         return redirect()->route('books.index')->with('success', 'Data buku berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified book from database.
-     */
-    public function destroy(Book $book)
+    public function destroy(Request $request, Book $book)
     {
         // Check if book is currently borrowed
         if (!$book->is_available) {
             return back()->with('error', 'Gagal menghapus buku. Buku sedang dalam status dipinjam.');
         }
 
+        if (auth()->user()->role === 'petugas') {
+            BookDeletionRequest::create([
+                'book_id' => $book->id,
+                'requested_by' => auth()->id(),
+                'status' => 'pending'
+            ]);
+
+            ActivityLog::create([
+                'user_id' => auth()->id(),
+                'action' => 'Mengajukan Hapus Buku',
+                'description' => "Mengajukan penghapusan buku: {$book->title}",
+                'ip_address' => $request->ip()
+            ]);
+
+            return redirect()->route('books.index')->with('success', 'Pengajuan penghapusan buku berhasil dikirim ke Super Admin.');
+        }
+
+        $title = $book->title;
         $book->delete();
 
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Menghapus Buku',
+            'description' => "Menghapus buku: {$title}",
+            'ip_address' => $request->ip()
+        ]);
+
         return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus dari sistem.');
+    }
+
+    /**
+     * Remove multiple books (Super Admin only)
+     */
+    public function bulkDelete(Request $request)
+    {
+        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+            return back()->with('error', 'Anda tidak memiliki akses untuk aksi ini.');
+        }
+
+        $request->validate([
+            'book_ids' => 'required|array',
+            'book_ids.*' => 'exists:books,id'
+        ]);
+
+        $books = Book::whereIn('id', $request->book_ids)->get();
+        $count = 0;
+
+        foreach ($books as $book) {
+            if ($book->is_available) {
+                $title = $book->title;
+                $book->delete();
+                $count++;
+                
+                ActivityLog::create([
+                    'user_id' => auth()->id(),
+                    'action' => 'Menghapus Buku (Bulk)',
+                    'description' => "Menghapus buku dari fitur bulk: {$title}",
+                    'ip_address' => $request->ip()
+                ]);
+            }
+        }
+
+        return redirect()->route('books.index')->with('success', "Berhasil menghapus {$count} buku.");
     }
 
     /**
@@ -205,6 +278,56 @@ class BookController extends Controller
         $embedUrl = $this->convertToEmbedUrl($book->drive_link);
 
         return view('books.read', compact('book', 'embedUrl'));
+    }
+
+    /**
+     * Show deleted books (Trash).
+     */
+    public function trash()
+    {
+        $books = Book::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+        return view('books.trash', compact('books'));
+    }
+
+    /**
+     * Restore a deleted book.
+     */
+    public function restore($id)
+    {
+        $book = Book::onlyTrashed()->findOrFail($id);
+        $book->restore();
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Memulihkan Buku',
+            'description' => "Memulihkan buku dari tempat sampah: {$book->title}",
+            'ip_address' => request()->ip()
+        ]);
+
+        return redirect()->route('books.trash')->with('success', 'Buku berhasil dipulihkan.');
+    }
+
+    /**
+     * Permanently delete a book.
+     */
+    public function forceDelete($id)
+    {
+        if (!in_array(auth()->user()->role, ['super_admin', 'admin'])) {
+            return back()->with('error', 'Hanya Admin yang dapat menghapus buku secara permanen.');
+        }
+
+        $book = Book::onlyTrashed()->findOrFail($id);
+        $title = $book->title;
+        $book->forceDelete();
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'Hapus Permanen Buku',
+            'description' => "Menghapus buku secara permanen: {$title}",
+            'ip_address' => request()->ip()
+        ]);
+
+        return redirect()->route('books.trash')->with('success', 'Buku berhasil dihapus secara permanen.');
     }
 
     /**

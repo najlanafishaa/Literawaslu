@@ -84,6 +84,16 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('superadmin.activities') }}" class="sidebar-link {{ request()->routeIs('superadmin.activities') ? 'active' : '' }}">
+                                <i class="ti ti-activity"></i> Log Aktivitas
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('superadmin.deletion_requests') }}" class="sidebar-link {{ request()->routeIs('superadmin.deletion_requests') ? 'active' : '' }}">
+                                <i class="ti ti-trash-x"></i> Persetujuan Hapus
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('settings.index') }}" class="sidebar-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                                 <i class="ti ti-settings"></i> Pengaturan
                             </a>

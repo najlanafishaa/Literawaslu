@@ -102,10 +102,10 @@ class MemberAdminController extends Controller
             'security_answer' => strtolower(trim($request->security_answer)),
         ]);
 
-        // Generate member code
-        do {
-            $code = 'MEM-' . rand(100000, 999999);
-        } while (Member::where('member_code', $code)->exists());
+        // Generate sequential member code starting from MEM-0000001
+        $lastMember = Member::orderBy('id', 'desc')->first();
+        $nextNum = $lastMember ? ((int) str_replace('MEM-', '', $lastMember->member_code)) + 1 : 1;
+        $code = 'MEM-' . str_pad($nextNum, 7, '0', STR_PAD_LEFT);
 
         $member = Member::create([
             'user_id' => $user->id,

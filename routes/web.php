@@ -16,6 +16,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\BookReviewController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SuperAdminActivityController;
 
 // Public route for FAB question submission
 Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
@@ -78,7 +79,7 @@ Route::middleware('auth')->group(function () {
     // ============================================
     // PETUGAS & SUPER ADMIN SHARED ROUTES
     // ============================================
-    Route::middleware('role:petugas,super_admin')->group(function () {
+    Route::middleware('role:petugas,admin,super_admin')->group(function () {
         Route::get('/borrows', [BorrowController::class, 'index'])->name('borrows.index');
         Route::post('/borrows/checkout', [BorrowController::class, 'checkout'])->name('borrows.checkout');
         Route::post('/borrows/checkin', [BorrowController::class, 'checkin'])->name('borrows.checkin');
@@ -95,6 +96,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/verifications/borrow/{borrow}/reject', [VerificationController::class, 'rejectBorrow'])->name('verifications.borrow.reject');
         Route::post('/verifications/reset-request/{resetRequest}/approve', [VerificationController::class, 'approveResetRequest'])->name('verifications.reset.approve');
         Route::post('/verifications/reset-request/{resetRequest}/reject', [VerificationController::class, 'rejectResetRequest'])->name('verifications.reset.reject');
+
+        // Books Bulk Delete
+        Route::post('/admin/books/bulk-remove', [BookController::class, 'bulkDelete'])->name('books.bulkDelete');
+
+        // Books Trash & Restore
+        Route::get('/admin/books/trash', [BookController::class, 'trash'])->name('books.trash');
+        Route::post('/admin/books/{id}/restore', [BookController::class, 'restore'])->name('books.restore');
+        Route::delete('/admin/books/{id}/force-delete', [BookController::class, 'forceDelete'])->name('books.forceDelete');
 
         // Books CRUD
         Route::resource('/admin/books', BookController::class)->names([
@@ -115,7 +124,7 @@ Route::middleware('auth')->group(function () {
     // ============================================
     // SUPER ADMIN ONLY ROUTES
     // ============================================
-    Route::middleware('role:super_admin')->group(function () {
+    Route::middleware('role:admin,super_admin')->group(function () {
     
         // Account Management
         Route::get('/admin/accounts', [AccountController::class, 'index'])->name('accounts.index');
@@ -151,5 +160,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/questions', [QuestionController::class, 'index'])->name('questions.index');
         Route::post('/admin/questions/{question}/reply', [QuestionController::class, 'reply'])->name('questions.reply');
         Route::get('/admin/questions/pending-count', [QuestionController::class, 'pendingCount'])->name('questions.pending_count');
+        
+        // Activities & Deletion Requests
+        Route::get('/admin/activities', [SuperAdminActivityController::class, 'activities'])->name('superadmin.activities');
+        Route::get('/admin/deletion-requests', [SuperAdminActivityController::class, 'deletionRequests'])->name('superadmin.deletion_requests');
+        Route::post('/admin/deletion-requests/{id}/approve', [SuperAdminActivityController::class, 'approveDeletion'])->name('superadmin.deletion_requests.approve');
+        Route::post('/admin/deletion-requests/{id}/reject', [SuperAdminActivityController::class, 'rejectDeletion'])->name('superadmin.deletion_requests.reject');
     });
+});
+
+// Temporary route to run migrations and commands on live server (InfinityFree)
+Route::get('/run-live-migrations-and-fixes', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('members:reorder-codes');
+        return "Berhasil! Migrasi database dan pengurutan ulang member code telah dijalankan di server live.";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
 });
